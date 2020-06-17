@@ -4,9 +4,7 @@ import toml
 
 import lasergame.data
 
-ids = None
-emojis = None
-colors = None
+game = None
 
 
 class AttrDict:
