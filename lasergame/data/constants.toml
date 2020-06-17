@@ -1,3 +1,18 @@
 [game]
-width = 512
-height = 448
+basewidth = 256
+baseheight = 224
+scale = 3
+
+[buttons]
+UP = "K_w"
+LEFT = "K_a"
+RIGHT = "K_d"
+DOWN = "K_s"
+A = "K_p"
+B = "K_l"
+X = "K_o"
+Y = "K_k"
+L = "K_1"
+R = "K_MINUS"
+SELECT = "K_RSHIFT"
+START = "K_RETURN"
