@@ -2,8 +2,11 @@ import pygame
 
 from digicolor import colors
 
+from lasergame.objects.gameobject import GameObject
+from lasergame.lib.buttons import buttons
 
-class Ship:
+
+class Ship(GameObject):
     def __init__(self, base: int, height: int, center: tuple, color: tuple = colors.WHITE.rgb):
         self.base = base
         self.height = height
@@ -25,6 +28,12 @@ class Ship:
     @y.setter
     def y(self, value):
         self.center = (self.center[0], value)
+
+    def update(self, events):
+        if pygame.key.get_pressed()[buttons.UP]:
+            self.y -= 1
+        if pygame.key.get_pressed()[buttons.DOWN]:
+            self.y += 1
 
     def draw(self, screen):
         boundingBox = drawTriangle(screen, self.color, self.center, self.base, self.height)
