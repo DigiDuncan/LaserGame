@@ -1,5 +1,6 @@
 from lasergame.procedures.gameloop import gameloop
 
+
 def main():
     gameloop()
 
