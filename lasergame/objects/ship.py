@@ -10,50 +10,40 @@ class Ship:
         self.center = center
         self.color = color
 
-        self.b = self.base
-        self.h = self.height
-        self.p1 = self.center[0]
-        self.p2 = self.center[1]
+    @property
+    def x(self):
+        return self.center[0]
+
+    @x.setter
+    def x(self, value):
+        self.center = (value, self.center[1])
 
     @property
-    def u1(self):
-        return self.p1
+    def y(self):
+        return self.center[1]
 
-    @property
-    def u2(self):
-        return self.p2 - (self.h / 2)
-
-    @property
-    def v1(self):
-        return self.p1 - (self.b / 2)
-
-    @property
-    def v2(self):
-        return self.p2 + (self.h / 2)
-
-    @property
-    def w1(self):
-        return self.p1 + (self.b / 2)
-
-    @property
-    def w2(self):
-        return self.p2 + (self.h / 2)
-
-    @property
-    def u(self):
-        return (self.u1, self.u2)
-
-    @property
-    def v(self):
-        return (self.v1, self.v2)
-
-    @property
-    def w(self):
-        return (self.w1, self.w2)
-
-    @property
-    def uvw(self):
-        return [self.u, self.v, self.w]
+    @y.setter
+    def y(self, value):
+        self.center = (self.center[0], value)
 
     def draw(self, screen):
-        return pygame.draw.polygon(screen, self.color, self.uvw)
+        boundingBox = drawTriangle(screen, self.color, self.center, self.base, self.height)
+        return boundingBox
+
+
+def drawTriangle(screen, color, center, base, height):
+    x, y = center
+    b = base
+    h = height
+    u1 = x
+    u2 = y - (h / 2)
+    v1 = x - (b / 2)
+    v2 = y + (h / 2)
+    w1 = x + (b / 2)
+    w2 = y + (h / 2)
+    u = (u1, u2)
+    v = (v1, v2)
+    w = (w1, w2)
+    uvw = (u, v, w)
+    boundingBox = pygame.draw.polygon(screen, color, uvw)
+    return boundingBox

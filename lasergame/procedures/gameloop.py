@@ -44,11 +44,16 @@ def gameloop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == buttons.UP:
-                    ship.center[0] += 1
+            #if event.type == pygame.KEYDOWN:
+            #    if event.key == buttons.UP:
+            #        ship.y -= 1
+        if pygame.key.get_pressed()[buttons.UP]:
+            ship.y -= 1
+        if pygame.key.get_pressed()[buttons.DOWN]:
+            ship.y += 1
 
         # Draw a ship.
+        screen.fill(colors.BLACK.rgb)
         ship.draw(screen)
 
         refresh()
