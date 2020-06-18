@@ -1,17 +1,27 @@
 import pygame
 import random
 
-import digicolor
+from digicolor import colors
 
 from lasergame.lib.constants import game
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
 
-colors = digicolor.colors
+
+def write(screen, coords, text, *, color=colors.WHITE.rgb):
+    font = pygame.font.Font(pygame.font.get_default_font(), 16)
+    textsurface = font.render(text, True, color)
+    if coords[0] < 0:
+        coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
+    if coords[1] < 0:
+        coords = (coords[0], screen.get_height() + coords[1] - textsurface.get_height())
+    screen.blit(textsurface, coords)
 
 
 def gameloop():
     pygame.init()
+
+    clock = pygame.time.Clock()
 
     # Create the screen.
     screen = pygame.Surface((game.width, game.height))
@@ -29,6 +39,7 @@ def gameloop():
     def refresh():
         # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
         pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
+        write(bigscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
         pygame.display.flip()
 
     running = True
@@ -55,6 +66,7 @@ def gameloop():
             o.draw(screen)
 
         refresh()
+        clock.tick(60)
 
 
 pygame.quit()
