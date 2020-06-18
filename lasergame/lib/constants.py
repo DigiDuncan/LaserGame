@@ -16,8 +16,10 @@ def loadgame(data):
     gamedict = {name.lower(): value for name, value in gamedict.items()}
     # create the enum
     game = AttrDict(gamedict)
-    game["width"] = game.basewidth * game.scale
-    game["height"] = game.baseheight * game.scale
+    if not isinstance(game.scale, int):
+        raise ValueError("Scale is not an integer.")
+    game["windowwidth"] = game.width * game.scale
+    game["windowheight"] = game.height * game.scale
     game["center"] = (round(game.width / 2), round(game.height / 2))
 
 

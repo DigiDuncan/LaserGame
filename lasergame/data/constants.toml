@@ -1,7 +1,7 @@
 [game]
-basewidth = 256
-baseheight = 224
-scale = 3
+width = 256
+height = 224
+scale = 4
 
 [buttons]
 UP = "K_w"

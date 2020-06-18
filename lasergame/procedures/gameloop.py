@@ -1,4 +1,5 @@
 import pygame
+import random
 from pygame import locals
 
 import digicolor
@@ -6,6 +7,7 @@ import digicolor
 from lasergame.lib.attrdict import AttrDict
 from lasergame.lib.constants import game
 from lasergame.lib.constants import buttons as keys
+from lasergame.objects.ship import Ship
 
 colors = digicolor.colors
 buttonsdict = {}
@@ -18,7 +20,22 @@ def gameloop():
     pygame.init()
 
     # Create the screen.
-    screen = pygame.display.set_mode([game.width, game.height])
+    screen = pygame.Surface((game.width, game.height))
+    bigscreen = pygame.display.set_mode([game.windowwidth, game.windowheight])
+    pygame.display.set_caption("LaserGame v0 by DigiDuncan")
+    ship = Ship(20, 25, game.center, colors.BLUE.rgb)
+
+    # Fill the background
+    screen.fill(colors.BLACK.rgb)
+
+    # Draw stars?
+    for i in range(150):
+        pygame.draw.circle(screen, colors.WHITE.rgb, (random.randint(0, game.width), random.randint(0, game.height)), 2)
+
+    def refresh():
+        # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
+        pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
+        pygame.display.flip()
 
     running = True
 
@@ -27,14 +44,11 @@ def gameloop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        # Fill the background with white
-        screen.fill(colors.BLACK.rgb)
 
-        # Draw a solid blue circle in the center
-        pygame.draw.circle(screen, (0, 0, 255), (game.center[0], game.center[1]), 75)
+        # Draw a ship.
+        ship.draw(screen)
 
-        # Flip [refresh?] the display
-        pygame.display.flip()
+        refresh()
 
 
 pygame.quit()
