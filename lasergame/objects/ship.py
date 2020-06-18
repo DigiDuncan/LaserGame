@@ -9,12 +9,15 @@ from lasergame.objects.gameobject import GameObject
 
 
 class Ship(GameObject):
-    def __init__(self, base: int, height: int, center: tuple, speed, color: tuple = colors.WHITE.rgb):
-        self.base = base
+    directions = ["right", "down", "left", "up"]
+
+    def __init__(self, width: int, height: int, center: tuple, speed, color: tuple = colors.WHITE.rgb):
+        self.width = width
         self.height = height
         self.center = center
         self.color = color
         self.speed = speed
+        self.direction = 0
 
     @property
     def x(self):
@@ -34,6 +37,12 @@ class Ship(GameObject):
         value = clamp(0, value, game.height)
         self.center = (self.center[0], value)
 
+    def rotate_right(self):
+        self.direction = (self.direction + 1) % 4
+
+    def rotate_left(self):
+        self.direction = (self.direction - 1) % 4
+
     def update(self, events):
         if pygame.key.get_pressed()[buttons.UP]:
             self.y -= self.speed
@@ -44,24 +53,46 @@ class Ship(GameObject):
         if pygame.key.get_pressed()[buttons.RIGHT]:
             self.x += self.speed
 
+        for e in events:
+            if e.type == pygame.KEYDOWN:
+                if e.key == buttons.L:
+                    self.rotate_left()
+                elif e.key == buttons.R:
+                    self.rotate_right()
+
     def draw(self, screen):
-        boundingBox = drawTriangle(screen, self.color, self.center, self.base, self.height)
+        boundingBox = drawTriangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
+
         return boundingBox
 
 
-def drawTriangle(screen, color, center, base, height):
+def drawTriangle(screen, color, center, width, height, direction="right"):
     x, y = center
-    b = base
-    h = height
-    u1 = x
-    u2 = y - (h / 2)
-    v1 = x - (b / 2)
-    v2 = y + (h / 2)
-    w1 = x + (b / 2)
-    w2 = y + (h / 2)
-    u = (u1, u2)
-    v = (v1, v2)
-    w = (w1, w2)
+    left = x - (width / 2)
+    right = x + (width / 2)
+    top = y - (height / 2)
+    bottom = y + (height / 2)
+    middlex = x
+    middley = y
+
+    if direction == "up":
+        u = (middlex, top)      # middle top (tip)
+        v = (right, bottom)     # bottom right
+        w = (left, bottom)      # bottom left
+    elif direction == "right":
+        u = (right, middley)    # middle right (tip)
+        v = (left, bottom)      # bottom left
+        w = (left, top)         # top left
+    elif direction == "down":
+        u = (middlex, bottom)   # middle bottom (tip)
+        v = (left, top)         # top left
+        w = (right, top)        # top right
+    elif direction == "left":
+        u = (left, middley)     # middle left (tip)
+        v = (right, top)        # top right
+        w = (right, bottom)     # bottom right
+    else:
+        raise ValueError("Unrecognized direction")
     uvw = (u, v, w)
     boundingBox = pygame.draw.polygon(screen, color, uvw)
     return boundingBox
