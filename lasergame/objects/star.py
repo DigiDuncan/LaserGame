@@ -13,10 +13,10 @@ class Star(GameObject):
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.twinkle = random.random() * 4
+        self.twinkle = random.randint(0, 4)
 
     def update(self, clock, **kwargs):
-        self.twinkle = (self.twinkle + (1 * clock.get_time_secs())) % 4
+        self.twinkle = (self.twinkle + (4 * clock.get_time_secs())) % 4
 
     @property
     def color(self):
