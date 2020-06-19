@@ -3,6 +3,8 @@ import random
 
 from digicolor import colors
 
+
+from lasergame.lib import nygame
 from lasergame.lib.constants import game
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
@@ -21,7 +23,7 @@ def write(screen, coords, text, *, color=colors.WHITE.rgb):
 def gameloop():
     pygame.init()
 
-    clock = pygame.time.Clock()
+    clock = nygame.time.Clock()
 
     # Create the screen.
     screen = pygame.Surface((game.width, game.height))
