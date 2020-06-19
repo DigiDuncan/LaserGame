@@ -8,15 +8,16 @@ from lasergame.objects.gameobject import GameObject
 
 
 class Star(GameObject):
-    colors = [colors.LIGHT_GRAY.rgb, colors.WHITE.rgb, colors.LIGHT_YELLOW.rgb, colors.YELLOW.rgb]
+    colors = [colors.LIGHT_GRAY.rgb] * 300 + [colors.WHITE.rgb] * 4 + [colors.LIGHT_YELLOW.rgb] * 4 + [colors.YELLOW.rgb]
+    color_speed = 8
 
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.twinkle = random.randint(0, 4)
+        self.twinkle = random.random() * len(self.colors)
 
     def update(self, clock, **kwargs):
-        self.twinkle = (self.twinkle + (4 * clock.get_time_secs())) % 4
+        self.twinkle = (self.twinkle + (self.color_speed * clock.get_time_secs())) % len(self.colors)
 
     @property
     def color(self):
