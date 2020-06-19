@@ -6,18 +6,10 @@ from digicolor import colors
 
 from lasergame.lib import nygame
 from lasergame.lib.constants import game
+from lasergame.lib.pgutils import write
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
-
-
-def write(screen, coords, text, *, color=colors.WHITE.rgb):
-    font = pygame.font.Font(pygame.font.get_default_font(), 16)
-    textsurface = font.render(text, True, color)
-    if coords[0] < 0:
-        coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
-    if coords[1] < 0:
-        coords = (coords[0], screen.get_height() + coords[1] - textsurface.get_height())
-    screen.blit(textsurface, coords)
+from lasergame.procedures.controllerview import controllersurface
 
 
 def gameloop():
@@ -45,6 +37,7 @@ def gameloop():
         pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
         if game.debug:
             write(bigscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
+            bigscreen.blit(controllersurface(), (0, 0))
         pygame.display.flip()
 
     running = True
