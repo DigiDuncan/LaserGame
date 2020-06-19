@@ -170,6 +170,17 @@ class Clock:
         """
         return self._timepassed
 
+    def get_time_secs(self) -> float:
+        """time used in the previous tick
+
+        The number of seconds that passed between the previous two calls to Clock.tick().
+
+        Returns
+        -------
+            The time used in the previous tick in seconds.
+        """
+        return self._timepassed / 10**9
+
     def get_rawtime(self) -> int:
         """actual time used in the previous tick
 
