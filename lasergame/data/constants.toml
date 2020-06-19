@@ -2,6 +2,7 @@
 width = 256
 height = 224
 scale = 4
+framerate = 60
 
 [buttons]
 UP = "K_w"

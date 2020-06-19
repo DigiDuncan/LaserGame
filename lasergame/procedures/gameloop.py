@@ -27,8 +27,10 @@ def gameloop():
 
     # Create the screen.
     screen = pygame.Surface((game.width, game.height))
+    # Pixel-scale the screen up to something seeable on a monitor.
     bigscreen = pygame.display.set_mode([game.windowwidth, game.windowheight])
-    pygame.display.set_caption("LaserGame v0 by DigiDuncan")
+    # Window title.
+    pygame.display.set_caption("LaserGame v0 by DigiSoft")
 
     gameObjects = []
 
@@ -65,7 +67,7 @@ def gameloop():
             o.draw(screen)
 
         refresh()
-        clock.tick_busy_loop(60)
+        clock.tick_busy_loop(game.framerate)
 
 
 pygame.quit()
