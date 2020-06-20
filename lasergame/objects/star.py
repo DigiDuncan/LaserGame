@@ -11,10 +11,9 @@ class Star(GameObject):
     colors = [colors.LIGHT_GRAY.rgb] * 300 + [colors.WHITE.rgb] * 4 + [colors.LIGHT_YELLOW.rgb] * 4 + [colors.YELLOW.rgb]
     color_speed = 8
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self, center):
         self.twinkle = random.random() * len(self.colors)
+        super().__init__(center=center)
 
     def update(self, clock, **kwargs):
         self.twinkle = (self.twinkle + (self.color_speed * clock.get_time_secs())) % len(self.colors)

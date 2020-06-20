@@ -17,12 +17,12 @@ class Ship(GameObject):
     def __init__(self, width: int, height: int, center: tuple, speed, color: tuple = colors.WHITE.rgb, bulletrate = 10):
         self.width = width
         self.height = height
-        self.center = center
         self.color = color
         self.speed = speed
         self.direction = 0
         self.bulletrate = bulletrate
         self._lastbullet = 0
+        super().__init__(center=center)
 
     @property
     def x(self):
@@ -48,7 +48,7 @@ class Ship(GameObject):
     def rotate_left(self):
         self.direction = (self.direction - 1) % 4
 
-    def update(self, events, clock, gameobjects, **kwargs):
+    def update(self, events, clock, gm, **kwargs):
         if pygame.key.get_pressed()[buttons.UP]:
             self.y -= self.speed * clock.get_time_secs()
         if pygame.key.get_pressed()[buttons.DOWN]:
@@ -60,7 +60,7 @@ class Ship(GameObject):
 
         if pygame.key.get_pressed()[buttons.A]:
             if self._lastbullet + (1 / self.bulletrate) < (time.get_ticks() / 10**9):
-                gameobjects.append(Bullet(self.center))
+                gm.add(Bullet(self.center))
                 self._lastbullet = time.get_ticks() / 10**9
 
         for e in events:
@@ -70,7 +70,7 @@ class Ship(GameObject):
                 elif e.key == buttons.R:
                     self.rotate_right()
                 elif e.key == buttons.B:
-                    gameobjects.append(Star(int(self.center[0]), int(self.center[1])))
+                    gm.add(Star((int(self.center[0]), int(self.center[1]))))
 
     def draw(self, screen):
         boundingBox = drawTriangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
