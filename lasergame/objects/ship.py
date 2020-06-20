@@ -69,6 +69,8 @@ class Ship(GameObject):
                     self.rotate_left()
                 elif e.key == buttons.R:
                     self.rotate_right()
+                elif e.key == buttons.B:
+                    gameobjects.append(Star(int(self.center[0]), int(self.center[1])))
 
     def draw(self, screen):
         boundingBox = drawTriangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
