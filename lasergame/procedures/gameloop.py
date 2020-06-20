@@ -23,7 +23,7 @@ def gameloop():
     # Create the screen.
     screen = pygame.Surface((game.width, game.height))
 
-    gm = GameManager(clock)
+    gm = GameManager()
 
     # Pixel-scale the screen up to something seeable on a monitor.
     bigscreen = pygame.display.set_mode([game.windowwidth, game.windowheight])
@@ -56,7 +56,7 @@ def gameloop():
                 running = False
 
         # Update objects
-        gm.update(events, screen)
+        gm.update(clock=clock, events=events, screen=screen)
 
         # Fill the background
         screen.fill(colors.BLACK.rgb)

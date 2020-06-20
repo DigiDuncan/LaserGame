@@ -2,13 +2,12 @@ from operator import attrgetter
 
 
 class GameManager:
-    def __init__(self, clock):
-        self.clock = clock
+    def __init__(self):
         self._objects = set()
 
-    def update(self, events, screen):
+    def update(self, **kwargs):
         for o in list(self._objects):
-            o.update(events=events, clock=self.clock, gm=self, screen=screen)
+            o.update(gm=self, **kwargs)
 
     def draw(self, screen):
         for o in sorted(self._objects, key=attrgetter("z")):
