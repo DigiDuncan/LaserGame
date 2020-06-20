@@ -39,6 +39,7 @@ def gameloop():
         pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
         if game.debug:
             write(bigscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
+            write(bigscreen, (-8, 24), f"{len(gameObjects)} objects", color=colors.LIGHT_GREEN.rgb)
             bigscreen.blit(controllerview.controllersurface(), (0, 0))
         pygame.display.flip()
 
@@ -53,7 +54,7 @@ def gameloop():
 
         # Update objects
         for o in gameObjects:
-            o.update(events=events, clock=clock)
+            o.update(events=events, clock=clock, gameobjects=gameObjects)
 
         # Fill the background
         screen.fill(colors.BLACK.rgb)
