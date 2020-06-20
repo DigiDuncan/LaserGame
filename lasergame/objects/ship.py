@@ -4,20 +4,25 @@ from digicolor import colors
 
 from lasergame.lib.buttons import buttons
 from lasergame.lib.constants import game
+from lasergame.lib.nygame import time
 from lasergame.lib.utils import clamp
 from lasergame.objects.gameobject import GameObject
+from lasergame.objects.bullet import Bullet
+from lasergame.objects.star import Star
 
 
 class Ship(GameObject):
     directions = ["right", "down", "left", "up"]
 
-    def __init__(self, width: int, height: int, center: tuple, speed, color: tuple = colors.WHITE.rgb):
+    def __init__(self, width: int, height: int, center: tuple, speed, color: tuple = colors.WHITE.rgb, bulletrate = 10):
         self.width = width
         self.height = height
         self.center = center
         self.color = color
         self.speed = speed
         self.direction = 0
+        self.bulletrate = bulletrate
+        self._lastbullet = 0
 
     @property
     def x(self):
@@ -43,7 +48,7 @@ class Ship(GameObject):
     def rotate_left(self):
         self.direction = (self.direction - 1) % 4
 
-    def update(self, events, clock, **kwargs):
+    def update(self, events, clock, gameobjects, **kwargs):
         if pygame.key.get_pressed()[buttons.UP]:
             self.y -= self.speed * clock.get_time_secs()
         if pygame.key.get_pressed()[buttons.DOWN]:
@@ -52,6 +57,11 @@ class Ship(GameObject):
             self.x -= self.speed * clock.get_time_secs()
         if pygame.key.get_pressed()[buttons.RIGHT]:
             self.x += self.speed * clock.get_time_secs()
+
+        if pygame.key.get_pressed()[buttons.A]:
+            if self._lastbullet + (1 / self.bulletrate) < (time.get_ticks() / 10**9):
+                gameobjects.append(Bullet(self.center))
+                self._lastbullet = time.get_ticks() / 10**9
 
         for e in events:
             if e.type == pygame.KEYDOWN:
