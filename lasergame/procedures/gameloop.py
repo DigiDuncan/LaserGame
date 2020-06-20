@@ -3,17 +3,19 @@ import random
 
 from digicolor import colors
 
-
 from lasergame.lib import nygame
 from lasergame.lib.constants import game
 from lasergame.lib.pgutils import write
+from lasergame.procedures import controllerview
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
-from lasergame.procedures.controllerview import controllersurface
 
 
 def gameloop():
     pygame.init()
+
+    if game.debug:
+        controllerview.init()
 
     clock = nygame.time.Clock()
 
@@ -37,7 +39,7 @@ def gameloop():
         pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
         if game.debug:
             write(bigscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
-            bigscreen.blit(controllersurface(), (0, 0))
+            bigscreen.blit(controllerview.controllersurface(), (0, 0))
         pygame.display.flip()
 
     running = True
