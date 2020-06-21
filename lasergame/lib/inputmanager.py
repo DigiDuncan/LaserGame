@@ -24,17 +24,17 @@ class InputManager:
     def __init__(self):
         self.keycodes_to_buttons = {}
         for name, pygame_key in button_constants.items():
-            scancode = getattr(pygame_locals, pygame_key)
-            button = ButtonState(name, scancode)
+            keycode = getattr(pygame_locals, pygame_key)
+            button = ButtonState(name, keycode)
             setattr(self, name, button)
-            self.keycodes_to_buttons[scancode] = button
+            self.keycodes_to_buttons[keycode] = button
 
     def clear(self):
         for button in self.keycodes_to_buttons.values():
             button.clear()
 
-    def __getitem__(self, scancode):
-        return self.keycodes_to_buttons[scancode]
+    def __getitem__(self, keycode):
+        return self.keycodes_to_buttons[keycode]
 
     def __iter__(self):
         return iter(self.keycodes_to_buttons)
@@ -59,5 +59,5 @@ class InputManager:
                     self[e.key].released = True
 
         pygame_pressed = pygame.key.get_pressed()
-        for scancode in self.keycodes:
-            self[scancode].held = pygame_pressed[scancode]
+        for keycode in self.keycodes:
+            self[keycode].held = pygame_pressed[keycode]
