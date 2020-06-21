@@ -2,7 +2,7 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.lib.constants import game
+from lasergame.lib.conf import game
 from lasergame.lib.nygame import time
 from lasergame.lib.utils import clamp
 from lasergame.objects.gameobject import GameObject

@@ -4,7 +4,7 @@ import random
 from digicolor import colors
 
 from lasergame.lib import nygame, pgutils
-from lasergame.lib.constants import game
+from lasergame.lib.conf import game
 from lasergame.lib.pgutils import write
 from lasergame.lib.gamemanager import GameManager
 from lasergame.objects.inputlistener import InputListener

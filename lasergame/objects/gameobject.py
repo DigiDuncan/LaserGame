@@ -3,7 +3,7 @@ import uuid
 from digicolor import colors
 
 from lasergame.lib.pgutils import write
-from lasergame.lib.constants import game
+from lasergame.lib.conf import game
 
 
 class GameObject:

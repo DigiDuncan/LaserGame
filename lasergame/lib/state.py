@@ -1,4 +1,4 @@
-from lasergame.lib.constants import game
+from lasergame.lib.conf import game
 
 
 class State:
