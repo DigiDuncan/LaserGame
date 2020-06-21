@@ -8,6 +8,8 @@ from lasergame.objects.gameobject import GameObject
 
 
 class Star(GameObject):
+    __slots__ = ["twinkle", "size"]
+
     colors = [colors.LIGHT_GRAY.rgb] * 300 + [colors.WHITE.rgb] * 4 + [colors.LIGHT_YELLOW.rgb] * 4 + [colors.YELLOW.rgb]
     color_speed = 8
 

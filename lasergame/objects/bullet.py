@@ -6,6 +6,8 @@ from lasergame.objects.gameobject import GameObject
 
 
 class Bullet(GameObject):
+    __slots__ = ["color", "speed", "bullettype", "radius"]
+
     def __init__(self, center: tuple, *, color = colors.RED.rgb, speed = 180, bullettype = "default", radius = 2):
         self.color = color
         self.speed = speed

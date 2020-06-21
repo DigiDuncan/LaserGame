@@ -11,6 +11,8 @@ from lasergame.objects.star import Star
 
 
 class Ship(GameObject):
+    __slots__ = ["width", "height", "color", "speed", "direction", "bulletrate", "_lastbullet"]
+
     directions = ["right", "down", "left", "up"]
 
     def __init__(self, width: int, height: int, center: tuple, speed, color: tuple = colors.WHITE.rgb, bulletrate = 10):

@@ -5,6 +5,8 @@ from lasergame.lib.inputmanager import InputManager
 
 
 class GameManager:
+    __slots__ = ["_objects", "state", "input"]
+
     def __init__(self):
         self._objects = set()
         self.state = State()

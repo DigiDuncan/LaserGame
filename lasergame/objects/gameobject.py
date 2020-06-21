@@ -7,6 +7,8 @@ from lasergame.lib.constants import game
 
 
 class GameObject:
+    __slots__ = ["center", "z", "uuid", "showuuid"]
+
     def __init__(self, center=(0, 0), z=0):
         self.center = center
         self.z = z
