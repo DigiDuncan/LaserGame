@@ -22,6 +22,18 @@ def get_ticks() -> int:
     return time.perf_counter_ns()
 
 
+def get_ticks_sec() -> int:
+    """get the time in seconds
+
+    Return the number of seconds since get_ticks() was first called.
+
+    Returns
+    -------
+        Time since get_ticks() was first called in nanoseconds.
+    """
+    return get_ticks() / 10**9
+
+
 def wait(ticks: int) -> int:
     """pause the program for an amount of time
 
@@ -44,6 +56,26 @@ def wait(ticks: int) -> int:
     start = get_ticks()
     time.sleep(ticks / 10**9)
     return get_ticks() - start
+
+
+def wait_secs(ticks: int) -> int:
+    """pause the program for an amount of time
+
+    Will pause for a given number of seconds.
+    This function sleeps the process to share the processor with other programs.
+    A program that waits for even a few seconds will consume very little processor time.
+    It is slightly less accurate than the nygame.time.delay() function.
+
+    Parameters
+    ----------
+    ticks
+        The amount of time to pause in seconds.
+
+    Returns
+    -------
+        The actual number of seconds used.
+    """
+    return wait(ticks * 10**9) / 10**9
 
 
 def delay(ticks: int) -> int:
@@ -69,6 +101,24 @@ def delay(ticks: int) -> int:
     while time.perf_counter_ns() < end:
         pass
     return time.perf_counter_ns() - start
+
+
+def delay_secs(ticks: int) -> int:
+    """pause the program for an amount of time
+
+    Will pause for a given number of seconds.
+    This function will use the processor (rather than sleeping) in order to make the delay more accurate than nygame.time.wait().
+
+    Parameters
+    ----------
+    ticks
+        The amount of time to pause in seconds.
+
+    Returns
+    -------
+        The actual number of seconds used.
+    """
+    return delay(ticks * 10**9) / 10**9
 
 
 class Clock:
@@ -182,6 +232,17 @@ class Clock:
         return self._timepassed / 10**9
 
     def get_rawtime(self) -> int:
+        """actual time used in the previous tick
+
+        Similar to Clock.get_time(), but does not include any time used while Clock.tick() was delaying to limit the framerate.
+
+        Returns
+        -------
+            The actual time used in the previous tick in nanoseconds.
+        """
+        return self._rawpassed
+
+    def get_rawtime_secs(self) -> int:
         """actual time used in the previous tick
 
         Similar to Clock.get_time(), but does not include any time used while Clock.tick() was delaying to limit the framerate.
