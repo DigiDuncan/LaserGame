@@ -17,7 +17,7 @@ class Bullet(GameObject):
         self.x += self.speed * clock.get_time_secs()
         if not self.is_on_screen(screen):
             gm.discard(self)
-        self.showuuid = gm.held.SELECT and gm.state.debug
+        self.showuuid = gm.input.SELECT.held and gm.state.debug
 
     def is_on_screen(self, screen):
         return self.x + self.radius > 0 \

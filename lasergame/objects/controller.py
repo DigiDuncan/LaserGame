@@ -64,7 +64,7 @@ class Controller(GameObject):
         self.show = gm.state.debug
 
     def draw(self, debugscreen, **kwargs):
-        if not self.show():
+        if not self.show:
             return
         surface = pygame.Surface((147, 80))
         surface.fill(colors.LIGHT_GRAY.rgb)
