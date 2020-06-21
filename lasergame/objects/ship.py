@@ -2,7 +2,6 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.lib.buttons import buttons
 from lasergame.lib.constants import game
 from lasergame.lib.nygame import time
 from lasergame.lib.utils import clamp
@@ -49,29 +48,27 @@ class Ship(GameObject):
         self.direction = (self.direction - 1) % 4
 
     def update(self, events, clock, gm, screen, **kwargs):
-        if pygame.key.get_pressed()[buttons.UP]:
+        if gm.input.UP.held:
             self.y -= self.speed * clock.get_time_secs()
-        if pygame.key.get_pressed()[buttons.DOWN]:
+        if gm.input.DOWN.held:
             self.y += self.speed * clock.get_time_secs()
-        if pygame.key.get_pressed()[buttons.LEFT]:
+        if gm.input.LEFT.held:
             self.x -= self.speed * clock.get_time_secs()
-        if pygame.key.get_pressed()[buttons.RIGHT]:
+        if gm.input.RIGHT.held:
             self.x += self.speed * clock.get_time_secs()
-        self.showuuid = pygame.key.get_pressed()[buttons.SELECT] and gm.state.debug
+        self.showuuid = gm.input.SELECT.held and gm.state.debug
 
-        if pygame.key.get_pressed()[buttons.A]:
+        if gm.input.A.held:
             if self._lastbullet + (1 / self.bulletrate) < (time.get_ticks() / 10**9):
                 gm.add(Bullet(self.center))
                 self._lastbullet = time.get_ticks() / 10**9
 
-        for e in events:
-            if e.type == pygame.KEYDOWN:
-                if e.key == buttons.L:
-                    self.rotate_left()
-                elif e.key == buttons.R:
-                    self.rotate_right()
-                elif e.key == buttons.B:
-                    gm.add(Star((int(self.center[0]), int(self.center[1]))))
+        if gm.input.L.pressed:
+            self.rotate_left()
+        elif gm.input.R.pressed:
+            self.rotate_right()
+        elif gm.input.B.pressed:
+            gm.add(Star((int(self.center[0]), int(self.center[1]))))
 
     def draw(self, screen, debugscreen, **kwargs):
         boundingBox = drawTriangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])

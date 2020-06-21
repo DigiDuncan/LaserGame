@@ -2,8 +2,6 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.lib.buttons import buttons
-from lasergame.lib.constants import game
 from lasergame.objects.gameobject import GameObject
 
 
@@ -19,7 +17,7 @@ class Bullet(GameObject):
         self.x += self.speed * clock.get_time_secs()
         if not self.is_on_screen(screen):
             gm.discard(self)
-        self.showuuid = pygame.key.get_pressed()[buttons.SELECT] and gm.state.debug
+        self.showuuid = gm.held.SELECT and gm.state.debug
 
     def is_on_screen(self, screen):
         return self.x + self.radius > 0 \

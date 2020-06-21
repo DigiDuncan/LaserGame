@@ -25,11 +25,7 @@ def loadgame(data):
 
 def loadbuttons(data):
     global buttons
-    buttonsdict = data.get("buttons", {})
-    # make all names lowercase
-    buttonsdict = {name: value for name, value in buttonsdict.items()}
-    # create the enum
-    buttons = AttrDict(buttonsdict)
+    buttons = data.get("buttons", {})
 
 
 def load():

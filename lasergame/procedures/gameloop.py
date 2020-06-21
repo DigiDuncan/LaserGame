@@ -7,18 +7,14 @@ from lasergame.lib import nygame, pgutils
 from lasergame.lib.constants import game
 from lasergame.lib.pgutils import write
 from lasergame.lib.gamemanager import GameManager
-from lasergame.procedures import controllerview
 from lasergame.objects.inputlistener import InputListener
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
+from lasergame.objects.controller import Controller
 
 
 def gameloop():
     pygame.init()
-
-    if game.debug:
-        controllerview.init()
-
     pgutils.init()
 
     clock = nygame.time.Clock()
@@ -42,13 +38,13 @@ def gameloop():
     # Add objects to the GameManager.
     gm.add(InputListener())
     gm.add(Ship(20, 25, game.center, 90, colors.BLUE.rgb))
+    gm.add(Controller())
 
     def refresh():
         # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
         if gm.state.debug:
             write(debugscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
             write(debugscreen, (-8, 24), f"{len(gm)} objects", color=colors.LIGHT_GREEN.rgb)
-            debugscreen.blit(controllerview.controllersurface(), (0, 0))
         pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
         bigscreen.blit(debugscreen, (0, 0))
         pygame.display.flip()
