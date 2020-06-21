@@ -1,6 +1,9 @@
 import uuid
 
+from digicolor import colors
+
 from lasergame.lib.pgutils import write
+from lasergame.lib.constants import game
 
 
 class GameObject:
@@ -13,7 +16,7 @@ class GameObject:
     def update(self, **kwargs):
         pass
 
-    def draw(self, screen):
+    def draw(self, screen, **kwargs):
         pass
 
     @property
@@ -32,6 +35,6 @@ class GameObject:
     def y(self, value):
         self.center = (self.center[0], value)
 
-    def draw_uuid(self, screen):
+    def draw_uuid(self, screen, yoffset = 0):
         if self.showuuid:
-            write(screen, (self.center[0], self.center[1] - 8), (str(self.uuid)[:8] + "..."), size = 8)
+            write(screen, (self.center[0] * game.scale, self.center[1] * game.scale - yoffset), (str(self.uuid)[:8] + "..."), align = "center", color = colors.CYAN.rgb, antialias = False)

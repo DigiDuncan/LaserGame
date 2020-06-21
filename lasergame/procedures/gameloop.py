@@ -3,11 +3,12 @@ import random
 
 from digicolor import colors
 
-from lasergame.lib import nygame
+from lasergame.lib import nygame, pgutils
 from lasergame.lib.constants import game
 from lasergame.lib.pgutils import write
 from lasergame.lib.gamemanager import GameManager
 from lasergame.procedures import controllerview
+from lasergame.objects.inputlistener import InputListener
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
 
@@ -18,10 +19,13 @@ def gameloop():
     if game.debug:
         controllerview.init()
 
+    pgutils.init()
+
     clock = nygame.time.Clock()
 
     # Create the screen.
     screen = pygame.Surface((game.width, game.height))
+    debugscreen = pygame.Surface((game.windowwidth, game.windowheight), flags=pygame.SRCALPHA)
 
     gm = GameManager()
 
@@ -35,15 +39,18 @@ def gameloop():
         center = (random.randint(0, game.width), random.randint(0, game.height))
         gm.add(Star(center))
 
+    # Add objects to the GameManager.
+    gm.add(InputListener())
     gm.add(Ship(20, 25, game.center, 90, colors.BLUE.rgb))
 
     def refresh():
         # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
-        pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
         if game.debug:
-            write(bigscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
-            write(bigscreen, (-8, 24), f"{len(gm)} objects", color=colors.LIGHT_GREEN.rgb)
-            bigscreen.blit(controllerview.controllersurface(), (0, 0))
+            write(debugscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
+            write(debugscreen, (-8, 24), f"{len(gm)} objects", color=colors.LIGHT_GREEN.rgb)
+            debugscreen.blit(controllerview.controllersurface(), (0, 0))
+        pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
+        bigscreen.blit(debugscreen, (0, 0))
         pygame.display.flip()
 
     running = True
@@ -61,8 +68,10 @@ def gameloop():
         # Fill the background
         screen.fill(colors.BLACK.rgb)
 
+        debugscreen.fill((0, 0, 0, 0))
+
         # Draw objects
-        gm.draw(screen)
+        gm.draw(screen = screen, debugscreen = debugscreen)
 
         refresh()
         clock.tick_busy_loop(game.framerate)

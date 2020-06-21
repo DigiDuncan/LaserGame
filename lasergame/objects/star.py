@@ -24,5 +24,5 @@ class Star(GameObject):
         color_index = int(self.twinkle)
         return self.colors[color_index]
 
-    def draw(self, screen):
+    def draw(self, screen, **kwargs):
         pygame.draw.circle(screen, self.color, (self.x, self.y), self.size)
