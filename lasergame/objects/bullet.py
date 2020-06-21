@@ -16,10 +16,9 @@ class Bullet(GameObject):
 
     def update(self, clock, screen, gm, **kwargs):
         self.x += self.speed * clock.get_time_secs()
-        if pygame.key.get_pressed()[buttons.SELECT]:
-            self.draw_uuid(screen)
         if not self.is_on_screen(screen):
             gm.discard(self)
+        self.showuuid = pygame.key.get_pressed()[buttons.SELECT]
 
     def is_on_screen(self, screen):
         return self.x + self.radius > 0 \
@@ -29,5 +28,5 @@ class Bullet(GameObject):
 
     def draw(self, screen):
         boundingBox = pygame.draw.circle(screen, self.color, (int(self.center[0]), int(self.center[1])), self.radius)
-
+        self.draw_uuid(screen)
         return boundingBox

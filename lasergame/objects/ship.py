@@ -57,8 +57,7 @@ class Ship(GameObject):
             self.x -= self.speed * clock.get_time_secs()
         if pygame.key.get_pressed()[buttons.RIGHT]:
             self.x += self.speed * clock.get_time_secs()
-        if pygame.key.get_pressed()[buttons.SELECT]:
-            self.draw_uuid(screen)
+        self.showuuid = pygame.key.get_pressed()[buttons.SELECT]
 
         if pygame.key.get_pressed()[buttons.A]:
             if self._lastbullet + (1 / self.bulletrate) < (time.get_ticks() / 10**9):
@@ -76,7 +75,7 @@ class Ship(GameObject):
 
     def draw(self, screen):
         boundingBox = drawTriangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
-
+        self.draw_uuid(screen)
         return boundingBox
 
 

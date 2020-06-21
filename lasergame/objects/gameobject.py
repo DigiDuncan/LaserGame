@@ -8,6 +8,7 @@ class GameObject:
         self.center = center
         self.z = z
         self.uuid = uuid.uuid4()
+        self.showuuid = False
 
     def update(self, **kwargs):
         pass
@@ -32,4 +33,5 @@ class GameObject:
         self.center = (self.center[0], value)
 
     def draw_uuid(self, screen):
-        write(screen, (self.center[0], self.center[1] - 8), (str(self.uuid)[:8] + "..."), size = 8)
+        if self.showuuid:
+            write(screen, (self.center[0], self.center[1] - 8), (str(self.uuid)[:8] + "..."), size = 8)
