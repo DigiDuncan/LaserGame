@@ -1,37 +1,20 @@
-import importlib.resources as pkg_resources
-
-import pygame
-from digicolor import colors
-
 from lasergame.objects.gameobject import GameObject
-import lasergame.data.sprites.buttons as buttonsprites
-
-image_cache = {}
+from lasergame.lib import images
 
 buttonmap = {
-    "UP": ("dpad-up", None),
-    "DOWN": ("dpad-down", None),
-    "LEFT": ("dpad-left", None),
-    "RIGHT": ("dpad-right", None),
-    "A": ("a-on", "a-off"),
-    "B": ("b-on", "b-off"),
-    "X": ("x-on", "x-off"),
-    "Y": ("y-on", "y-off"),
-    "L": ("l-on", "l-off"),
-    "R": ("r-on", "r-off"),
-    "SELECT": ("select-on", "select-off"),
-    "START": ("start-on", "start-off"),
+    "UP": ("buttons.fake.dpad-up", None),
+    "DOWN": ("buttons.dpad-down", None),
+    "LEFT": ("buttons.dpad-left", None),
+    "RIGHT": ("buttons.dpad-right", None),
+    "A": ("buttons.a-on", "buttons.a-off"),
+    "B": ("buttons.b-on", "buttons.b-off"),
+    "X": ("buttons.x-on", "buttons.x-off"),
+    "Y": ("buttons.y-on", "buttons.y-off"),
+    "L": ("buttons.l-on", "buttons.l-off"),
+    "R": ("buttons.r-on", "buttons.r-off"),
+    "SELECT": ("buttons.select-on", "buttons.select-off"),
+    "START": ("buttons.start-on", "buttons.start-off"),
 }
-
-
-def get_image(name):
-    image = image_cache.get(name)
-    if image is None:
-        image_file = pkg_resources.open_binary(buttonsprites, f"{name}.png")
-        image = pygame.image.load(image_file)
-        image.set_colorkey(colors.LIGHT_MAGENTA.rgb)
-        image_cache[name] = image
-    return image
 
 
 class Controller(GameObject):
@@ -49,14 +32,14 @@ class Controller(GameObject):
     def draw(self, debugscreen, **kwargs):
         if not self.show:
             return
-        surface = get_image("controller").copy()
+        surface = images.get("buttons.controller").copy()
 
         for name, (active, inactive) in buttonmap.items():
             if self.buttons[name]:
                 if active is not None:
-                    surface.blit(get_image(active), (0, 0))
+                    surface.blit(images.get(active), (0, 0))
             else:
                 if inactive is not None:
-                    surface.blit(get_image(inactive), (0, 0))
+                    surface.blit(images.get(inactive), (0, 0))
 
         debugscreen.blit(surface, self.center)
