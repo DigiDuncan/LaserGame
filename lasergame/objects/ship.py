@@ -48,7 +48,7 @@ class Ship(GameObject):
     def rotate_left(self):
         self.direction = (self.direction - 1) % 4
 
-    def update(self, events, clock, gm, **kwargs):
+    def update(self, events, clock, gm, screen, **kwargs):
         if pygame.key.get_pressed()[buttons.UP]:
             self.y -= self.speed * clock.get_time_secs()
         if pygame.key.get_pressed()[buttons.DOWN]:
@@ -57,6 +57,8 @@ class Ship(GameObject):
             self.x -= self.speed * clock.get_time_secs()
         if pygame.key.get_pressed()[buttons.RIGHT]:
             self.x += self.speed * clock.get_time_secs()
+        if pygame.key.get_pressed()[buttons.SELECT]:
+            self.draw_uuid(screen)
 
         if pygame.key.get_pressed()[buttons.A]:
             if self._lastbullet + (1 / self.bulletrate) < (time.get_ticks() / 10**9):

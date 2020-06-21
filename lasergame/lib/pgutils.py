@@ -3,8 +3,8 @@ import pygame
 from digicolor import colors
 
 
-def write(screen, coords, text, *, color=colors.WHITE.rgb):
-    font = pygame.font.Font(pygame.font.get_default_font(), 16)
+def write(screen, coords, text, *, color=colors.WHITE.rgb, size = 16):
+    font = pygame.font.Font(pygame.font.get_default_font(), size)
     textsurface = font.render(text, True, color)
     if coords[0] < 0:
         coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
