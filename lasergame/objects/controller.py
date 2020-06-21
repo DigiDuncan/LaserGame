@@ -47,7 +47,7 @@ buttonmap = {
 
 
 class Controller(GameObject):
-    __slots__ = ["buttons"]
+    __slots__ = ["buttons", "show"]
 
     def __init__(self):
         for name in image_cache.keys():
@@ -56,12 +56,16 @@ class Controller(GameObject):
             image.set_colorkey(colors.LIGHT_MAGENTA.rgb)
             image_cache[name] = image
         self.buttons = None
+        self.show = False
         super().__init__()
 
     def update(self, gm, events, **kwargs):
         self.buttons = {btn.name: btn.held for btn in gm.input.buttons}
+        self.show = gm.state.debug
 
     def draw(self, debugscreen, **kwargs):
+        if not self.show():
+            return
         surface = pygame.Surface((147, 80))
         surface.fill(colors.LIGHT_GRAY.rgb)
         surface.blit(image_cache["dpad-none"], (0, 0))
