@@ -71,9 +71,11 @@ class Controller(GameObject):
         surface.blit(image_cache["dpad-none"], (0, 0))
 
         for name, (active, inactive) in buttonmap.items():
-            if self.buttons[name] and active:
-                surface.blit(image_cache[active], (0, 0))
-            elif inactive is not None:
-                surface.blit(image_cache[inactive], (0, 0))
+            if self.buttons[name]:
+                if active is not None:
+                    surface.blit(image_cache[active], (0, 0))
+            else:
+                if inactive is not None:
+                    surface.blit(image_cache[inactive], (0, 0))
 
         debugscreen.blit(surface, self.center)
