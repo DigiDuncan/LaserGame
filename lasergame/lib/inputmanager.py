@@ -19,7 +19,7 @@ class ButtonState:
 
 
 class InputManager:
-    __slots__ = ["UP", "LEFT", "RIGHT", "DOWN", "A", "B", "X", "Y", "L", "R", "SELECT", "START", "keycodes_to_buttons"]
+    __slots__ = ["UP", "LEFT", "RIGHT", "DOWN", "A", "B", "X", "Y", "L", "R", "SELECT", "START", "keycodes_to_buttons", "limit_dpad"]
 
     def __init__(self):
         self.keycodes_to_buttons = {}
@@ -28,6 +28,7 @@ class InputManager:
             button = ButtonState(name, keycode)
             setattr(self, name, button)
             self.keycodes_to_buttons[keycode] = button
+        self.limit_dpad = True
 
     def clear(self):
         for button in self.keycodes_to_buttons.values():
@@ -61,3 +62,12 @@ class InputManager:
         pygame_pressed = pygame.key.get_pressed()
         for keycode in self.keycodes:
             self[keycode].held = pygame_pressed[keycode]
+
+        if self.limit_dpad:
+            if self.LEFT.held and self.RIGHT.held:
+                self.LEFT.held = False
+                self.RIGHT.held = False
+
+            if self.UP.held and self.DOWN.held:
+                self.UP.held = False
+                self.DOWN.held = False
