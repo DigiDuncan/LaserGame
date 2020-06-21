@@ -45,7 +45,7 @@ def gameloop():
 
     def refresh():
         # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
-        if game.debug:
+        if gm.state.debug:
             write(debugscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
             write(debugscreen, (-8, 24), f"{len(gm)} objects", color=colors.LIGHT_GREEN.rgb)
             debugscreen.blit(controllerview.controllersurface(), (0, 0))
