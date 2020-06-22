@@ -2,7 +2,7 @@ from lasergame.objects.gameobject import GameObject
 from lasergame.lib import images
 
 buttonmap = {
-    "UP": ("buttons.fake.dpad-up", None),
+    "UP": ("buttons.dpad-up", None),
     "DOWN": ("buttons.dpad-down", None),
     "LEFT": ("buttons.dpad-left", None),
     "RIGHT": ("buttons.dpad-right", None),
