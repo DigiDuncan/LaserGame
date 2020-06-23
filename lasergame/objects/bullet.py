@@ -2,10 +2,10 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.objects.gameobject import GameObject
+from lasergame.objects.collidablegameobject import CollidableGameObject
 
 
-class Bullet(GameObject):
+class Bullet(CollidableGameObject):
     __slots__ = ["color", "speed", "bullettype", "radius"]
 
     def __init__(self, center: tuple, *, color = colors.RED.rgb, speed = 180, bullettype = "default", radius = 2):
@@ -19,7 +19,7 @@ class Bullet(GameObject):
         self.x += self.speed * clock.get_time_secs()
         if not self.is_on_screen(screen):
             gm.discard(self)
-        self.showuuid = gm.input.SELECT.held and gm.state.debug
+        super().update(gm=gm)
 
     def is_on_screen(self, screen):
         return self.x + self.radius > 0 \
@@ -28,6 +28,6 @@ class Bullet(GameObject):
             and self.y - self.radius < screen.get_height()
 
     def draw(self, screen, debugscreen, **kwargs):
-        boundingBox = pygame.draw.circle(screen, self.color, (int(self.center[0]), int(self.center[1])), self.radius)
+        self.boundingBox = pygame.draw.circle(screen, self.color, (int(self.center[0]), int(self.center[1])), self.radius)
         self.draw_uuid(debugscreen, self.radius * 3 + 8)
-        return boundingBox
+        return self.boundingBox

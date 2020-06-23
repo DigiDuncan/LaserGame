@@ -7,6 +7,7 @@ from lasergame.lib import nygame, pgutils
 from lasergame.lib.conf import game
 from lasergame.lib.pgutils import write
 from lasergame.lib.gamemanager import GameManager
+from lasergame.objects.box import Box
 from lasergame.objects.inputlistener import InputListener
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
@@ -37,6 +38,7 @@ def gameloop():
     # Add objects to the GameManager.
     gm.add(InputListener())
     gm.add(Ship(20, 25, game.center, 90, colors.BLUE.rgb))
+    gm.add(Box((game.center[0] + 100, game.center[1])))
     gm.add(Controller())
 
     def refresh():
@@ -59,6 +61,7 @@ def gameloop():
 
         # Update objects
         gm.update(clock=clock, events=events, screen=screen)
+        gm.collide()
 
         # Fill the background
         screen.fill(colors.BLACK.rgb)
