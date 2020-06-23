@@ -28,6 +28,12 @@ class AttrDict:
             raise KeyError(f"{key!r} is a reserved key for {self.__class__.__name__!r}")
         self._values[key] = value
 
+    def __delitem__(self, key, value):
+        """del attrdict[key]"""
+        if key.startswith("_"):
+            raise KeyError(f"{key!r} is a reserved key for {self.__class__.__name__!r}")
+        del self._values[key]
+
     def __str__(self):
         return str(self._values)
 
@@ -36,3 +42,12 @@ class AttrDict:
 
     def __iter__(self):
         return iter(self._values)
+
+    def __contains__(self, key):
+        return key in self._values
+
+    def __len__(self):
+        return len(self._values)
+
+    def __eq__(self, other):
+        return other == self._values
