@@ -19,6 +19,13 @@ def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left"
     screen.blit(textsurface, coords)
 
 
+def draw_box(screen, center: tuple, width: int, height: int, *, color = colors.WHITE.rgb, thickness: int = 0):
+    left = center[0] - (width / 2)
+    top = center[1] - (height / 2)
+    rect = pygame.Rect(left, top, width, height)
+    return pygame.draw.rect(screen, color, rect, thickness)
+
+
 def init():
     global font
     font = pygame.font.Font(pygame.font.get_default_font(), 16)

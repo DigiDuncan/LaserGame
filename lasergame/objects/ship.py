@@ -23,7 +23,7 @@ class Ship(GameObject):
         self.direction = 0
         self.bulletrate = bulletrate
         self._lastbullet = 0
-        super().__init__(center=center, z=1)
+        super().__init__(center=center, z=999)
 
     @property
     def x(self):
