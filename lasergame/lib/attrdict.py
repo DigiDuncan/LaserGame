@@ -24,6 +24,15 @@ class AttrDict:
 
     def __setitem__(self, key, value):
         """attrdict[key] = value"""
-        if key in self.__slots__:
+        if key.startswith("_"):
             raise KeyError(f"{key!r} is a reserved key for {self.__class__.__name__!r}")
         self._values[key] = value
+
+    def __str__(self):
+        return str(self._values)
+
+    def __repr__(self):
+        return repr(self._values)
+
+    def __iter__(self):
+        return iter(self._values)
