@@ -1,5 +1,6 @@
 from operator import attrgetter
 
+from lasergame.objects.collidablegameobject import CollidableGameObject
 from lasergame.lib.state import State
 from lasergame.lib.inputmanager import InputManager
 
@@ -21,6 +22,11 @@ class GameManager:
         for o in sorted(self._objects, key=attrgetter("z")):
             o.draw(**kwargs)
 
+    def collide(self, **kwargs):
+        for o1 in self.collidables:
+            for o2 in self.collidables:
+                o1.collide(o2, gm = self)
+
     def add(self, obj):
         self._objects.add(obj)
 
@@ -29,3 +35,7 @@ class GameManager:
 
     def __len__(self):
         return len(self._objects)
+
+    @property
+    def collidables(self):
+        return [o for o in self._objects if isinstance(o, CollidableGameObject)]

@@ -62,6 +62,7 @@ def gameloop():
 
         # Update objects
         gm.update(clock=clock, events=events, screen=screen)
+        gm.collide()
 
         # Fill the background
         screen.fill(colors.BLACK.rgb)
