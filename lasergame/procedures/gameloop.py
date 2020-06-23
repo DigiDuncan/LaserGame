@@ -15,7 +15,6 @@ from lasergame.objects.controller import Controller
 
 def gameloop():
     pygame.init()
-    pgutils.init()
 
     clock = nygame.time.Clock()
 
