@@ -5,12 +5,12 @@ from digicolor import colors
 from lasergame.lib.conf import game
 from lasergame.lib.nygame import time
 from lasergame.lib.utils import clamp
-from lasergame.objects.gameobject import GameObject
+from lasergame.objects.collidablegameobject import CollidableGameObject
 from lasergame.objects.bullet import Bullet
 from lasergame.objects.star import Star
 
 
-class Ship(GameObject):
+class Ship(CollidableGameObject):
     __slots__ = ["width", "height", "color", "speed", "direction", "bulletrate", "_lastbullet"]
 
     directions = ["right", "down", "left", "up"]
@@ -58,7 +58,6 @@ class Ship(GameObject):
             self.x -= self.speed * clock.get_time_secs()
         if gm.input.RIGHT.held:
             self.x += self.speed * clock.get_time_secs()
-        self.showuuid = gm.input.SELECT.held and gm.state.debug
 
         if gm.input.A.held:
             if self._lastbullet + (1 / self.bulletrate) < (time.get_ticks() / 10**9):
@@ -71,6 +70,8 @@ class Ship(GameObject):
             self.rotate_right()
         elif gm.input.B.pressed:
             gm.add(Star((int(self.center[0]), int(self.center[1]))))
+
+        super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):
         boundingBox = drawTriangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])

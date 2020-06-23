@@ -19,7 +19,7 @@ class Bullet(CollidableGameObject):
         self.x += self.speed * clock.get_time_secs()
         if not self.is_on_screen(screen):
             gm.discard(self)
-        self.showuuid = gm.input.SELECT.held and gm.state.debug
+        super().update(gm=gm)
 
     def is_on_screen(self, screen):
         return self.x + self.radius > 0 \

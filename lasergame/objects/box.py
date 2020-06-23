@@ -15,17 +15,19 @@ class Box(CollidableGameObject):
         self._hits = 0
         super().__init__(center=center, z=1)
 
-    def update(self, **kwargs):
-        pass
+    def update(self, gm, **kwargs):
+        super().update(gm=gm)
 
-    def draw(self, screen, **kwargs):
+    def draw(self, screen, debugscreen, **kwargs):
         self.boundingBox = draw_box(screen, self.center, self.width, self.height, color = self.color)
         write(screen, (self.center[0], self.center[1] - 8), str(self._hits), align = "center")
+        self.draw_uuid(debugscreen, self.height * 3 + 8)
         return self.boundingBox
 
-    def collide(self, other, **kwargs):
+    def collide(self, other, gm, **kwargs):
         if isinstance(other, Bullet):
             if self.boundingBox is None or other.boundingBox is None:
                 return
             if self.boundingBox.colliderect(other.boundingBox):
                 self._hits += 1
+                gm.discard(other)
