@@ -1,9 +1,32 @@
+class ReservedAttributeError(AttributeError):
+    def __init__(self, obj, key):
+        super().__init__(f"{key!r} is a reserved attribute for {obj.__class__.__name__!r}")
+
+
+class ReservedKeyError(KeyError):
+    def __init__(self, obj, key):
+        super().__init__(f"{key!r} is a reserved key for {obj.__class__.__name__!r}")
+
+
 class AttrDict:
+    """A convenient class for accessing a dictionary via attributes"""
     __slots__ = ["_values"]
 
     def __init__(self, data={}):
-        # This avoids an infinite recursion issue with __getattr__()
+        # Ensure we're dealing with a plain dictionary
+        data = {**data}
+
+        # Check for reserved keys
+        for k in data:
+            if self._is_reserved(k):
+                raise ReservedKeyError(self, k)
+
+        # Set self._values while avoiding an infinite recursion issue with __setattr__ and __getattr__
         super().__setattr__("_values", data)
+
+    def _is_reserved(self, key):
+        """Check if a key is reserved"""
+        return key.startswith("_")
 
     def __getattr__(self, key):
         """value = attrdict.key"""
@@ -14,9 +37,15 @@ class AttrDict:
 
     def __setattr__(self, key, value):
         """attrdict.key = value"""
-        if key in self.__slots__:
-            raise AttributeError(f"{key!r} is a reserved attribute for {self.__class__.__name__!r}")
+        if self._is_reserved(key):
+            raise ReservedAttributeError(self, key)
         self._values[key] = value
+
+    def __delattr__(self, key):
+        """del attrdict.key"""
+        if self._is_reserved(key):
+            raise ReservedAttributeError(self, key)
+        del self._values[key]
 
     def __getitem__(self, key):
         """value = attrdict[key]"""
@@ -24,14 +53,14 @@ class AttrDict:
 
     def __setitem__(self, key, value):
         """attrdict[key] = value"""
-        if key.startswith("_"):
-            raise KeyError(f"{key!r} is a reserved key for {self.__class__.__name__!r}")
+        if self._is_reserved(key):
+            raise ReservedKeyError(self, key)
         self._values[key] = value
 
     def __delitem__(self, key, value):
         """del attrdict[key]"""
-        if key.startswith("_"):
-            raise KeyError(f"{key!r} is a reserved key for {self.__class__.__name__!r}")
+        if self._is_reserved(key):
+            raise ReservedKeyError(self, key)
         del self._values[key]
 
     def __str__(self):
