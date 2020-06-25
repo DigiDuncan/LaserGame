@@ -28,7 +28,7 @@ def mainmenu(bigscreen: pygame.Surface):
 
     def draw():
         screen.fill(colors.BLACK.rgb)
-        write(screen, (game.center[0], game.center[1] - 30), "LaserGame", align = "center", size = 20)
+        write(screen, (game.center[0], game.center[1] - 30), "LaserGame", align = "center", size = 20, font = "EndlessBossBattleRegular.ttf")
         write(screen, game.center, "Press START", align = "center", size = 12)
 
     running = True
