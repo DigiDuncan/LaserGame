@@ -22,14 +22,13 @@ def get(name=None, size=None):
         try:
             with pkg_resources.path(lasergame.data.fonts, name) as fontgen:
                 fontpath = open(fontgen, "r")
-        except Exception:
+        except FileNotFoundError:
             fontpath = open(name, "r")
     if size is None:
         size = 16
     key = (name, size)
     font = font_cache.get(key)
     if font is None:
-        print(fontpath)
         font = pygame.font.Font(fontpath, size)
         font_cache[key] = font
     return font
