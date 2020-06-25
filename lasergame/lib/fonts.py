@@ -7,6 +7,15 @@ import lasergame.data.fonts
 font_cache = {}
 
 
+def get_fontpath(name):
+    if name == pygame.font.get_default_font():
+        fontpath = name
+    else:
+        with pkg_resources.path(lasergame.data.fonts, name) as p:
+            fontpath = p
+    return str(fontpath)
+
+
 def get(name=None, size=None):
     """Load a font
 
@@ -17,19 +26,13 @@ def get(name=None, size=None):
     font = fonts.get("freesansbold.ttf", size=16)
     """
     if name is None:
-        fontpath = pygame.font.get_default_font()
-    else:
-        try:
-            with pkg_resources.path(lasergame.data.fonts, name) as fontgen:
-                fontpath = open(fontgen, "r")
-        except FileNotFoundError:
-            fontpath = open(name, "r")
+        name = pygame.font.get_default_font()
     if size is None:
         size = 16
     key = (name, size)
     font = font_cache.get(key)
     if font is None:
-        font = pygame.font.Font(fontpath, size)
+        font = pygame.font.Font(get_fontpath(name), size)
         font_cache[key] = font
     return font
 
