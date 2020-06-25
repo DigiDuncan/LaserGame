@@ -11,6 +11,7 @@ from lasergame.lib.gamemanager import GameManager
 from lasergame.lib.pgutils import write
 from lasergame.objects.box import Box
 from lasergame.objects.controller import Controller
+from lasergame.objects.framegraph import FrameGraph
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
 
@@ -41,13 +42,16 @@ def gameloop():
     gm.add(Ship(20, 25, game.center, 90, colors.BLUE.rgb, bulletrate=100))
     gm.add(Box((game.center[0] + 100, game.center[1])))
     gm.add(Controller())
+    gm.add(FrameGraph())
 
     def refresh():
-        # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
+        # Create debug information.
         if gm.state.debug:
-            write(debugscreen, (-8, 8), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
-            write(debugscreen, (-8, 24), f"{len(gm)} objects", color=colors.LIGHT_GREEN.rgb)
+            write(debugscreen, (-8, 8 + 61), f"{clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
+            write(debugscreen, (-8, 24 + 61), f"{len(gm)} objects", color=colors.LIGHT_GREEN.rgb)
+        # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
         pygame.transform.scale(screen, (game.windowwidth, game.windowheight), bigscreen)
+        # Show debug screen.
         bigscreen.blit(debugscreen, (0, 0))
         pygame.display.flip()
 
