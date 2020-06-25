@@ -43,6 +43,6 @@ class Bullet(CollidableGameObject):
             and self.y - self.radius < screen.get_height()
 
     def draw(self, screen, debugscreen, **kwargs):
-        self.boundingBox = pygame.draw.circle(screen, self.color, (int(self.center[0]), int(self.center[1])), self.radius)
+        self.boundingBox = pygame.draw.circle(screen, self.color, self.safecenter, self.radius)
         self.draw_uuid(debugscreen, self.radius * 3 + 8)
         return self.boundingBox

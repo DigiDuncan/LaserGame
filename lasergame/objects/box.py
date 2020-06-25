@@ -20,7 +20,7 @@ class Box(CollidableGameObject):
 
     def draw(self, screen, debugscreen, **kwargs):
         self.boundingBox = draw_box(screen, self.center, self.width, self.height, color = self.color)
-        write(screen, (self.center[0], self.center[1] - 8), str(self._hits), align = "center")
+        write(screen, (self.x, self.y - 8), str(self._hits), align = "center")
         self.draw_uuid(debugscreen, self.height * 3 + 8)
         return self.boundingBox
 

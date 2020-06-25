@@ -78,14 +78,14 @@ class Ship(CollidableGameObject):
 
         if gm.input.A.held:
             if self._lastbullet + (1 / self.bulletrate) < time.get_ticks_sec():
-                gm.add(Bullet(self.center, bullettype = self.weaponselect))
+                gm.add(Bullet((self.x + (self.height / 2), self.y), bullettype = self.weaponselect))
                 self._lastbullet = time.get_ticks_sec()
         if gm.input.L.pressed:
             self._weaponselectindex -= 1
         elif gm.input.R.pressed:
             self._weaponselectindex += 1
         elif gm.input.B.pressed:
-            gm.add(Star((int(self.center[0]), int(self.center[1]))))
+            gm.add(Star(self.safecenter))
 
         super().update(gm=gm)
 
