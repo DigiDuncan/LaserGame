@@ -4,16 +4,31 @@ from digicolor import colors
 
 from lasergame.classes.collidablegameobject import CollidableGameObject
 
+bulletcolors = {
+    "red":    colors.RED.rgb,
+    "orange": colors.DARK_ORANGE.rgb,
+    "yellow": colors.YELLOW.rgb,
+    "green":  colors.LIGHT_GREEN.rgb,
+    "blue":   colors.BLUE.rgb,
+    "purple": colors.LIGHT_MAGENTA.rgb
+}
+
 
 class Bullet(CollidableGameObject):
-    __slots__ = ["color", "speed", "bullettype", "radius"]
+    __slots__ = ["speed", "bullettype", "radius"]
 
-    def __init__(self, center: tuple, *, color = colors.RED.rgb, speed = 180, bullettype = "default", radius = 2):
-        self.color = color
+    def __init__(self, center: tuple, *, speed = 180, bullettype = "red", radius = 2):
         self.speed = speed
         self.bullettype = bullettype
         self.radius = radius
         super().__init__(center=center)
+
+    @property
+    def color(self):
+        if self.bullettype:
+            return bulletcolors[self.bullettype]
+        else:
+            return bulletcolors["red"]
 
     def update(self, clock, screen, gm, **kwargs):
         self.x += self.speed * clock.get_time_secs()
