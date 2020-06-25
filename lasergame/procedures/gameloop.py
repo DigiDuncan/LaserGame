@@ -34,7 +34,7 @@ def gameloop(bigscreen: pygame.Surface):
 
     # Add objects to the GameManager.
     gm.add(InputListener())
-    gm.add(Ship(20, 25, game.center, 90, colors.BLUE.rgb, bulletrate=100))
+    gm.add(Ship(20, 25, game.center, 90, colors.BLUE.rgb, bulletrate=10))
     gm.add(Box((game.center[0] + 100, game.center[1])))
     gm.add(Controller())
     gm.add(FrameGraph())
