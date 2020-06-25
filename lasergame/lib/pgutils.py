@@ -6,11 +6,10 @@ from digicolor import colors
 
 from lasergame.lib import fonts
 
-font = None
 
-
-def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left", antialias: bool = True):
-    textsurface = fonts.render(text, antialias=antialias, color=color)
+def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left", antialias: bool = True,
+          font=None, size=None, background=None):
+    textsurface = fonts.render(text, antialias=antialias, color=color, font=font, size=size, background=background)
     if coords[0] < 0:
         coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
     if coords[1] < 0:
