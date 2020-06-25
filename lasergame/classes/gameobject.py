@@ -22,6 +22,10 @@ class GameObject:
         pass
 
     @property
+    def safecenter(self):
+        return (int(self.center[0]), int(self.center[1]))
+
+    @property
     def x(self):
         return self.center[0]
 
@@ -36,6 +40,14 @@ class GameObject:
     @y.setter
     def y(self, value):
         self.center = (self.center[0], value)
+
+    @property
+    def safex(self):
+        return self.safecenter[0]
+
+    @property
+    def safey(self):
+        return self.safecenter[1]
 
     def draw_uuid(self, screen, yoffset = 0):
         if self.showuuid:

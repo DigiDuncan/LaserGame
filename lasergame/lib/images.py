@@ -1,6 +1,7 @@
 import importlib
 
 import pygame
+
 from digicolor import colors
 
 image_root = "lasergame.data.images"

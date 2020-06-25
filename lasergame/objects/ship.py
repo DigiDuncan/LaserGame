@@ -2,16 +2,28 @@ import pygame
 
 from digicolor import colors
 
+from lasergame.classes.collidablegameobject import CollidableGameObject
 from lasergame.lib.conf import game
 from lasergame.lib.nygame import time
+from lasergame.lib.pgutils import draw_triangle
 from lasergame.lib.utils import clamp
-from lasergame.objects.collidablegameobject import CollidableGameObject
 from lasergame.objects.bullet import Bullet
 from lasergame.objects.star import Star
 
+weapontypes = ["red", "orange", "yellow", "green", "blue", "purple"]
+
+bulletcolors = {
+    "red":    colors.RED.rgb,
+    "orange": colors.DARK_ORANGE.rgb,
+    "yellow": colors.YELLOW.rgb,
+    "green":  colors.LIGHT_GREEN.rgb,
+    "blue":   colors.BLUE.rgb,
+    "purple": colors.LIGHT_MAGENTA.rgb
+}
+
 
 class Ship(CollidableGameObject):
-    __slots__ = ["width", "height", "color", "speed", "direction", "bulletrate", "_lastbullet"]
+    __slots__ = ["width", "height", "color", "speed", "direction", "bulletrate", "_lastbullet", "_weaponselectindex"]
 
     directions = ["right", "down", "left", "up"]
 
@@ -23,6 +35,7 @@ class Ship(CollidableGameObject):
         self.direction = 0
         self.bulletrate = bulletrate
         self._lastbullet = 0
+        self._weaponselectindex = 0
         super().__init__(center=center, z=999)
 
     @property
@@ -43,6 +56,10 @@ class Ship(CollidableGameObject):
         value = clamp(0, value, game.height)
         self.center = (self.center[0], value)
 
+    @property
+    def weaponselect(self):
+        return weapontypes[self._weaponselectindex % len(weapontypes)]
+
     def rotate_right(self):
         self.direction = (self.direction + 1) % 4
 
@@ -60,52 +77,20 @@ class Ship(CollidableGameObject):
             self.x += self.speed * clock.get_time_secs()
 
         if gm.input.A.held:
-            if self._lastbullet + (1 / self.bulletrate) < (time.get_ticks() / 10**9):
-                gm.add(Bullet(self.center))
-                self._lastbullet = time.get_ticks() / 10**9
-
+            if self._lastbullet + (1 / self.bulletrate) < time.get_ticks_sec():
+                gm.add(Bullet((self.x + (self.height / 2), self.y), bullettype = self.weaponselect))
+                self._lastbullet = time.get_ticks_sec()
         if gm.input.L.pressed:
-            self.rotate_left()
+            self._weaponselectindex -= 1
         elif gm.input.R.pressed:
-            self.rotate_right()
+            self._weaponselectindex += 1
         elif gm.input.B.pressed:
-            gm.add(Star((int(self.center[0]), int(self.center[1]))))
+            gm.add(Star(self.safecenter))
 
         super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):
-        boundingBox = drawTriangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
+        boundingBox = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
+        pygame.draw.circle(screen, bulletcolors[self.weaponselect], self.safecenter, 2)
         self.draw_uuid(debugscreen, self.width * 3 + 4)
         return boundingBox
-
-
-def drawTriangle(screen, color, center, width, height, direction="right"):
-    x, y = center
-    left = x - (width / 2)
-    right = x + (width / 2)
-    top = y - (height / 2)
-    bottom = y + (height / 2)
-    middlex = x
-    middley = y
-
-    if direction == "up":
-        u = (middlex, top)      # middle top (tip)
-        v = (right, bottom)     # bottom right
-        w = (left, bottom)      # bottom left
-    elif direction == "right":
-        u = (right, middley)    # middle right (tip)
-        v = (left, bottom)      # bottom left
-        w = (left, top)         # top left
-    elif direction == "down":
-        u = (middlex, bottom)   # middle bottom (tip)
-        v = (left, top)         # top left
-        w = (right, top)        # top right
-    elif direction == "left":
-        u = (left, middley)     # middle left (tip)
-        v = (right, top)        # top right
-        w = (right, bottom)     # bottom right
-    else:
-        raise ValueError("Unrecognized direction")
-    uvw = (u, v, w)
-    boundingBox = pygame.draw.polygon(screen, color, uvw)
-    return boundingBox

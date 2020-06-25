@@ -1,14 +1,15 @@
-import pygame
 from typing import Literal
 
+import pygame
+
 from digicolor import colors
+
 from lasergame.lib import fonts
 
-font = None
 
-
-def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left", antialias: bool = True):
-    textsurface = fonts.render(text, antialias=antialias, color=color)
+def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left", antialias: bool = True,
+          font=None, size=None, background=None):
+    textsurface = fonts.render(text, antialias=antialias, color=color, font=font, size=size, background=background)
     if coords[0] < 0:
         coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
     if coords[1] < 0:
@@ -25,3 +26,35 @@ def draw_box(screen, center: tuple, width: int, height: int, *, color = colors.W
     top = center[1] - (height / 2)
     rect = pygame.Rect(left, top, width, height)
     return pygame.draw.rect(screen, color, rect, thickness)
+
+
+def draw_triangle(screen, color, center, width, height, direction="right"):
+    x, y = center
+    left = x - (width / 2)
+    right = x + (width / 2)
+    top = y - (height / 2)
+    bottom = y + (height / 2)
+    middlex = x
+    middley = y
+
+    if direction == "up":
+        u = (middlex, top)      # middle top (tip)
+        v = (right, bottom)     # bottom right
+        w = (left, bottom)      # bottom left
+    elif direction == "right":
+        u = (right, middley)    # middle right (tip)
+        v = (left, bottom)      # bottom left
+        w = (left, top)         # top left
+    elif direction == "down":
+        u = (middlex, bottom)   # middle bottom (tip)
+        v = (left, top)         # top left
+        w = (right, top)        # top right
+    elif direction == "left":
+        u = (left, middley)     # middle left (tip)
+        v = (right, top)        # top right
+        w = (right, bottom)     # bottom right
+    else:
+        raise ValueError("Unrecognized direction")
+    uvw = (u, v, w)
+    boundingBox = pygame.draw.polygon(screen, color, uvw)
+    return boundingBox

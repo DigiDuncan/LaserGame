@@ -1,8 +1,15 @@
-from lasergame.procedures.gameloop import gameloop
+import pygame
+
+from lasergame.lib.conf import game
+from lasergame.procedures.mainmenu import mainmenu
 
 
 def main():
-    gameloop()
+    bigscreen = pygame.display.set_mode([game.windowwidth, game.windowheight])
+    # Window title.
+    pygame.display.set_caption("LaserGame v0 by DigiSoft")
+
+    mainmenu(bigscreen)
 
 
 # This is needed, or else calling `python -m <name>` will mean that main() is called twice.

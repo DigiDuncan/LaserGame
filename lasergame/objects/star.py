@@ -4,7 +4,7 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.objects.gameobject import GameObject
+from lasergame.classes.gameobject import GameObject
 
 
 class Star(GameObject):
