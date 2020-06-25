@@ -2,10 +2,10 @@ import pygame
 
 from digicolor import colors
 
+from lasergame.classes.collidablegameobject import CollidableGameObject
 from lasergame.lib.conf import game
 from lasergame.lib.nygame import time
 from lasergame.lib.utils import clamp
-from lasergame.objects.collidablegameobject import CollidableGameObject
 from lasergame.objects.bullet import Bullet
 from lasergame.objects.star import Star
 

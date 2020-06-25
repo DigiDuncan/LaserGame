@@ -1,5 +1,5 @@
-from pygame import locals as pygame_locals
 import pygame
+from pygame import locals as pygame_locals
 
 from lasergame.lib.constants import buttons as button_constants
 

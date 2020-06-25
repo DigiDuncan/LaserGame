@@ -1,5 +1,6 @@
-from lasergame.objects.gameobject import GameObject
+from lasergame.classes.gameobject import GameObject
 from lasergame.lib import images
+
 
 buttonmap = {
     "UP": ("buttons.dpad-up", None),

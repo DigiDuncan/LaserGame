@@ -2,7 +2,7 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.objects.collidablegameobject import CollidableGameObject
+from lasergame.classes.collidablegameobject import CollidableGameObject
 
 
 class Bullet(CollidableGameObject):

@@ -1,4 +1,4 @@
-from lasergame.objects.gameobject import GameObject
+from lasergame.classes.gameobject import GameObject
 
 
 class InputListener(GameObject):

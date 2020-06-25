@@ -1,8 +1,8 @@
 from operator import attrgetter
 
-from lasergame.objects.collidablegameobject import CollidableGameObject
-from lasergame.lib.state import State
+from lasergame.classes.collidablegameobject import CollidableGameObject
 from lasergame.lib.inputmanager import InputManager
+from lasergame.lib.state import State
 
 
 class GameManager:

@@ -1,7 +1,9 @@
-import pygame
 from typing import Literal
 
+import pygame
+
 from digicolor import colors
+
 from lasergame.lib import fonts
 
 font = None
