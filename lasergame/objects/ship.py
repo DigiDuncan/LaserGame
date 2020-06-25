@@ -1,10 +1,9 @@
-import pygame
-
 from digicolor import colors
 
 from lasergame.classes.collidablegameobject import CollidableGameObject
 from lasergame.lib.conf import game
 from lasergame.lib.nygame import time
+from lasergame.lib.pgutils import draw_triangle
 from lasergame.lib.utils import clamp
 from lasergame.objects.bullet import Bullet
 from lasergame.objects.star import Star
@@ -74,38 +73,6 @@ class Ship(CollidableGameObject):
         super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):
-        boundingBox = drawTriangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
+        boundingBox = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
         self.draw_uuid(debugscreen, self.width * 3 + 4)
         return boundingBox
-
-
-def drawTriangle(screen, color, center, width, height, direction="right"):
-    x, y = center
-    left = x - (width / 2)
-    right = x + (width / 2)
-    top = y - (height / 2)
-    bottom = y + (height / 2)
-    middlex = x
-    middley = y
-
-    if direction == "up":
-        u = (middlex, top)      # middle top (tip)
-        v = (right, bottom)     # bottom right
-        w = (left, bottom)      # bottom left
-    elif direction == "right":
-        u = (right, middley)    # middle right (tip)
-        v = (left, bottom)      # bottom left
-        w = (left, top)         # top left
-    elif direction == "down":
-        u = (middlex, bottom)   # middle bottom (tip)
-        v = (left, top)         # top left
-        w = (right, top)        # top right
-    elif direction == "left":
-        u = (left, middley)     # middle left (tip)
-        v = (right, top)        # top right
-        w = (right, bottom)     # bottom right
-    else:
-        raise ValueError("Unrecognized direction")
-    uvw = (u, v, w)
-    boundingBox = pygame.draw.polygon(screen, color, uvw)
-    return boundingBox
