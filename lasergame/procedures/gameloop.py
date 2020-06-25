@@ -16,7 +16,7 @@ from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
 
 
-def gameloop():
+def gameloop(bigscreen: pygame.Surface):
     pygame.init()
 
     clock = nygame.time.Clock()
@@ -26,11 +26,6 @@ def gameloop():
     debugscreen = pygame.Surface((game.windowwidth, game.windowheight), flags=pygame.SRCALPHA)
 
     gm = GameManager()
-
-    # Pixel-scale the screen up to something seeable on a monitor.
-    bigscreen = pygame.display.set_mode([game.windowwidth, game.windowheight])
-    # Window title.
-    pygame.display.set_caption("LaserGame v0 by DigiSoft")
 
     # Draw stars?
     for i in range(150):
