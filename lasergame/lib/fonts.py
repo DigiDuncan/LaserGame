@@ -116,7 +116,7 @@ def test_render():
     rendered = render("TEST 8", font="freesansbold.ttf", size=20, color=gry, antialias=True)
     screen.blit(rendered, (0, 140))
 
-    rendered = render("TEST 5", color=blk, background=mga)
+    rendered = render("TEST 9", color=blk, background=mga)
     screen.blit(rendered, (0, 160))
 
     pygame.display.flip()
