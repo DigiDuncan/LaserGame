@@ -73,6 +73,8 @@ class Game():
         pygame.display.flip()
 
     def switch_scene(self, name):
+        if self.scenes is None or self.scenes == {}:
+            return
         self.active = self.scenes[name]
 
     def pause(self):

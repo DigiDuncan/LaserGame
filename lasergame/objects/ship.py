@@ -66,7 +66,7 @@ class Ship(CollidableGameObject):
     def rotate_left(self):
         self.direction = (self.direction - 1) % 4
 
-    def update(self, events, clock, gm, screen, **kwargs):
+    def update(self, clock, gm, **kwargs):
         if gm.input.UP.held:
             self.y -= self.speed * clock.get_time_secs()
         if gm.input.DOWN.held:
