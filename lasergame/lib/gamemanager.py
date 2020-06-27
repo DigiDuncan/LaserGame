@@ -9,13 +9,12 @@ from lasergame.objects.bullet import Bullet
 class GameManager:
     __slots__ = ["_objects", "state", "input"]
 
-    def __init__(self):
+    def __init__(self, inputmanager: InputManager):
         self._objects = set()
         self.state = State()
-        self.input = InputManager()
+        self.input = inputmanager
 
     def update(self, events, **kwargs):
-        self.input.update(events=events)
         for o in list(self._objects):
             o.update(gm=self, events=events, **kwargs)
 
