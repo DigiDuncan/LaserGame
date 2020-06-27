@@ -7,8 +7,8 @@ from digicolor import colors
 from lasergame.lib import fonts
 
 
-def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left", antialias: bool = True,
-          font=None, size=None, background=None):
+def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left",
+          valign: Literal["top", "center", "bottom"] = "top", antialias: bool = True, font=None, size=None, background=None):
     textsurface = fonts.render(text, antialias=antialias, color=color, font=font, size=size, background=background)
     if coords[0] < 0:
         coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
@@ -18,6 +18,10 @@ def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left"
         coords = (coords[0] - (textsurface.get_width() / 2), coords[1])
     if align == "right":
         coords = (coords[0] - textsurface.get_width(), coords[1])
+    if valign == "center":
+        coords = (coords[0], coords[1] - (textsurface.get_height() / 2))
+    if valign == "bottom":
+        coords = (coords[0], coords[1] - textsurface.get_height())
     screen.blit(textsurface, coords)
 
 

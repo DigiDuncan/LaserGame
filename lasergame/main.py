@@ -58,7 +58,8 @@ class Game():
             self.active.draw()
             # Write "PAUSED" on the screen if we're, you know, paused.
             if self.paused:
-                write(self.screen, conf.game.center, "PAUSED", align = "center", font = "EndlessBossBattleRegular.ttf", size = 32, antialias = False)
+                write(self.screen, conf.game.center, "PAUSED", align = "center", valign = "center",
+                      font = "EndlessBossBattleRegular.ttf", size = 32, antialias = False)
             # Final draw stage
             self.refresh(self.screen, self.bigscreen, self.debugscreen)
             # Timing loop
