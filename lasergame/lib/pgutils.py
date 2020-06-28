@@ -60,5 +60,5 @@ def draw_triangle(screen, color, center, width, height, direction="right"):
     else:
         raise ValueError("Unrecognized direction")
     uvw = (u, v, w)
-    boundingBox = pygame.draw.polygon(screen, color, uvw)
-    return boundingBox
+    collision_box = pygame.draw.polygon(screen, color, uvw)
+    return collision_box

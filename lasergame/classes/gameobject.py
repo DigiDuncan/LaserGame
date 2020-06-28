@@ -15,12 +15,6 @@ class GameObject:
         self.uuid = uuid.uuid4()
         self.showuuid = False
 
-    def update(self, **kwargs):
-        pass
-
-    def draw(self, screen, **kwargs):
-        pass
-
     @property
     def safecenter(self):
         return (int(self.center[0]), int(self.center[1]))
@@ -52,3 +46,6 @@ class GameObject:
     def draw_uuid(self, screen, yoffset = 0):
         if self.showuuid:
             write(screen, (self.center[0] * game.scale, self.center[1] * game.scale - yoffset), (str(self.uuid)[:8] + "..."), align = "center", color = colors.CYAN.rgb, antialias = False)
+
+    def __hash__(self):
+        return hash(self.uuid)

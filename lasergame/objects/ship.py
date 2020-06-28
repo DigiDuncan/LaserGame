@@ -66,6 +66,26 @@ class Ship(CollidableGameObject):
     def rotate_left(self):
         self.direction = (self.direction - 1) % 4
 
+    @property
+    def left(self):
+        return self.x - int(self.width / 2)
+
+    @property
+    def top(self):
+        return self.y - int(self.width / 2)
+
+    @property
+    def right(self):
+        return self.left + self.width
+
+    @property
+    def bottom(self):
+        return self.top + self.height
+
+    @property
+    def collision_box(self):
+        return pygame.Rect(self.left, self.top, self.width, self.height)
+
     def update(self, clock, gm, **kwargs):
         if gm.input.UP.held:
             self.y -= self.speed * clock.get_time_secs()
@@ -90,7 +110,7 @@ class Ship(CollidableGameObject):
         super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):
-        boundingBox = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
+        collision_box = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
         pygame.draw.circle(screen, bulletcolors[self.weaponselect], self.safecenter, 2)
         self.draw_uuid(debugscreen, self.width * 3 + 4)
-        return boundingBox
+        return collision_box

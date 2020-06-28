@@ -42,8 +42,6 @@ class GameLoop():
         # Update objects
         self.gm.update(clock=self.clock, events=events, screen=self.screen)
 
-        self.gm.collide()
-
     def draw(self):
         # Draw objects
         self.gm.draw(screen = self.screen, debugscreen = self.debugscreen)

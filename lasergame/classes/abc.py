@@ -46,12 +46,13 @@ class Drawable(metaclass=ABCMeta):
 class Collidable(metaclass=ABCMeta):
     __slots__ = ()
 
+    @property
     @abstractmethod
-    def collide(self, other):
-        raise NotImplementedError
+    def collision_box(self):
+        return None
 
     @classmethod
     def __subclasshook__(cls, subclass):
         if cls is Collidable:
-            return _check_methods(subclass, "collide")
+            return hasattr(subclass, "collision_box")
         return NotImplemented
