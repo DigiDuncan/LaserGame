@@ -9,7 +9,8 @@ class AllClass:
     def draw(self):
         pass
 
-    def collide(self):
+    @property
+    def collision_box(self):
         pass
 
 
@@ -27,7 +28,8 @@ class DrawClass:
 
 # A class that should be a Collidable but not an Updateable or Drawable
 class CollideClass:
-    def collide(self):
+    @property
+    def collision_box(self):
         pass
 
 
