@@ -10,3 +10,9 @@
 - Add current collisions to debug screen.
 - Add hit-boxes to debug screen.
 - Move tests to their own folder.
+- Add debug menu.
+  - Only show debug menu when in debug mode.
+  - Menu items:
+    - Show/Hide hit-boxes
+    - Show/Hide UUIDs
+    - Show/Hide collisions
