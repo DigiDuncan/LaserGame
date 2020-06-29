@@ -5,7 +5,7 @@ import pygame
 from digicolor import colors
 
 from lasergame.classes.inputlistener import InputListener
-from lasergame.lib import conf
+from lasergame.lib import conf, constants
 from lasergame.lib.gamemanager import GameManager
 from lasergame.lib.pgutils import write
 from lasergame.objects.box import Box
@@ -25,7 +25,7 @@ class GameLoop():
 
         # Draw stars?
         for i in range(150):
-            center = (random.randint(0, conf.game.width), random.randint(0, conf.game.height))
+            center = (random.randint(0, constants.game.width), random.randint(0, constants.game.height))
             self.gm.add(Star(center))
 
         # Add objects to the GameManager.

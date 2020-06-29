@@ -4,28 +4,29 @@ import toml
 
 import lasergame.data
 from lasergame.lib.attrdict import AttrDict
+from lasergame.lib.constants import game
 
-game = None
+
+settings = None
 
 
-def loadgame(data):
-    global game
-    gamedict = data.get("game", {})
+def loadsettings(data):
+    global settings
+    settingsdict = data.get("settings", {})
     # make all names lowercase
-    gamedict = {name.lower(): value for name, value in gamedict.items()}
+    settingsdict = {name.lower(): value for name, value in settingsdict.items()}
     # create the enum
-    game = AttrDict(gamedict)
-    if not isinstance(game.scale, int):
+    settings = AttrDict(settingsdict)
+    if not isinstance(settings.scale, int):
         raise ValueError("Scale is not an integer.")
-    game.windowwidth = game.width * game.scale
-    game.windowheight = game.height * game.scale
-    game.center = (round(game.width / 2), round(game.height / 2))
+    settings.windowwidth = game.width * settings.scale
+    settings.windowheight = game.height * settings.scale
 
 
 def load():
     # Load constants toml file
     data = toml.loads(pkg_resources.read_text(lasergame.data, "conf.toml"))
-    loadgame(data)
+    loadsettings(data)
 
 
 load()

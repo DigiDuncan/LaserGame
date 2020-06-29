@@ -3,7 +3,7 @@ import pygame
 from digicolor import colors
 
 from lasergame.classes.collidablegameobject import CollidableGameObject
-from lasergame.lib.conf import game
+from lasergame.lib.constants import game
 from lasergame.lib.nygame import time
 from lasergame.lib.pgutils import draw_triangle
 from lasergame.lib.utils import clamp

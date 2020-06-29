@@ -3,7 +3,7 @@ from lasergame.lib import nygame
 
 from digicolor import colors
 
-from lasergame.lib import conf
+from lasergame.lib import conf, constants
 from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.pgutils import write
 from lasergame.scenes.gameloop import GameLoop
@@ -21,9 +21,9 @@ class Game():
         self.im = InputManager()
 
         # Create the screen.
-        self.screen = pygame.Surface((conf.game.width, conf.game.height))
-        self.bigscreen = pygame.display.set_mode([conf.game.windowwidth, conf.game.windowheight])
-        self.debugscreen = pygame.Surface((conf.game.windowwidth, conf.game.windowheight), flags=pygame.SRCALPHA)
+        self.screen = pygame.Surface((constants.game.width, constants.game.height))
+        self.bigscreen = pygame.display.set_mode([conf.settings.windowwidth, conf.settings.windowheight])
+        self.debugscreen = pygame.Surface((conf.settings.windowwidth, conf.settings.windowheight), flags=pygame.SRCALPHA)
 
     def run(self):
         pygame.init()
@@ -65,11 +65,11 @@ class Game():
             # Final draw stage
             self.refresh(self.screen, self.bigscreen, self.debugscreen)
             # Timing loop
-            self.clock.tick_busy_loop(conf.game.framerate)
+            self.clock.tick_busy_loop(conf.settings.framerate)
 
     def refresh(self, screen, bigscreen, debugscreen):
         # Pixel-scale the screen to the bigscreen.
-        pygame.transform.scale(screen, (conf.game.windowwidth, conf.game.windowheight), bigscreen)
+        pygame.transform.scale(screen, (conf.settings.windowwidth, conf.settings.windowheight), bigscreen)
         # Show debug screen.
         bigscreen.blit(debugscreen, (0, 0))
         # Flip [refresh?] the display.

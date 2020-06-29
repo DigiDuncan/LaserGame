@@ -3,7 +3,7 @@ import uuid
 from digicolor import colors
 
 from lasergame.lib.pgutils import write
-from lasergame.lib.conf import game
+from lasergame.lib.conf import settings
 
 
 class GameObject:
@@ -45,7 +45,7 @@ class GameObject:
 
     def draw_uuid(self, screen, yoffset = 0):
         if self.showuuid:
-            write(screen, (self.center[0] * game.scale, self.center[1] * game.scale - yoffset), (str(self.uuid)[:8] + "..."), align = "center", color = colors.CYAN.rgb, antialias = False)
+            write(screen, (self.center[0] * settings.scale, self.center[1] * settings.scale - yoffset), (str(self.uuid)[:8] + "..."), align = "center", color = colors.CYAN.rgb, antialias = False)
 
     def __hash__(self):
         return hash(self.uuid)

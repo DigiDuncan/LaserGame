@@ -1,8 +1,8 @@
-from lasergame.lib.conf import game
+from lasergame.lib.conf import settings
 
 
 class State:
     __slots__ = ["debug"]
 
     def __init__(self):
-        self.debug = game.debug
+        self.debug = settings.debug

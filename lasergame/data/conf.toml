@@ -1,6 +1,4 @@
-[game]
-width = 256
-height = 224
+[settings]
 scale = 4
 framerate = 60
 debug = true
