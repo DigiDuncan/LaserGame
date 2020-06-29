@@ -1,7 +1,7 @@
 def collide_objects(obj, others):
     """Return a list of objects that collide with the first object"""
     # Setup comparison dict (https://www.pygame.org/docs/ref/rect.html#pygame.Rect.collidedictall)
-    other_dicts = {tuple(other.collision_box): other for other in others}
+    other_dicts = {tuple(other.collision_box): other for other in others if other is not obj}
     # Get all the collisions (as a list of (rect, obj) tuples)
     collisions = obj.collision_box.collidedictall(other_dicts)
     # Convert to list of objects
