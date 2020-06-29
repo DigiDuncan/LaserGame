@@ -19,6 +19,10 @@ class MenuItem:
         if self.functiontype == "quit":
             return self.game.quit()
 
+    @property
+    def displaytext(self):
+        return self.text
+
 
 class SceneMenuItem(MenuItem):
     def __init__(self, game, name, text, *, scene):
@@ -37,20 +41,36 @@ class QuitMenuItem(MenuItem):
 
 
 class ValueMenuItem(MenuItem):
-    def __init__(self, game, name, text, value, default, step = 1):
+    def __init__(self, game, name, text, value, default, *, textoverrides = {}, **kwargs):
         self.value = value
         self.default = default
-        self.step = step
         self._current = self.default
+        self.textoverrides = textoverrides
         super().__init__(game, name, text)
+
+
+class IntValueMenuItem(ValueMenuItem):
+    def __init__(self, game, name, text, value, default, step = 1, **kwargs):
+        self.step = step
+        super().__init__(game, name, text, value, default, **kwargs)
 
     def increment(self):
         self._current += self.step
+        self._current = max(0, self._current)
         setattr(conf.settings, self.value, self._current)
 
     def decrement(self):
         self._current -= self.step
+        self._current = max(0, self._current)
         setattr(conf.settings, self.value, self._current)
+
+    @property
+    def displaytext(self):
+        if self._current in self.textoverrides:
+            currenttext = self.textoverrides[self._current]
+        else:
+            currenttext = self._current
+        return f"< {self.text}: {currenttext} >"
 
     @property
     def function(self):
@@ -105,11 +125,7 @@ class Menu(GameObject):
 
     def draw(self, **kwargs):
         for n, item in enumerate(self.items):
-            if isinstance(item, ValueMenuItem):
-                itemtext = f"{item.text}: {item._current}"
-            else:
-                itemtext = item.text
-            write(self.screen, (self.x, self.texttopY + (n * self.fontspacing)), itemtext,
+            write(self.screen, (self.x, self.texttopY + (n * self.fontspacing)), item.displaytext,
                   color = self.fontcolor, align = self.fontalign, antialias = self.fontantialias,
                   font = self.fontfont, size = self.fontsize)
         draw_triangle(self.screen, self.cursorcolor,

@@ -2,7 +2,7 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.classes.menu import Menu, SceneMenuItem, ValueMenuItem
+from lasergame.classes.menu import Menu, SceneMenuItem, IntValueMenuItem
 from lasergame.lib import conf
 from lasergame.lib.pgutils import write
 
@@ -14,7 +14,7 @@ class OptionsMenu:
         self.bigscreen = game.bigscreen
         self.inputmanager = game.im
         self.items = [
-            ValueMenuItem(self.game, "framerate", "FRAMERATE", "framerate", 60),
+            IntValueMenuItem(self.game, "framerate", "FRAMERATE", "framerate", 60, textoverrides = {0: "UNLOCKED"}),
             SceneMenuItem(self.game, "back", "BACK TO MAIN MENU", scene = "mainmenu")
         ]
         self.menu = Menu(
