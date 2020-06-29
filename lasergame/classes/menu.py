@@ -8,19 +8,31 @@ from lasergame.lib.pgutils import draw_triangle, write
 
 
 class MenuItem:
-    def __init__(self, game, name, text, functiontype, arguments = {}):
+    def __init__(self, game, name, text):
         self.game = game
         self.name = name
         self.text = text
-        self.functiontype = functiontype
-        self.arguments = arguments
 
     @property
     def function(self):
-        if self.functiontype == "scene":
-            return self.game.switch_scene(self.arguments["scene"])
         if self.functiontype == "quit":
             return self.game.quit()
+
+
+class SceneMenuItem(MenuItem):
+    def __init__(self, game, name, text, *, scene):
+        self.scene = scene
+        super().__init__(game, name, text)
+
+    @property
+    def function(self):
+        return self.game.switch_scene(self.scene)
+
+
+class QuitMenuItem(MenuItem):
+    @property
+    def function(self):
+        return self.game.quit()
 
 
 class Menu(GameObject):

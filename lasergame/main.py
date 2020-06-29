@@ -8,6 +8,7 @@ from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.pgutils import write
 from lasergame.scenes.gameloop import GameLoop
 from lasergame.scenes.mainmenu import MainMenu
+from lasergame.scenes.optionsmenu import OptionsMenu
 
 
 class Game():
@@ -32,7 +33,8 @@ class Game():
 
         self.scenes = {
             "mainmenu": MainMenu(game = self),
-            "gameloop": GameLoop(game = self)
+            "gameloop": GameLoop(game = self),
+            "optionsmenu": OptionsMenu(game = self)
         }
         self.switch_scene("mainmenu")
 

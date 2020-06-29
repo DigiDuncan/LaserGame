@@ -7,19 +7,17 @@ from lasergame.lib import conf
 from lasergame.lib.pgutils import write
 
 
-class MainMenu:
+class OptionsMenu:
     def __init__(self, *, game):
         self.game = game
         self.screen = game.screen
         self.bigscreen = game.bigscreen
         self.inputmanager = game.im
         self.items = [
-            SceneMenuItem(self.game, "start", "START GAME", scene = "gameloop"),
-            SceneMenuItem(self.game, "options", "OPTIONS", scene = "optionsmenu"),
-            QuitMenuItem(self.game, "quit", "QUIT TO DESKTOP")
+            SceneMenuItem(self.game, "back", "BACK TO MAIN MENU", scene = "mainmenu")
         ]
         self.menu = Menu(
-            self.screen, (conf.game.center[0], conf.game.center[1] + 25), self.items, cursorsettings = {
+            self.screen, conf.game.center, self.items, cursorsettings = {
                 "color": colors.WHITE.rgb,
                 "width": 8,
                 "height": 8,
@@ -44,7 +42,7 @@ class MainMenu:
         self.menu.update(im = self.inputmanager)
 
     def draw(self, **kwargs):
-        write(self.screen, (conf.game.center[0], conf.game.center[1] - 25), "LaserGame",
+        write(self.screen, (conf.game.center[0], conf.game.center[1] - 50), "LaserGame",
               antialias = False, font = "EndlessBossBattleRegular.ttf", size = 24, align = "center")
         self.menu.draw()
 
