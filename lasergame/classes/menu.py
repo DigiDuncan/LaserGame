@@ -4,6 +4,7 @@ from typing import Literal
 from digicolor import colors
 
 from lasergame.classes.gameobject import GameObject
+from lasergame.lib import conf
 from lasergame.lib.pgutils import draw_triangle, write
 
 
@@ -33,6 +34,27 @@ class QuitMenuItem(MenuItem):
     @property
     def function(self):
         return self.game.quit()
+
+
+class ValueMenuItem(MenuItem):
+    def __init__(self, game, name, text, value, default, step = 1):
+        self.value = value
+        self.default = default
+        self.step = step
+        self._current = self.default
+        super().__init__(game, name, text)
+
+    def increment(self):
+        self._current += self.step
+        setattr(conf.settings, self.value, self._current)
+
+    def decrement(self):
+        self._current -= self.step
+        setattr(conf.settings, self.value, self._current)
+
+    @property
+    def function(self):
+        pass
 
 
 class Menu(GameObject):
@@ -73,12 +95,21 @@ class Menu(GameObject):
         if im.DOWN.pressed:
             self.selected += 1
         self.selected = self.selected % len(self.items)
+        if isinstance(self.items[self.selected], ValueMenuItem):
+            if im.LEFT.pressed:
+                self.items[self.selected].decrement()
+            if im.RIGHT.pressed:
+                self.items[self.selected].increment()
         if im.START.pressed:
             self.items[self.selected].function
 
     def draw(self, **kwargs):
         for n, item in enumerate(self.items):
-            write(self.screen, (self.x, self.texttopY + (n * self.fontspacing)), item.text,
+            if isinstance(item, ValueMenuItem):
+                itemtext = f"{item.text}: {item._current}"
+            else:
+                itemtext = item.text
+            write(self.screen, (self.x, self.texttopY + (n * self.fontspacing)), itemtext,
                   color = self.fontcolor, align = self.fontalign, antialias = self.fontantialias,
                   font = self.fontfont, size = self.fontsize)
         draw_triangle(self.screen, self.cursorcolor,

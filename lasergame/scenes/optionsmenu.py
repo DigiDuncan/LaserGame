@@ -2,7 +2,7 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.classes.menu import Menu, SceneMenuItem, QuitMenuItem
+from lasergame.classes.menu import Menu, SceneMenuItem, ValueMenuItem
 from lasergame.lib import conf
 from lasergame.lib.pgutils import write
 
@@ -14,6 +14,7 @@ class OptionsMenu:
         self.bigscreen = game.bigscreen
         self.inputmanager = game.im
         self.items = [
+            ValueMenuItem(self.game, "framerate", "FRAMERATE", "framerate", 60),
             SceneMenuItem(self.game, "back", "BACK TO MAIN MENU", scene = "mainmenu")
         ]
         self.menu = Menu(
@@ -34,7 +35,7 @@ class OptionsMenu:
 
     def refresh(self):
         # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
-        pygame.transform.scale(self.screen, (conf.game.windowwidth, conf.game.windowheight), self.bigscreen)
+        pygame.transform.scale(self.screen, (conf.settings.windowwidth, conf.settings.windowheight), self.bigscreen)
         # Show debug screen.
         pygame.display.flip()
 
