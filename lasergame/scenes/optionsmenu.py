@@ -14,7 +14,9 @@ class OptionsMenu:
         self.bigscreen = game.bigscreen
         self.inputmanager = game.im
         self.items = [
-            IntValueMenuItem(self.game, "framerate", "FRAMERATE", "framerate", 60, textoverrides = {0: "UNLOCKED"}),
+            IntValueMenuItem(self.game, "framerate", "FRAMERATE", "framerate", 60, textoverrides = {0: "UNLOCKED", 69: "NICE"}),
+            # Scale does not change.
+            IntValueMenuItem(self.game, "scale", "SCALE", "scale", 4, minimum = 1, maximum = 5),
             SceneMenuItem(self.game, "back", "BACK TO MAIN MENU", scene = "mainmenu")
         ]
         self.menu = Menu(

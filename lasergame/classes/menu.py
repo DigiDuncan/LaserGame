@@ -6,6 +6,7 @@ from digicolor import colors
 from lasergame.classes.gameobject import GameObject
 from lasergame.lib import conf
 from lasergame.lib.pgutils import draw_triangle, write
+from lasergame.lib.utils import clamp
 
 
 class MenuItem:
@@ -50,18 +51,20 @@ class ValueMenuItem(MenuItem):
 
 
 class IntValueMenuItem(ValueMenuItem):
-    def __init__(self, game, name, text, value, default, step = 1, **kwargs):
+    def __init__(self, game, name, text, value, default, step = 1, minimum = 0, maximum = None, **kwargs):
         self.step = step
+        self.min = minimum
+        self.max = maximum
         super().__init__(game, name, text, value, default, **kwargs)
 
     def increment(self):
         self._current += self.step
-        self._current = max(0, self._current)
+        self._current = clamp(self.min, self._current, self.max)
         setattr(conf.settings, self.value, self._current)
 
     def decrement(self):
         self._current -= self.step
-        self._current = max(0, self._current)
+        self._current = clamp(self.min, self._current, self.max)
         setattr(conf.settings, self.value, self._current)
 
     @property
