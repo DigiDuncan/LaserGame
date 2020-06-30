@@ -2,7 +2,7 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.classes.menu import Menu, SceneMenuItem, IntValueMenuItem
+from lasergame.classes.menu import Menu, SceneMenuItem, IntValueMenuItem, BoolValueMenuItem
 from lasergame.lib import conf
 from lasergame.lib.pgutils import write
 
@@ -17,6 +17,8 @@ class OptionsMenu:
             IntValueMenuItem(self.game, "framerate", "FRAMERATE", "framerate", 60, textoverrides = {0: "UNLOCKED", 69: "NICE"}),
             # Scale does not change.
             IntValueMenuItem(self.game, "scale", "SCALE", "scale", 4, minimum = 1, maximum = 5),
+            # Nor does debug.
+            BoolValueMenuItem(self.game, "debug", "DEBUG", "debug", True),
             SceneMenuItem(self.game, "back", "BACK TO MAIN MENU", scene = "mainmenu")
         ]
         self.menu = Menu(

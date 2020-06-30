@@ -16,11 +16,6 @@ class MenuItem:
         self.text = text
 
     @property
-    def function(self):
-        if self.functiontype == "quit":
-            return self.game.quit()
-
-    @property
     def displaytext(self):
         return self.text
 
@@ -49,6 +44,37 @@ class ValueMenuItem(MenuItem):
         self.textoverrides = textoverrides
         super().__init__(game, name, text)
 
+    def increment(self):
+        setattr(conf.settings, self.value, self._current)
+
+    def decrement(self):
+        setattr(conf.settings, self.value, self._current)
+
+    @property
+    def function(self):
+        pass
+
+
+class BoolValueMenuItem(ValueMenuItem):
+    def toggle(self):
+        self._current = not self._current
+
+    def increment(self):
+        self.toggle()
+        super().increment()
+
+    def decrement(self):
+        self.toggle()
+        super().increment()
+
+    @property
+    def displaytext(self):
+        if self._current in self.textoverrides:
+            currenttext = self.textoverrides[self._current]
+        else:
+            currenttext = self._current
+        return f"< {self.text}: {currenttext} >"
+
 
 class IntValueMenuItem(ValueMenuItem):
     def __init__(self, game, name, text, value, default, step = 1, minimum = 0, maximum = None, **kwargs):
@@ -60,12 +86,12 @@ class IntValueMenuItem(ValueMenuItem):
     def increment(self):
         self._current += self.step
         self._current = clamp(self.min, self._current, self.max)
-        setattr(conf.settings, self.value, self._current)
+        super().increment()
 
     def decrement(self):
         self._current -= self.step
         self._current = clamp(self.min, self._current, self.max)
-        setattr(conf.settings, self.value, self._current)
+        super().increment()
 
     @property
     def displaytext(self):
@@ -74,10 +100,6 @@ class IntValueMenuItem(ValueMenuItem):
         else:
             currenttext = self._current
         return f"< {self.text}: {currenttext} >"
-
-    @property
-    def function(self):
-        pass
 
 
 class Menu(GameObject):
