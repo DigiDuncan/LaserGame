@@ -128,7 +128,7 @@ class Menu(GameObject):
 
     @property
     def fontspacing(self):
-        return self.fontsize * 2
+        return self.fontsize / 2 + 1
 
     @property
     def texttopY(self):

@@ -32,8 +32,8 @@ class OptionsMenu:
                 "color": colors.WHITE.rgb,
                 "align": "center",
                 "antialias": False,
-                "font": "OldSchoolAdventures.ttf",
-                "size": 9
+                "font": "SinsGold.ttf",
+                "size": 24
             }
         )
 
