@@ -8,7 +8,8 @@ from lasergame.lib import fonts
 
 
 def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left",
-          valign: Literal["top", "center", "bottom"] = "top", antialias: bool = True, font=None, size=None, background=None):
+          valign: Literal["top", "center", "bottom"] = "top", antialias: bool = True, font=None, size=None, background=None,
+          blit = True):
     textsurface = fonts.render(text, antialias=antialias, color=color, font=font, size=size, background=background)
     if coords[0] < 0:
         coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
@@ -22,7 +23,9 @@ def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left"
         coords = (coords[0], coords[1] - (textsurface.get_height() / 2))
     if valign == "bottom":
         coords = (coords[0], coords[1] - textsurface.get_height())
-    screen.blit(textsurface, coords)
+    if blit:
+        screen.blit(textsurface, coords)
+    return {"surface": textsurface, "coords": coords}
 
 
 def draw_box(screen, center: tuple, width: int, height: int, *, color = colors.WHITE.rgb, thickness: int = 0):
