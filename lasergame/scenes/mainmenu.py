@@ -55,13 +55,13 @@ class MainMenu:
         self.splash = write(self.screen, (conf.game.center[0], conf.game.center[1] - 25), self.splashtext,
                             antialias = False, font = "SinsGold.ttf", size = 16, align = "center",
                             color = colors.LIGHT_CYAN.rgb, blit = False)
-        self.splash["surface"] = pygame.transform.rotate(self.splash["surface"], self.splashrot)
+        self.splash.surface = pygame.transform.rotate(self.splash.surface, self.splashrot)
 
     def draw(self, **kwargs):
         write(self.screen, (conf.game.center[0], conf.game.center[1] - 50), "LaserGame",
               antialias = False, font = "EndlessBossBattleRegular.ttf", size = 24, align = "center")
         self.menu.draw()
-        self.screen.blit(self.splash["surface"], self.splash["coords"])
+        self.screen.blit(self.splash.surface, self.splash.coords)
 
 
 pygame.quit()
