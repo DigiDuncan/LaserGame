@@ -1,3 +1,4 @@
+import importlib.resources as pkg_resources
 import math
 import random
 
@@ -5,21 +6,13 @@ import pygame
 
 from digicolor import colors
 
+import lasergame.data
 from lasergame.classes.menu import Menu, SceneMenuItem, QuitMenuItem
 from lasergame.lib import conf, nygame
 from lasergame.lib.pgutils import write
 
-splashtexts = [
-    "Splash text!",
-    "Destroy them with lasers!",
-    "Straight out of 1990!",
-    "No Digi prefix!",
-    "Super Nintendo, Sega Genesis!",
-    "Natalie helped!",
-    "Not on Switch (yet!)",
-    "Not on Steam (yet!)",
-    "Always aliased!"
-]
+
+splashtexts = pkg_resources.read_text(lasergame.data, "splashes.txt").splitlines()
 
 
 class MainMenu:
