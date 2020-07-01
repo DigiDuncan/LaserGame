@@ -76,6 +76,8 @@ class Game():
         pygame.display.flip()
 
     def switch_scene(self, name):
+        # Sometimes the scenes don't get initialized quick enough.
+        # Make sure we have scenes to switch to, and just return if we don't.
         if self.scenes is None or self.scenes == {}:
             return
         self.active = self.scenes[name]
@@ -91,6 +93,7 @@ class Game():
 
 
 def main():
+    # Make a Game object and run it.
     g = Game()
     g.run()
 

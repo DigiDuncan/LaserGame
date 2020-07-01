@@ -36,6 +36,7 @@ class GameLoop():
         self.gm.add(FrameGraph())
 
     def update(self, events):
+        # Pause
         if self.gm.input.START.pressed:
             self.game.pause()
             return

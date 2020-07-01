@@ -16,6 +16,7 @@ def _check_methods(C, *methods):
 
 
 class Updateable(metaclass=ABCMeta):
+    # A class is Updateable if it has an update() method.
     __slots__ = ()
 
     @abstractmethod
@@ -30,6 +31,7 @@ class Updateable(metaclass=ABCMeta):
 
 
 class Drawable(metaclass=ABCMeta):
+    # A class is Updateable if it has a draw() method.
     __slots__ = ()
 
     @abstractmethod
@@ -44,6 +46,7 @@ class Drawable(metaclass=ABCMeta):
 
 
 class Collidable(metaclass=ABCMeta):
+    # A class is Updateable if it has a collision_box attribute.
     __slots__ = ()
 
     @property

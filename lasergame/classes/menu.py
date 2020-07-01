@@ -54,6 +54,14 @@ class ValueMenuItem(MenuItem):
     def function(self):
         pass
 
+    @property
+    def displaytext(self):
+        if self._current in self.textoverrides:
+            currenttext = self.textoverrides[self._current]
+        else:
+            currenttext = self._current
+        return f"< {self.text}: {currenttext} >"
+
 
 class BoolValueMenuItem(ValueMenuItem):
     def toggle(self):
@@ -66,14 +74,6 @@ class BoolValueMenuItem(ValueMenuItem):
     def decrement(self):
         self.toggle()
         super().increment()
-
-    @property
-    def displaytext(self):
-        if self._current in self.textoverrides:
-            currenttext = self.textoverrides[self._current]
-        else:
-            currenttext = self._current
-        return f"< {self.text}: {currenttext} >"
 
 
 class IntValueMenuItem(ValueMenuItem):
@@ -92,14 +92,6 @@ class IntValueMenuItem(ValueMenuItem):
         self._current -= self.step
         self._current = clamp(self.min, self._current, self.max)
         super().increment()
-
-    @property
-    def displaytext(self):
-        if self._current in self.textoverrides:
-            currenttext = self.textoverrides[self._current]
-        else:
-            currenttext = self._current
-        return f"< {self.text}: {currenttext} >"
 
 
 class Menu(GameObject):
@@ -128,6 +120,9 @@ class Menu(GameObject):
 
     @property
     def fontspacing(self):
+        # TODO: Make this dynamic.
+        # This is just a value I tweaked until it looked ok.
+        # It doesn't work for every font.
         return self.fontsize / 2 + 1
 
     @property
@@ -135,11 +130,14 @@ class Menu(GameObject):
         return self.safey - (self.fontspacing * len(self.items) / 2)
 
     def update(self, *, im, **kwargs):
+        # Scroll up and down the menu.
         if im.UP.pressed:
             self.selected -= 1
         if im.DOWN.pressed:
             self.selected += 1
+        # Wrap the cursor around.
         self.selected = self.selected % len(self.items)
+        # If we're selected on a ValueMenuItem, left and right decrement and increment its value.
         if isinstance(self.items[self.selected], ValueMenuItem):
             if im.LEFT.pressed:
                 self.items[self.selected].decrement()
@@ -149,10 +147,12 @@ class Menu(GameObject):
             self.items[self.selected].function
 
     def draw(self, **kwargs):
+        # Write each menu option in order.
         for n, item in enumerate(self.items):
             write(self.screen, (self.x, self.texttopY + (n * self.fontspacing)), item.displaytext,
                   color = self.fontcolor, align = self.fontalign, antialias = self.fontantialias,
                   font = self.fontfont, size = self.fontsize)
+        # Draw the cursor.
         draw_triangle(self.screen, self.cursorcolor,
                       (self.x - self.selector_x_offset, self.texttopY + (self.selected * self.fontspacing) + round(self.fontsize / 2) + 1),
                       self.cursorwidth, self.cursorheight, self.cursordirection)

@@ -1,3 +1,6 @@
+# AttrDict by nfearnley.
+
+
 class ReservedAttributeError(AttributeError):
     def __init__(self, obj, key):
         super().__init__(f"{key!r} is a reserved attribute for {obj.__class__.__name__!r}")
