@@ -18,3 +18,4 @@
     - Show/Hide collisions
 - Use ConfigDicts.
 - Switch to lru_cache.
+- See if event emission is faster for collidables.
