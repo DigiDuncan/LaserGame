@@ -16,3 +16,5 @@
     - Show/Hide hit-boxes
     - Show/Hide UUIDs
     - Show/Hide collisions
+- Use ConfigDicts.
+- Switch to lru_cache.
