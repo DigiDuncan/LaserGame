@@ -1,10 +1,8 @@
 def clamp(minVal, val, maxVal):
-    if minVal is None and maxVal is None:
-        return val
     if minVal is None:
-        return max(val, maxVal)
+        minVal = float("-inf")
     if maxVal is None:
-        return min(minVal, val)
+        maxVal = float("inf")
     return max(minVal, min(maxVal, val))
 
 
