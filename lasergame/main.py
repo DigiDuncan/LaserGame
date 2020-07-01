@@ -23,7 +23,7 @@ class Game():
         # Create the screen.
         self.screen = pygame.Surface((constants.game.width, constants.game.height))
         self.bigscreen = pygame.display.set_mode([conf.settings.windowwidth, conf.settings.windowheight])
-        self.debugscreen = pygame.Surface((conf.settings.windowwidth, conf.settings.windowheight), flags=pygame.SRCALPHA)
+        self.debugscreen = pygame.Surface(self.bigscreen.get_size(), flags=pygame.SRCALPHA)
 
     def run(self):
         pygame.init()
@@ -69,7 +69,7 @@ class Game():
 
     def refresh(self, screen, bigscreen, debugscreen):
         # Pixel-scale the screen to the bigscreen.
-        pygame.transform.scale(screen, (conf.settings.windowwidth, conf.settings.windowheight), bigscreen)
+        pygame.transform.scale(screen, bigscreen.get_size(), bigscreen)
         # Show debug screen.
         bigscreen.blit(debugscreen, (0, 0))
         # Flip [refresh?] the display.

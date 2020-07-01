@@ -48,4 +48,4 @@ class FrameGraph(GameObject):
             self.surface.set_at((99, i), (0, 0, 0, 0))
         self.surface.set_at((99, (60 - self._fps)), self.color)
 
-        debugscreen.blit(self.surface, (settings.windowwidth - self.surface.get_width(), 0))
+        debugscreen.blit(self.surface, (debugscreen.get_width() - self.surface.get_width(), 0))

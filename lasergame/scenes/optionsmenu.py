@@ -39,7 +39,7 @@ class OptionsMenu:
 
     def refresh(self):
         # Pixel-scale the screen to the bigscreen and flip [refresh?] the display
-        pygame.transform.scale(self.screen, (conf.settings.windowwidth, conf.settings.windowheight), self.bigscreen)
+        pygame.transform.scale(self.screen, self.bigscreen.get_size(), self.bigscreen)
         # Show debug screen.
         pygame.display.flip()
 
