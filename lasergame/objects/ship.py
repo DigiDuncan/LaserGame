@@ -7,7 +7,7 @@ from lasergame.lib.constants import game
 from lasergame.lib.nygame import time
 from lasergame.lib.pgutils import draw_triangle
 from lasergame.lib.utils import clamp
-from lasergame.objects.bullet import Bullet
+from lasergame.objects.projectiles.bullet import Bullet
 from lasergame.objects.star import Star
 
 weapontypes = ["red", "orange", "yellow", "green", "blue", "purple"]

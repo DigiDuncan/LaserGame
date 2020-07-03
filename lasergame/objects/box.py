@@ -4,7 +4,7 @@ from digicolor import colors
 
 from lasergame.classes.collidablegameobject import CollidableGameObject
 from lasergame.lib.pgutils import write, draw_box
-from lasergame.objects.bullet import Bullet
+from lasergame.objects.projectiles.bullet import Bullet
 
 
 class Box(CollidableGameObject):

@@ -5,7 +5,7 @@ from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.collisionmanager import CollisionManager
 from lasergame.lib.state import State
 from lasergame.lib.utils import default_itemgetter
-from lasergame.objects.bullet import Bullet
+from lasergame.objects.projectiles.bullet import Bullet
 
 
 class GameManager:

@@ -2,7 +2,7 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.classes.collidablegameobject import CollidableGameObject
+from lasergame.classes.projectile import Projectile
 
 bulletcolors = {
     "red":    colors.RED.rgb,
@@ -14,13 +14,12 @@ bulletcolors = {
 }
 
 
-class Bullet(CollidableGameObject):
+class Bullet(Projectile):
     __slots__ = ["speed", "bullettype", "radius"]
 
-    def __init__(self, center: tuple, *, speed = 180, bullettype = "red", radius = 2):
+    def __init__(self, center: tuple, *, speed = 180, bullettype = "red"):
         self.speed = speed
         self.bullettype = bullettype
-        self.radius = radius
         super().__init__(center=center)
 
     @property
@@ -34,7 +33,7 @@ class Bullet(CollidableGameObject):
         self.x += self.speed * clock.get_time_secs()
         if not self.is_on_screen(screen):
             gm.discard(self)
-        super().update(gm=gm)
+        super().update(gm=gm, clock=clock, screen=screen)
 
     def is_on_screen(self, screen):
         return self.x + self.radius > 0 \
