@@ -41,7 +41,7 @@ class Box(CollidableGameObject):
         collisions = gm.collisions[self]
         for other in collisions:
             if isinstance(other, Bullet):
-                self._hits += 1
+                self._hits += other.damage
                 gm.discard(other)
         super().update(gm=gm)
 

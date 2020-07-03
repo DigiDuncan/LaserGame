@@ -4,13 +4,31 @@ from digicolor import colors
 
 from lasergame.classes.projectile import Projectile
 
-bulletcolors = {
-    "red":    colors.RED.rgb,
-    "orange": colors.DARK_ORANGE.rgb,
-    "yellow": colors.YELLOW.rgb,
-    "green":  colors.LIGHT_GREEN.rgb,
-    "blue":   colors.BLUE.rgb,
-    "purple": colors.LIGHT_MAGENTA.rgb
+bullettypes = {
+    "red": {
+        "color": colors.RED.rgb,
+        "damage": 1
+    },
+    "orange": {
+        "color": colors.DARK_ORANGE.rgb,
+        "damage": 2
+    },
+    "yellow": {
+        "color": colors.YELLOW.rgb,
+        "damage": 3
+    },
+    "green": {
+        "color": colors.LIGHT_GREEN.rgb,
+        "damage": 4
+    },
+    "blue": {
+        "color": colors.BLUE.rgb,
+        "damage": 5
+    },
+    "purple": {
+        "color": colors.LIGHT_MAGENTA.rgb,
+        "damage": 10
+    }
 }
 
 
@@ -25,9 +43,16 @@ class Bullet(Projectile):
     @property
     def color(self):
         if self.bullettype:
-            return bulletcolors[self.bullettype]
+            return bullettypes[self.bullettype]["color"]
         else:
-            return bulletcolors["red"]
+            return bullettypes["red"]["color"]
+
+    @property
+    def damage(self):
+        if self.bullettype:
+            return bullettypes[self.bullettype]["damage"]
+        else:
+            return bullettypes["red"]["damage"]
 
     def update(self, clock, screen, gm, **kwargs):
         self.x += self.speed * clock.get_time_secs()

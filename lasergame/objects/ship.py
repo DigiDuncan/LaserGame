@@ -7,19 +7,9 @@ from lasergame.lib.constants import game
 from lasergame.lib.nygame import time
 from lasergame.lib.pgutils import draw_triangle
 from lasergame.lib.utils import clamp
-from lasergame.objects.projectiles.bullet import Bullet
+from lasergame.objects.projectiles.bullet import Bullet, bullettypes
+
 from lasergame.objects.star import Star
-
-weapontypes = ["red", "orange", "yellow", "green", "blue", "purple"]
-
-bulletcolors = {
-    "red":    colors.RED.rgb,
-    "orange": colors.DARK_ORANGE.rgb,
-    "yellow": colors.YELLOW.rgb,
-    "green":  colors.LIGHT_GREEN.rgb,
-    "blue":   colors.BLUE.rgb,
-    "purple": colors.LIGHT_MAGENTA.rgb
-}
 
 
 class Ship(CollidableGameObject):
@@ -58,7 +48,7 @@ class Ship(CollidableGameObject):
 
     @property
     def weaponselect(self):
-        return weapontypes[self._weaponselectindex % len(weapontypes)]
+        return list(bullettypes.keys())[self._weaponselectindex % len(bullettypes.keys())]
 
     def rotate_right(self):
         self.direction = (self.direction + 1) % 4
@@ -111,6 +101,6 @@ class Ship(CollidableGameObject):
 
     def draw(self, screen, debugscreen, **kwargs):
         collision_box = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
-        pygame.draw.circle(screen, bulletcolors[self.weaponselect], self.safecenter, 2)
+        pygame.draw.circle(screen, bullettypes[self.weaponselect]["color"], self.safecenter, 2)
         self.draw_uuid(debugscreen, self.width * 3 + 4)
         return collision_box
