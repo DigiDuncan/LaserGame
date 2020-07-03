@@ -7,38 +7,43 @@ from lasergame.classes.projectile import Projectile
 bullettypes = {
     "red": {
         "color": colors.RED.rgb,
-        "damage": 1
+        "damage": 1,
+        "radius": 2
     },
     "orange": {
         "color": colors.DARK_ORANGE.rgb,
-        "damage": 2
+        "damage": 2,
+        "radius": 2
     },
     "yellow": {
         "color": colors.YELLOW.rgb,
-        "damage": 3
+        "damage": 3,
+        "radius": 2
     },
     "green": {
         "color": colors.LIGHT_GREEN.rgb,
-        "damage": 4
+        "damage": 4,
+        "radius": 2
     },
     "blue": {
         "color": colors.BLUE.rgb,
-        "damage": 5
+        "damage": 5,
+        "radius": 3
     },
     "purple": {
         "color": colors.LIGHT_MAGENTA.rgb,
-        "damage": 10
+        "damage": 10,
+        "radius": 4
     }
 }
 
 
 class Bullet(Projectile):
-    __slots__ = ["speed", "bullettype", "radius"]
+    __slots__ = ["speed", "bullettype", "speed"]
 
-    def __init__(self, center: tuple, *, speed = 180, bullettype = "red"):
-        self.speed = speed
+    def __init__(self, center: tuple, *, owner, speed = 180, bullettype = "red", **kwargs):
         self.bullettype = bullettype
-        super().__init__(center=center)
+        super().__init__(center = center, owner = owner, **kwargs)
 
     @property
     def color(self):
@@ -53,6 +58,13 @@ class Bullet(Projectile):
             return bullettypes[self.bullettype]["damage"]
         else:
             return bullettypes["red"]["damage"]
+
+    @property
+    def radius(self):
+        if self.bullettype:
+            return bullettypes[self.bullettype]["radius"]
+        else:
+            return bullettypes["red"]["radius"]
 
     def update(self, clock, screen, gm, **kwargs):
         self.x += self.speed * clock.get_time_secs()

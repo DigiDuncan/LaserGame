@@ -3,17 +3,21 @@ import pygame
 from lasergame.classes.collidablegameobject import CollidableGameObject
 
 
-# TODO: Not done, still needs to be stripped.
 class Projectile(CollidableGameObject):
     __slots__ = []
 
-    def __init__(self, center: tuple, *, speed = 180, radius = 2):
-        self.radius = radius
+    def __init__(self, center: tuple, *, owner, speed = 180):
+        self.owner = owner
+        self.speed = speed
         super().__init__(center=center)
 
     @property
     def color(self):
-        pass
+        raise NotImplementedError
+
+    @property
+    def damage(self):
+        raise NotImplementedError
 
     def update(self, clock, screen, gm, **kwargs):
         if not self.is_on_screen(screen):
