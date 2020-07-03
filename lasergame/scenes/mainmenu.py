@@ -8,7 +8,7 @@ from digicolor import colors
 
 import lasergame.data
 from lasergame.classes.menu import Menu, SceneMenuItem, QuitMenuItem
-from lasergame.lib import conf, nygame
+from lasergame.lib import conf, images, nygame
 from lasergame.lib.pgutils import write
 
 
@@ -45,10 +45,18 @@ class MainMenu:
                             antialias = False, font = "SinsGold.ttf", size = 16, align = "center",
                             color = colors.LIGHT_CYAN.rgb, blit = False)
         self.splashtext = random.choice(splashtexts).upper()
+        self.logo = images.get("digisoft-small")
 
     @property
     def splashrot(self):
         return (1.5 * math.sin(5 * nygame.time.get_ticks_sec())) * 2.5
+
+    @property
+    def logocoords(self):
+        return (
+            int((self.screen.get_width() / 2) - (self.logo.get_width() / 2)),
+            int(self.screen.get_height() - self.logo.get_height())
+        )
 
     def update(self, **kwargs):
         self.menu.update(im = self.inputmanager)
@@ -62,6 +70,7 @@ class MainMenu:
               antialias = False, font = "EndlessBossBattleRegular.ttf", size = 24, align = "center")
         self.menu.draw()
         self.screen.blit(self.splash.surface, self.splash.coords)
+        self.screen.blit(self.logo, self.logocoords)
 
 
 pygame.quit()
