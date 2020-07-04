@@ -5,7 +5,7 @@ from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.collisionmanager import CollisionManager
 from lasergame.lib.state import State
 from lasergame.lib.utils import default_itemgetter
-from lasergame.objects.projectiles.bullet import Bullet
+from lasergame.classes.projectile import Projectile
 
 
 class GameManager:
@@ -37,9 +37,9 @@ class GameManager:
             self._drawables.add(obj)
         if isinstance(obj, Updateable):
             self._updateables.add(obj)
-        if isinstance(obj, Collidable) and not isinstance(obj, Bullet):
+        if isinstance(obj, Collidable) and not isinstance(obj, Projectile):
             self._collidables.add(obj)
-        if isinstance(obj, Collidable) and isinstance(obj, Bullet):
+        if isinstance(obj, Collidable) and isinstance(obj, Projectile):
             self._projectiles.add(obj)
         self.__len__.cache_clear()
 
