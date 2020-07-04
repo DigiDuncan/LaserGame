@@ -52,5 +52,5 @@ class Projectile(CollidableGameObject):
         return pygame.Rect(self.left, self.top, self.right - self.left, self.bottom - self.top)
 
     def draw(self, screen, debugscreen, **kwargs):
-        self.draw_uuid(debugscreen, self.uuid_offset)
+        super().draw(debugscreen = debugscreen)
         return self.collision_box

@@ -22,3 +22,4 @@
   - left, top, right, and bottom property
   - topleft, topright, bottomleft, and bottomright property
   - setters for those
+  - safe (int) versions of those

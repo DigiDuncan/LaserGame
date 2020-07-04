@@ -106,5 +106,5 @@ class Ship(CollidableGameObject):
     def draw(self, screen, debugscreen, **kwargs):
         collision_box = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
         pygame.draw.circle(screen, bullettypes[self.weaponselect]["color"], self.safecenter, 2)
-        self.draw_uuid(debugscreen, self.uuid_offset)
+        super().draw(debugscreen = debugscreen)
         return collision_box
