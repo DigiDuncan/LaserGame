@@ -48,8 +48,10 @@ class GameLoop():
         self.gm.draw(screen = self.screen, debugscreen = self.debugscreen)
         # Create debug information.
         if self.gm.state.debug:
-            write(self.debugscreen, (-8, 8 + 61), f"{self.clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
-            write(self.debugscreen, (-8, 24 + 61), f"{len(self.gm)} objects", color=colors.LIGHT_GREEN.rgb)
+            FRAMEGRAPH_HEIGHT = 61
+            write(self.debugscreen, (-8, 8 + FRAMEGRAPH_HEIGHT), f"{self.clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
+            write(self.debugscreen, (-8, 24 + FRAMEGRAPH_HEIGHT), f"{len(self.gm)} objects", color=colors.LIGHT_GREEN.rgb)
+            write(self.debugscreen, (-8, 40 + FRAMEGRAPH_HEIGHT), f"{len(self.gm.collisions)} collisions", color=colors.LIGHT_GREEN.rgb)
 
 
 pygame.quit()

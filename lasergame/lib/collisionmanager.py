@@ -22,6 +22,12 @@ class CollisionManager():
         """Convenient way to pull up collisions for a particular object"""
         return self.collisions[obj]
 
+    def __len__(self):
+        lengths = [len(v) for v in self.collisions.values()]
+        sums = sum(lengths)
+        halfsums = sums / 2
+        return int(halfsums)
+
     def update(self, collidables, projectiles):
         """Calculate collisions for every object with a `.collision_box` attribute for this frame"""
         # Clear cached collisions
