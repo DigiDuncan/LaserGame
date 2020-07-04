@@ -30,8 +30,8 @@ def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left"
 
 
 def draw_box(screen, center: tuple, width: int, height: int, *, color = colors.WHITE.rgb, thickness: int = 0):
-    left = center[0] - (width / 2)
-    top = center[1] - (height / 2)
+    left = center[0] - int(width / 2)
+    top = center[1] - int(height / 2)
     rect = pygame.Rect(left, top, width, height)
     return pygame.draw.rect(screen, color, rect, thickness)
 
@@ -66,3 +66,10 @@ def draw_triangle(screen, color, center, width, height, direction="right"):
     uvw = (u, v, w)
     collision_box = pygame.draw.polygon(screen, color, uvw)
     return collision_box
+
+
+def scale_rect(rect, factor):
+    newrect = rect.inflate(rect.width * (factor - 1), rect.height * (factor - 1))
+    newrect.x = rect.x * factor
+    newrect.y = rect.y * factor
+    return newrect
