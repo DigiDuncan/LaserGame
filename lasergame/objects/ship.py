@@ -7,7 +7,6 @@ from lasergame.lib.constants import game
 from lasergame.lib.nygame import time
 from lasergame.lib.pgutils import draw_triangle, play_sound
 from lasergame.lib.utils import clamp
-from lasergame.lib import sounds
 from lasergame.objects.projectiles.bullet import Bullet, bullettypes
 
 from lasergame.objects.star import Star
