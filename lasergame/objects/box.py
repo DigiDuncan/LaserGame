@@ -37,6 +37,10 @@ class Box(CollidableGameObject):
     def collision_box(self):
         return pygame.Rect(self.left, self.top, self.width, self.height)
 
+    @property
+    def uuid_offset(self):
+        return (self.height / 2) + 3
+
     def update(self, gm, **kwargs):
         collisions = gm.collisions[self]
         for other in collisions:
@@ -48,5 +52,5 @@ class Box(CollidableGameObject):
     def draw(self, screen, debugscreen, **kwargs):
         draw_box(screen, self.center, self.width, self.height, color = self.color)
         write(screen, (self.x, self.y - 8), str(self._hits), align = "center")
-        self.draw_uuid(debugscreen, self.height * 3 + 8)
+        self.draw_uuid(debugscreen, self.uuid_offset)
         return self.collision_box

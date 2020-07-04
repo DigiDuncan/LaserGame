@@ -76,6 +76,10 @@ class Ship(CollidableGameObject):
     def collision_box(self):
         return pygame.Rect(self.left, self.top, self.width, self.height)
 
+    @property
+    def uuid_offset(self):
+        return (self.width / 2) + 2
+
     def update(self, clock, gm, **kwargs):
         if gm.input.UP.held:
             self.y -= self.speed * clock.get_time_secs()
@@ -102,5 +106,5 @@ class Ship(CollidableGameObject):
     def draw(self, screen, debugscreen, **kwargs):
         collision_box = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
         pygame.draw.circle(screen, bullettypes[self.weaponselect]["color"], self.safecenter, 2)
-        self.draw_uuid(debugscreen, self.width * 3 + 4)
+        self.draw_uuid(debugscreen, self.uuid_offset)
         return collision_box

@@ -39,7 +39,7 @@ bullettypes = {
 
 
 class Bullet(Projectile):
-    __slots__ = ["speed", "bullettype", "speed"]
+    __slots__ = ["bullettype"]
 
     def __init__(self, center: tuple, *, owner, speed = 180, bullettype = "red", **kwargs):
         self.bullettype = bullettype
@@ -65,6 +65,10 @@ class Bullet(Projectile):
             return bullettypes[self.bullettype]["radius"]
         else:
             return bullettypes["red"]["radius"]
+
+    @property
+    def uuid_offset(self):
+        return self.radius + 3
 
     def update(self, clock, screen, gm, **kwargs):
         self.x += self.speed * clock.get_time_secs()
@@ -94,11 +98,6 @@ class Bullet(Projectile):
     def bottom(self):
         return self.top + self.radius * 2
 
-    @property
-    def collision_box(self):
-        return pygame.Rect(self.left, self.top, self.radius * 2, self.radius * 2)
-
     def draw(self, screen, debugscreen, **kwargs):
         pygame.draw.circle(screen, self.color, self.safecenter, self.radius)
-        self.draw_uuid(debugscreen, self.radius * 3 + 8)
-        return self.collision_box
+        super().draw(screen = screen, debugscreen = debugscreen)
