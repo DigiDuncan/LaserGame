@@ -45,7 +45,7 @@ class GameObject:
 
     def draw_uuid(self, screen, yoffset = 0):
         if self.showuuid:
-            write(screen, (self.center[0] * settings.scale, self.center[1] * settings.scale - yoffset), (str(self.uuid)[:8] + "..."), align = "center", color = colors.CYAN.rgb, antialias = False)
+            write(screen, (self.center[0] * settings.scale, (self.center[1] - yoffset) * settings.scale), (str(self.uuid)[:8] + "..."), align = "center", valign = "bottom", color = colors.CYAN.rgb, antialias = False)
 
     def __hash__(self):
         return hash(self.uuid)

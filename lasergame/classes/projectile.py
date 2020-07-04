@@ -4,7 +4,7 @@ from lasergame.classes.collidablegameobject import CollidableGameObject
 
 
 class Projectile(CollidableGameObject):
-    __slots__ = []
+    __slots__ = ["owner", "speed"]
 
     def __init__(self, center: tuple, *, owner, speed = 180):
         self.owner = owner
@@ -17,6 +17,10 @@ class Projectile(CollidableGameObject):
 
     @property
     def damage(self):
+        raise NotImplementedError
+
+    @property
+    def uuid_offset(self):
         raise NotImplementedError
 
     def update(self, clock, screen, gm, **kwargs):
@@ -45,8 +49,8 @@ class Projectile(CollidableGameObject):
 
     @property
     def collision_box(self):
-        return pygame.Rect(self.left, self.top, self.radius * 2, self.radius * 2)
+        return pygame.Rect(self.left, self.top, self.right - self.left, self.bottom - self.top)
 
     def draw(self, screen, debugscreen, **kwargs):
-        self.draw_uuid(debugscreen, self.radius * 3 + 8)
+        super().draw(debugscreen = debugscreen)
         return self.collision_box

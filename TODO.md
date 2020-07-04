@@ -6,7 +6,7 @@
 - Clean up menu abstraction.
   - XML?
 - Begin enemies.
-- Move weapon colors to constants.
+- Move weapon colors to constants. [kinda done]
 - Add current collisions to debug screen.
 - Add hit-boxes to debug screen.
 - Move tests to their own folder.
@@ -17,5 +17,9 @@
     - Show/Hide UUIDs
     - Show/Hide collisions
 - Use ConfigDicts.
-- Switch to lru_cache.
-- See if event emission is faster for collidables.
+- Rework the object heirarchy so that each object that's rectangley has a...
+  - x, y, center attribute
+  - left, top, right, and bottom property
+  - topleft, topright, bottomleft, and bottomright property
+  - setters for those
+  - safe (int) versions of those
