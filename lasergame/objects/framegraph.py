@@ -1,7 +1,6 @@
 import pygame
 
 from lasergame.classes.gameobject import GameObject
-from lasergame.lib.conf import settings
 from lasergame.lib.utils import clamp
 
 
@@ -41,11 +40,9 @@ class FrameGraph(GameObject):
     def draw(self, debugscreen, **kwargs):
         if not self.show:
             return
-        if not self.color:
-            return
         self.surface.scroll(dx=-1)
         for i in range(61):
             self.surface.set_at((99, i), (0, 0, 0, 0))
         self.surface.set_at((99, (60 - self._fps)), self.color)
 
-        debugscreen.blit(self.surface, (debugscreen.get_width() - self.surface.get_width(), 0))
+        debugscreen.blit(self.surface, (debugscreen.get_width() - self.surface.get_width(), 3))
