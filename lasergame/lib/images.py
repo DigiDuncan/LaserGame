@@ -1,3 +1,4 @@
+from functools import lru_cache
 import importlib
 
 import pygame
@@ -6,7 +7,6 @@ from digicolor import colors
 
 image_root = "lasergame.data.images"
 image_ext = "png"
-image_cache = {}
 
 
 class ImageNotFoundError(Exception):
@@ -23,6 +23,7 @@ def parse_path(path):
     return module_path, filename
 
 
+@lru_cache(maxsize=None)
 def get(name):
     """Load a named image
 
@@ -30,18 +31,15 @@ def get(name):
 
     image = images.get("buttons.up")
     """
-    image = image_cache.get(name)
-    if image is None:
-        module_path, filename = parse_path(name)
-        try:
-            image_module = importlib.import_module(module_path)
-        except ModuleNotFoundError:
-            raise ImageNotFoundError(name)
-        try:
-            image_file = importlib.resources.open_binary(image_module, filename)
-        except FileNotFoundError:
-            raise ImageNotFoundError(name)
-        image = pygame.image.load(image_file)
-        image.set_colorkey(colors.LIGHT_MAGENTA.rgb)
-        image_cache[name] = image
+    module_path, filename = parse_path(name)
+    try:
+        image_module = importlib.import_module(module_path)
+    except ModuleNotFoundError:
+        raise ImageNotFoundError(name)
+    try:
+        image_file = importlib.resources.open_binary(image_module, filename)
+    except FileNotFoundError:
+        raise ImageNotFoundError(name)
+    image = pygame.image.load(image_file)
+    image.set_colorkey(colors.LIGHT_MAGENTA.rgb)
     return image
