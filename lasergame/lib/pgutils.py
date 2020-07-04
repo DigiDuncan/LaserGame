@@ -4,7 +4,7 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.lib import fonts
+from lasergame.lib import fonts, sounds
 from lasergame.lib.attrdict import AttrDict
 
 
@@ -73,3 +73,9 @@ def scale_rect(rect, factor):
     newrect.x = rect.x * factor
     newrect.y = rect.y * factor
     return newrect
+
+
+def play_sound(sound: str, channel = 0):
+    ch = pygame.mixer.Channel(channel)
+    snd = sounds.get(sound)
+    ch.play(snd)

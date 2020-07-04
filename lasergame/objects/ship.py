@@ -5,7 +5,7 @@ from digicolor import colors
 from lasergame.classes.collidablegameobject import CollidableGameObject
 from lasergame.lib.constants import game
 from lasergame.lib.nygame import time
-from lasergame.lib.pgutils import draw_triangle
+from lasergame.lib.pgutils import draw_triangle, play_sound
 from lasergame.lib.utils import clamp
 from lasergame.lib import sounds
 from lasergame.objects.projectiles.bullet import Bullet, bullettypes
@@ -95,9 +95,7 @@ class Ship(CollidableGameObject):
         if gm.input.A.held:
             if self._lastbullet + (1 / self.bulletrate) < time.get_ticks_sec():
                 gm.add(Bullet((self.x + (self.height / 2), self.y), owner = self.uuid, bullettype = self.weaponselect))
-                ch = pygame.mixer.Channel(0)
-                pew = sounds.get(f"laser-{self._weaponselectindex + 1}")
-                ch.play(pew)
+                play_sound(f"laser-{self._weaponselectindex + 1}", 0)
                 self._lastbullet = time.get_ticks_sec()
         if gm.input.L.pressed:
             self._weaponselectindex = (self._weaponselectindex - 1) % len(bullettypes)
@@ -109,7 +107,7 @@ class Ship(CollidableGameObject):
         super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):
-        collision_box = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
+        draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
         pygame.draw.circle(screen, bullettypes[self.weaponselect]["color"], self.safecenter, 2)
         super().draw(debugscreen = debugscreen)
         # return collision_box
