@@ -74,7 +74,8 @@ class Ship(CollidableGameObject):
 
     @property
     def collision_box(self):
-        return pygame.Rect(self.left, self.top, self.width, self.height)
+        # return pygame.Rect(self.left, self.top, self.width, self.height)
+        return pygame.Rect(self.x, self.y, 1, 1)
 
     @property
     def uuid_offset(self):
@@ -107,4 +108,5 @@ class Ship(CollidableGameObject):
         collision_box = draw_triangle(screen, self.color, self.center, self.width, self.height, self.directions[self.direction])
         pygame.draw.circle(screen, bullettypes[self.weaponselect]["color"], self.safecenter, 2)
         super().draw(debugscreen = debugscreen)
-        return collision_box
+        # return collision_box
+        return pygame.Rect(self.x, self.y, 1, 1)
