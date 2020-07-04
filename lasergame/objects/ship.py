@@ -95,8 +95,9 @@ class Ship(CollidableGameObject):
         if gm.input.A.held:
             if self._lastbullet + (1 / self.bulletrate) < time.get_ticks_sec():
                 gm.add(Bullet((self.x + (self.height / 2), self.y), owner = self.uuid, bullettype = self.weaponselect))
+                ch = pygame.mixer.Channel(0)
                 pew = sounds.get(f"laser-{self._weaponselectindex + 1}")
-                pew.play()
+                ch.play(pew)
                 self._lastbullet = time.get_ticks_sec()
         if gm.input.L.pressed:
             self._weaponselectindex = (self._weaponselectindex - 1) % len(bullettypes)
