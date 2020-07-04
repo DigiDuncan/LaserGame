@@ -7,6 +7,7 @@ from lasergame.lib.constants import game
 from lasergame.lib.nygame import time
 from lasergame.lib.pgutils import draw_triangle
 from lasergame.lib.utils import clamp
+from lasergame.lib import sounds
 from lasergame.objects.projectiles.bullet import Bullet, bullettypes
 
 from lasergame.objects.star import Star
@@ -48,7 +49,7 @@ class Ship(CollidableGameObject):
 
     @property
     def weaponselect(self):
-        return list(bullettypes.keys())[self._weaponselectindex % len(bullettypes.keys())]
+        return list(bullettypes.keys())[self._weaponselectindex]
 
     def rotate_right(self):
         self.direction = (self.direction + 1) % 4
@@ -89,11 +90,13 @@ class Ship(CollidableGameObject):
         if gm.input.A.held:
             if self._lastbullet + (1 / self.bulletrate) < time.get_ticks_sec():
                 gm.add(Bullet((self.x + (self.height / 2), self.y), owner = self.uuid, bullettype = self.weaponselect))
+                pew = sounds.get(f"laser-{self._weaponselectindex + 1}")
+                pew.play()
                 self._lastbullet = time.get_ticks_sec()
         if gm.input.L.pressed:
-            self._weaponselectindex -= 1
+            self._weaponselectindex = (self._weaponselectindex - 1) % len(bullettypes)
         elif gm.input.R.pressed:
-            self._weaponselectindex += 1
+            self._weaponselectindex = (self._weaponselectindex + 1) % len(bullettypes)
         elif gm.input.B.pressed:
             gm.add(Star(self.safecenter))
 

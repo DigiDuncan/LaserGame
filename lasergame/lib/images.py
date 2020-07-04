@@ -1,5 +1,6 @@
 from functools import lru_cache
 import importlib
+import importlib.resources
 
 import pygame
 
