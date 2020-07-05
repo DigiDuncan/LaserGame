@@ -24,6 +24,7 @@ class MainMenu:
         self.items = [
             SceneMenuItem(self.game, "start", "START GAME", scene = "gameloop"),
             SceneMenuItem(self.game, "options", "OPTIONS", scene = "optionsmenu"),
+            SceneMenuItem(self.game, "test", "TEST MENU", scene = "testmenu"),
             QuitMenuItem(self.game, "quit", "QUIT TO DESKTOP")
         ]
         self.menu = Menu(

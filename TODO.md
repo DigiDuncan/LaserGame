@@ -21,3 +21,4 @@
   - topleft, topright, bottomleft, and bottomright property
   - setters for those
   - safe (int) versions of those
+- Dynamically add scenes from /scenes to the game.scenes list.

@@ -36,6 +36,12 @@ class QuitMenuItem(MenuItem):
         return self.game.quit()
 
 
+class PlaceholderMenuItem(MenuItem):
+    @property
+    def function(self):
+        pass
+
+
 class ValueMenuItem(MenuItem):
     def __init__(self, game, name, text, value, default, *, textoverrides = {}, **kwargs):
         self.value = value
