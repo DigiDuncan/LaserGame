@@ -28,7 +28,7 @@ class MainMenu:
             QuitMenuItem(self.game, "quit", "QUIT TO DESKTOP")
         ]
         self.menu = Menu(
-            self.screen, (conf.game.center[0], conf.game.center[1] + 25), self.items, cursorsettings = {
+            self.screen, (conf.game.center[0], conf.game.center[1] + 30), self.items, cursorsettings = {
                 "color": colors.WHITE.rgb,
                 "width": 8,
                 "height": 8,

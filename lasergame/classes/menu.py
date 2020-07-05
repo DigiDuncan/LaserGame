@@ -102,14 +102,13 @@ class IntValueMenuItem(ValueMenuItem):
 
 class Menu(GameObject):
     def __init__(self, screen: pygame.Surface, center, items: list, *, valign: Literal["top", "center", "bottom"] = "center",
-                 cursorsettings: dict, fontsettings: dict, selector_x_offset = 85):
+                 cursorsettings: dict, fontsettings: dict):
         self.screen = screen
         self.center = center
         self.items = items
         self.valign = valign
         self.cursorsettings = cursorsettings
         self.fontsettings = fontsettings
-        self.selector_x_offset = selector_x_offset
 
         self.fontcolor = fontsettings.get("color", colors.WHITE.rgb)
         self.fontalign = fontsettings.get("align", "center")
@@ -125,15 +124,28 @@ class Menu(GameObject):
         self.selected = 0
 
     @property
+    def testsurface(self):
+        testtext = self.items[self.selected].text
+        return write(self.screen, (0, 0), testtext,
+                     color = self.fontcolor, align = self.fontalign, antialias = self.fontantialias,
+                     font = self.fontfont, size = self.fontsize, blit = False).surface
+
+    @property
     def fontspacing(self):
-        # TODO: Make this dynamic.
-        # This is just a value I tweaked until it looked ok.
-        # It doesn't work for every font.
-        return self.fontsize / 2 + 1
+        return self.testsurface.get_height() - 2
+
+    @property
+    def selector_x_offset(self):
+        return self.testsurface.get_width() / 2 + 8
 
     @property
     def texttopY(self):
         return self.safey - (self.fontspacing * len(self.items) / 2)
+
+    @property
+    def cursorpos(self):
+        return (self.x - self.selector_x_offset,
+                self.texttopY + ((self.selected + 1) * self.fontspacing) - (self.fontspacing / 2))
 
     def update(self, *, im, **kwargs):
         # Scroll up and down the menu.
@@ -159,6 +171,5 @@ class Menu(GameObject):
                   color = self.fontcolor, align = self.fontalign, antialias = self.fontantialias,
                   font = self.fontfont, size = self.fontsize)
         # Draw the cursor.
-        draw_triangle(self.screen, self.cursorcolor,
-                      (self.x - self.selector_x_offset, self.texttopY + (self.selected * self.fontspacing) + round(self.fontsize / 2) + 1),
+        draw_triangle(self.screen, self.cursorcolor, self.cursorpos,
                       self.cursorwidth, self.cursorheight, self.cursordirection)
