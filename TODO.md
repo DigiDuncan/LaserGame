@@ -7,16 +7,14 @@
   - XML?
 - Begin enemies.
 - Move weapon colors to constants. [kinda done]
-- Add current collisions to debug screen.
-- Add hit-boxes to debug screen.
-- Move tests to their own folder.
+- Move tests to their own folder. [in progress]
 - Add debug menu.
   - Only show debug menu when in debug mode.
   - Menu items:
     - Show/Hide hit-boxes
     - Show/Hide UUIDs
     - Show/Hide collisions
-- Use ConfigDicts.
+- Use PathDicts for config/constants.
 - Rework the object heirarchy so that each object that's rectangley has a...
   - x, y, center attribute
   - left, top, right, and bottom property
