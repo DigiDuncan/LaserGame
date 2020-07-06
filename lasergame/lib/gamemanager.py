@@ -1,21 +1,24 @@
 from functools import lru_cache
 
 from lasergame.classes.abc import Drawable, Updateable, Collidable
+from lasergame.lib.constants import zlayer
 from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.collisionmanager import CollisionManager
 from lasergame.lib.state import State
 from lasergame.lib.utils import default_itemgetter
 from lasergame.classes.projectile import Projectile
+from lasergame.objects.textbox import Textbox
 
 
 class GameManager:
-    __slots__ = ["_drawables", "_updateables", "_collidables", "_projectiles", "state", "input", "collisions"]
+    __slots__ = ["_drawables", "_updateables", "_collidables", "_projectiles", "_textboxes", "state", "input", "collisions"]
 
     def __init__(self, inputmanager: InputManager):
         self._drawables = set()
         self._updateables = set()
         self._collidables = set()
         self._projectiles = set()
+        self._textboxes = set()
         self.state = State()
         self.input = inputmanager
         self.collisions = CollisionManager()
@@ -41,6 +44,10 @@ class GameManager:
             self._collidables.add(obj)
         if isinstance(obj, Collidable) and isinstance(obj, Projectile):
             self._projectiles.add(obj)
+        if isinstance(obj, Textbox):
+            self._textboxes.add(obj)
+            # Always make sure the newest textbox is on top.
+            obj.z = zlayer.TEXT + len(self._textboxes)
         self.__len__.cache_clear()
 
     def discard(self, obj):
