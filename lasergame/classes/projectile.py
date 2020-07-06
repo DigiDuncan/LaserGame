@@ -1,6 +1,7 @@
 import pygame
 
 from lasergame.classes.collidablegameobject import CollidableGameObject
+from lasergame.lib.constants import zlayer
 
 
 class Projectile(CollidableGameObject):
@@ -9,7 +10,7 @@ class Projectile(CollidableGameObject):
     def __init__(self, center: tuple, *, owner, speed = 180):
         self.owner = owner
         self.speed = speed
-        super().__init__(center=center)
+        super().__init__(center=center, z=zlayer.PROJECTILE)
 
     @property
     def color(self):

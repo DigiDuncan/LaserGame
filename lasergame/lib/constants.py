@@ -28,7 +28,8 @@ def loadbuttons(data):
 def loadzlayer(data):
     global zlayer
     zlayerdict = data.get("zlayer", {})
-    zlayerdict = {name.lower(): value for name, value in zlayerdict.items()}
+    # uppercase everything
+    zlayerdict = {name.upper(): value for name, value in zlayerdict.items()}
     # create the enum
     zlayer = AttrDict(zlayerdict)
 
@@ -38,6 +39,7 @@ def load():
     data = toml.loads(pkg_resources.read_text(lasergame.data, "constants.toml"))
     loadbuttons(data)
     loadgame(data)
+    loadzlayer(data)
 
 
 load()

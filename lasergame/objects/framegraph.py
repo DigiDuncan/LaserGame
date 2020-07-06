@@ -1,6 +1,7 @@
 import pygame
 
 from lasergame.classes.gameobject import GameObject
+from lasergame.lib.constants import zlayer
 from lasergame.lib.utils import clamp
 
 
@@ -27,7 +28,7 @@ class FrameGraph(GameObject):
         self._fps = 60
         self.show = False
         self.surface = pygame.Surface((100, 61), flags=pygame.SRCALPHA)
-        super().__init__()
+        super().__init__(z=zlayer.DEBUG)
 
     @property
     def color(self):

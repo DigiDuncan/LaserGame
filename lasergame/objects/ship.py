@@ -3,7 +3,7 @@ import pygame
 from digicolor import colors
 
 from lasergame.classes.collidablegameobject import CollidableGameObject
-from lasergame.lib.constants import game
+from lasergame.lib.constants import game, zlayer
 from lasergame.lib.nygame import time
 from lasergame.lib.pgutils import draw_triangle, play_sound
 from lasergame.lib.utils import clamp
@@ -26,7 +26,7 @@ class Ship(CollidableGameObject):
         self.bulletrate = bulletrate
         self._lastbullet = 0
         self._weaponselectindex = 0
-        super().__init__(center=center, z=999)
+        super().__init__(center=center, z=zlayer.SHIP)
 
     @property
     def x(self):

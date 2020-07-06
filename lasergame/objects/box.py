@@ -3,6 +3,7 @@ import pygame
 from digicolor import colors
 
 from lasergame.classes.collidablegameobject import CollidableGameObject
+from lasergame.lib.constants import zlayer
 from lasergame.lib.pgutils import write, draw_box
 from lasergame.objects.projectiles.bullet import Bullet
 
@@ -15,7 +16,7 @@ class Box(CollidableGameObject):
         self.width = width
         self.height = height
         self._hits = 0
-        super().__init__(center=center, z=1)
+        super().__init__(center=center, z=zlayer.ENEMY)
 
     @property
     def left(self):

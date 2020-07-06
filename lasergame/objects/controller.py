@@ -1,5 +1,6 @@
 from lasergame.classes.gameobject import GameObject
 from lasergame.lib import images
+from lasergame.lib.constants import zlayer
 
 
 buttonmap = {
@@ -24,7 +25,7 @@ class Controller(GameObject):
     def __init__(self):
         self.buttons = None
         self.show = False
-        super().__init__()
+        super().__init__(z=zlayer.DEBUG)
 
     def update(self, gm, events, **kwargs):
         self.buttons = {btn.name: btn.held for btn in gm.input.buttons}
