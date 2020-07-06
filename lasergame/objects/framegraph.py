@@ -7,7 +7,7 @@ from lasergame.lib.utils import clamp
 
 colorlist = []
 
-# This genenerates a list of rgb tuples fading between red to gree,
+# This genenerates a list of rgb tuples fading between red to green,
 # passing through orange and yellow. It starts at (255, 0, 0)
 # [or (0xFF, 0x00, 0x00)], fades G from 0 -> 255 for 30 colors,
 # then fades R from 255 -> 0 for 30 colors, resulting in 61 colors,

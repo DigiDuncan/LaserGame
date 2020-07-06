@@ -3,9 +3,11 @@ import pygame
 from digicolor import colors
 
 from lasergame.classes.collidablegameobject import CollidableGameObject
+from lasergame.lib import constants
 from lasergame.lib.constants import zlayer
 from lasergame.lib.pgutils import write, draw_box
 from lasergame.objects.projectiles.bullet import Bullet
+from lasergame.objects.textbox import Textbox
 
 
 class Box(CollidableGameObject):
@@ -48,6 +50,8 @@ class Box(CollidableGameObject):
             if isinstance(other, Bullet):
                 self._hits += other.damage
                 gm.discard(other)
+                gm.add(Textbox((0, constants.game.height - 50), f"You've hit me for {self._hits} damage!", 5,
+                               fontsettings = {"font": "SinsGold.ttf"}))
         super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):
