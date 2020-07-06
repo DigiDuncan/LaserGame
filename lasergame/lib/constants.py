@@ -7,6 +7,7 @@ from lasergame.lib.attrdict import AttrDict
 
 buttons = None
 game = None
+zlayer = None
 
 
 def loadgame(data):
@@ -22,6 +23,14 @@ def loadgame(data):
 def loadbuttons(data):
     global buttons
     buttons = data.get("buttons", {})
+
+
+def loadzlayer(data):
+    global zlayer
+    zlayerdict = data.get("zlayer", {})
+    zlayerdict = {name.lower(): value for name, value in zlayerdict.items()}
+    # create the enum
+    zlayer = AttrDict(zlayerdict)
 
 
 def load():
