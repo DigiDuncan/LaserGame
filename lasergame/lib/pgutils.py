@@ -30,6 +30,11 @@ def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left"
     return AttrDict({"surface": textsurface, "coords": coords})
 
 
+def get_write_size(text, *, font=None, size=None):
+    font_obj = fonts.get(font, size=size)
+    return font_obj.size(text)
+
+
 def draw_box(screen, center: tuple, width: int, height: int, *, color = colors.WHITE.rgb, thickness: int = 0):
     left = center[0] - int(width / 2)
     top = center[1] - int(height / 2)

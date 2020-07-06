@@ -5,7 +5,7 @@ from digicolor import colors
 
 from lasergame.classes.gameobject import GameObject
 from lasergame.lib import conf
-from lasergame.lib.pgutils import draw_triangle, write
+from lasergame.lib.pgutils import draw_triangle, write, get_write_size
 from lasergame.lib.utils import clamp
 
 
@@ -124,19 +124,16 @@ class Menu(GameObject):
         self.selected = 0
 
     @property
-    def testsurface(self):
-        testtext = self.items[self.selected].text
-        return write(self.screen, (0, 0), testtext,
-                     color = self.fontcolor, align = self.fontalign, antialias = self.fontantialias,
-                     font = self.fontfont, size = self.fontsize, blit = False).surface
+    def write_size(self):
+        return get_write_size(self.items[self.selected].displaytext, font=self.fontfont, size=self.fontsize)
 
     @property
     def fontspacing(self):
-        return self.testsurface.get_height() - 2
+        return self.write_size[1] - 2
 
     @property
     def selector_x_offset(self):
-        return self.testsurface.get_width() / 2 + 8
+        return self.write_size[0] / 2 + 8
 
     @property
     def texttopY(self):
