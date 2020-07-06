@@ -51,7 +51,7 @@ class Box(CollidableGameObject):
                 self._hits += other.damage
                 gm.discard(other)
                 gm.add(Textbox((0, constants.game.height - 50), f"You've hit me for {self._hits} damage!", 5,
-                               fontsettings = {"font": "SinsGold.ttf"}))
+                               fontsettings = {"font": "SinsGold"}))
         super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):

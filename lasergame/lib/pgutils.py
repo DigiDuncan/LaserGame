@@ -4,14 +4,15 @@ import pygame
 
 from digicolor import colors
 
-from lasergame.lib import fonts, sounds
+from lasergame.lib.assets import fonts, sounds
 from lasergame.lib.attrdict import AttrDict
 
 
 def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left",
           valign: Literal["top", "center", "bottom"] = "top", antialias: bool = True, font=None, size=None, background=None,
           blit = True):
-    textsurface = fonts.render(text, antialias=antialias, color=color, font=font, size=size, background=background)
+    font_obj = fonts.get(font, size=size)
+    textsurface = font_obj.render(text, antialias, color, background)
     if coords[0] < 0:
         coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
     if coords[1] < 0:

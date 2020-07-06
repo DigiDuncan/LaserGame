@@ -1,6 +1,6 @@
 import pygame
 
-from lasergame.lib import sounds
+from lasergame.lib.assets import sounds
 
 
 def test_sounds():

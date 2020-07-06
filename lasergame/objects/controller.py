@@ -1,5 +1,5 @@
 from lasergame.classes.gameobject import GameObject
-from lasergame.lib import images
+from lasergame.lib.assets import images
 from lasergame.lib.constants import zlayer
 
 

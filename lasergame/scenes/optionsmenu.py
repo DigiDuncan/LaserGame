@@ -32,7 +32,7 @@ class OptionsMenu:
                 "color": colors.WHITE.rgb,
                 "align": "center",
                 "antialias": False,
-                "font": "SinsGold.ttf",
+                "font": "SinsGold",
                 "size": 24
             }
         )
@@ -42,7 +42,7 @@ class OptionsMenu:
 
     def draw(self, **kwargs):
         write(self.screen, (conf.game.center[0], conf.game.center[1] - 50), "LaserGame",
-              antialias = False, font = "EndlessBossBattleRegular.ttf", size = 24, align = "center")
+              antialias = False, font = "EndlessBossBattleRegular", size = 24, align = "center")
         self.menu.draw()
 
 
