@@ -47,7 +47,7 @@ class GameManager:
         if isinstance(obj, Textbox):
             self._textboxes.add(obj)
             # Always make sure the newest textbox is on top.
-            obj.z = zlayer.TEXT + len(self._textboxes)
+            obj.z = zlayer.TEXT + max(t.z for t in self._textboxes) + 1
         self.__len__.cache_clear()
 
     def discard(self, obj):
@@ -56,6 +56,7 @@ class GameManager:
         self._updateables.discard(obj)
         self._collidables.discard(obj)
         self._projectiles.discard(obj)
+        self._textboxes.discard(obj)
         self.__len__.cache_clear()
 
     @lru_cache(maxsize=1)
