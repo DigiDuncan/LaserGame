@@ -8,8 +8,7 @@ from lasergame.lib.assets.assetmanager import AssetManager
 
 class ImageManager(AssetManager):
     def __init__(self):
-        self.root = "lasergame.data.images"
-        self.ext = "png"
+        super().__init__("lasergame.data.images", "png")
 
     @lru_cache(maxsize=None)
     def get(self, name):

@@ -7,8 +7,7 @@ from lasergame.lib.assets.assetmanager import AssetManager
 
 class SoundManager(AssetManager):
     def __init__(self):
-        self.root = "lasergame.data.sounds"
-        self.ext = "wav"
+        super().__init__("lasergame.data.sounds", "wav")
 
     @lru_cache(maxsize=None)
     def get(self, name):

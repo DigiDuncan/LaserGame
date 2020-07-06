@@ -8,8 +8,7 @@ from lasergame.lib.assets.assetmanager import AssetManager
 
 class FontManager(AssetManager):
     def __init__(self):
-        self.root = "lasergame.data.fonts"
-        self.ext = "ttf"
+        super().__init__("lasergame.data.fonts", "ttf")
 
     @lru_cache(maxsize=None)
     def get(self, name=None, size=None):
