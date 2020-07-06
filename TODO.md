@@ -15,6 +15,7 @@
     - Show/Hide UUIDs
     - Show/Hide collisions
 - Use PathDicts for config/constants.
+- Clean up objects and object heirarchy.
 - Rework the object heirarchy so that each object that's rectangley has a...
   - x, y, center attribute
   - left, top, right, and bottom property

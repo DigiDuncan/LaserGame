@@ -1,12 +1,12 @@
 from functools import lru_cache
 
 from lasergame.classes.abc import Drawable, Updateable, Collidable
+from lasergame.classes.projectile import Projectile
 from lasergame.lib.constants import zlayer
-from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.collisionmanager import CollisionManager
+from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.state import State
 from lasergame.lib.utils import default_itemgetter
-from lasergame.classes.projectile import Projectile
 from lasergame.objects.textbox import Textbox
 
 
@@ -61,4 +61,4 @@ class GameManager:
     @lru_cache(maxsize=1)
     def __len__(self):
         """Count up all unique objects (cached for performance)"""
-        return len(self._drawables | self._updateables | self._updateables | self._projectiles)
+        return len(self._drawables | self._updateables | self._collidables | self._projectiles)
