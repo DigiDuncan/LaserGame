@@ -27,7 +27,7 @@ class FontManager(AssetManager):
 
         # Special exception for default font
         if name is None:
-            return pygame.font.Font(None, size)
+            return pygame.font.Font(pygame.font.get_default_font(), size)
 
         # pygame's Font constructor doesn't load file handles properly, so we have to wrap them in a BytesIO.
         with self.open_binary(name) as f:
