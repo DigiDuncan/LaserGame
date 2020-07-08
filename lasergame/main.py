@@ -3,7 +3,7 @@ from lasergame.lib import nygame
 
 from digicolor import colors
 
-from lasergame.lib import conf, constants
+from lasergame.lib import conf, constants, display
 from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.pgutils import write
 from lasergame.scenes.gameloop import GameLoop
@@ -13,6 +13,8 @@ from lasergame.scenes.testmenu import TestMenu
 
 
 class Game():
+    __slots__ = ["active", "scenes", "running", "paused", "clock", "im", "screen", "debugscreen"]
+
     def __init__(self):
         self.active = None
         self.scenes = {}
@@ -22,9 +24,11 @@ class Game():
         self.im = InputManager()
 
         # Create the screen.
-        self.screen = pygame.Surface((constants.game.width, constants.game.height))
-        self.bigscreen = pygame.display.set_mode([conf.settings.windowwidth, conf.settings.windowheight])
-        self.debugscreen = pygame.Surface(self.bigscreen.get_size(), flags=pygame.SRCALPHA)
+        window_size = (conf.settings.windowwidth, conf.settings.windowheight)
+        display_size = display.set_mode(window_size)
+        screen_size = (constants.game.width, constants.game.height)
+        self.screen = display.add_layer(pygame.Surface(screen_size))
+        self.debugscreen = display.add_layer(pygame.Surface(display_size, flags=pygame.SRCALPHA))
 
     def run(self):
         pygame.init()
@@ -49,6 +53,11 @@ class Game():
 
             # Get input
             self.im.update(events=events)
+            if self.im.FULLSCREEN.pressed:
+                display.set_mode((0, 0), fullscreen=True)
+            elif self.im.WINDOW.pressed:
+                window_size = (conf.settings.windowwidth, conf.settings.windowheight)
+                display.set_mode((window_size))
             # Run current scene's update function (or not if we're paused.)
             paused = self.paused
             if not self.paused:
@@ -65,17 +74,9 @@ class Game():
                 write(self.screen, conf.game.center, "PAUSED", align = "center", valign = "center",
                       font = "EndlessBossBattleRegular", size = 32, antialias = False)
             # Final draw stage
-            self.refresh(self.screen, self.bigscreen, self.debugscreen)
+            display.flip()
             # Timing loop
             self.clock.tick_busy_loop(conf.settings.framerate)
-
-    def refresh(self, screen, bigscreen, debugscreen):
-        # Pixel-scale the screen to the bigscreen.
-        pygame.transform.scale(screen, bigscreen.get_size(), bigscreen)
-        # Show debug screen.
-        bigscreen.blit(debugscreen, (0, 0))
-        # Flip [refresh?] the display.
-        pygame.display.flip()
 
     def switch_scene(self, name):
         # Sometimes the scenes don't get initialized quick enough.

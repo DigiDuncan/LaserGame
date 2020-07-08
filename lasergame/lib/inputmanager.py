@@ -19,7 +19,7 @@ class ButtonState:
 
 
 class InputManager:
-    __slots__ = ["UP", "LEFT", "RIGHT", "DOWN", "A", "B", "X", "Y", "L", "R", "SELECT", "START", "keycodes_to_buttons", "limit_dpad"]
+    __slots__ = ["UP", "LEFT", "RIGHT", "DOWN", "A", "B", "X", "Y", "L", "R", "SELECT", "START", "FULLSCREEN", "WINDOW", "keycodes_to_buttons", "limit_dpad"]
 
     def __init__(self):
         self.keycodes_to_buttons = {}

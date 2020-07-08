@@ -11,7 +11,6 @@ class OptionsMenu:
     def __init__(self, *, game):
         self.game = game
         self.screen = game.screen
-        self.bigscreen = game.bigscreen
         self.inputmanager = game.im
         self.items = [
             IntValueMenuItem(self.game, "framerate", "FRAMERATE", "framerate", 60, textoverrides = {0: "UNLOCKED", 69: "NICE"}),

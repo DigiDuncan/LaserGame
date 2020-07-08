@@ -20,7 +20,6 @@ class MainMenu:
     def __init__(self, *, game):
         self.game = game
         self.screen = game.screen
-        self.bigscreen = game.bigscreen
         self.inputmanager = game.im
         self.items = [
             SceneMenuItem(self.game, "start", "START GAME", scene = "gameloop"),

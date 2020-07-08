@@ -15,6 +15,8 @@ L = "K_1"
 R = "K_MINUS"
 SELECT = "K_RSHIFT"
 START = "K_RETURN"
+FULLSCREEN = "K_F1"
+WINDOW = "K_F2"
 
 [zlayer]
 BACKGROUND = 0

@@ -11,7 +11,6 @@ class TestMenu:
     def __init__(self, *, game):
         self.game = game
         self.screen = game.screen
-        self.bigscreen = game.bigscreen
         self.inputmanager = game.im
         self.items = [
             SceneMenuItem(self.game, "back", "BACK TO MAIN MENU", scene = "mainmenu"),
