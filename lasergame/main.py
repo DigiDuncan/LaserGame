@@ -3,7 +3,8 @@ from lasergame.lib import nygame
 
 from digicolor import colors
 
-from lasergame.lib import conf, constants, display
+from lasergame.lib import conf, constants
+from lasergame.lib.display import display
 from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.pgutils import write
 from lasergame.scenes.gameloop import GameLoop
@@ -25,10 +26,12 @@ class Game():
 
         # Create the screen.
         window_size = (conf.settings.windowwidth, conf.settings.windowheight)
-        display_size = display.set_mode(window_size)
         screen_size = (constants.game.width, constants.game.height)
+
+        display.set_mode(window_size)
+
         self.screen = display.add_layer(pygame.Surface(screen_size))
-        self.debugscreen = display.add_layer(pygame.Surface(display_size, flags=pygame.SRCALPHA))
+        self.debugscreen = display.add_layer(pygame.Surface(display.size, flags=pygame.SRCALPHA))
 
     def run(self):
         pygame.init()
@@ -54,10 +57,11 @@ class Game():
             # Get input
             self.im.update(events=events)
             if self.im.FULLSCREEN.pressed:
-                display.set_mode((0, 0), fullscreen=True)
-            elif self.im.WINDOW.pressed:
-                window_size = (conf.settings.windowwidth, conf.settings.windowheight)
-                display.set_mode((window_size))
+                if display.fullscreen:
+                    window_size = (conf.settings.windowwidth, conf.settings.windowheight)
+                    display.set_mode((window_size))
+                else:
+                    display.set_mode((0, 0), fullscreen=True)
             # Run current scene's update function (or not if we're paused.)
             paused = self.paused
             if not self.paused:
