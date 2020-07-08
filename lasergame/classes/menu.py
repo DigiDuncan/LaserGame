@@ -101,9 +101,16 @@ class IntValueMenuItem(ValueMenuItem):
 
 
 class Menu(GameObject):
-    def __init__(self, screen: pygame.Surface, center, items: list, *, valign: Literal["top", "center", "bottom"] = "center",
-                 cursorsettings: dict, fontsettings: dict):
-        self.screen = screen
+    def __init__(self,
+                 game,
+                 center,
+                 items: list,
+                 *,
+                 valign: Literal["top", "center", "bottom"] = "center",
+                 cursorsettings: dict,
+                 fontsettings: dict):
+        self.game = game
+        self.screen = game.screen
         self.center = center
         self.items = items
         self.valign = valign
@@ -144,29 +151,35 @@ class Menu(GameObject):
         return (self.x - self.selector_x_offset,
                 self.texttopY + ((self.selected + 1) * self.fontspacing) - (self.fontspacing / 2))
 
-    def update(self, *, im, **kwargs):
+    def update(self, **kwargs):
         # Scroll up and down the menu.
-        if im.UP.pressed:
+        if self.game.input.actions.UP.pressed:
             self.selected -= 1
-        if im.DOWN.pressed:
+        if self.game.input.actions.DOWN.pressed:
             self.selected += 1
         # Wrap the cursor around.
         self.selected = self.selected % len(self.items)
         # If we're selected on a ValueMenuItem, left and right decrement and increment its value.
         if isinstance(self.items[self.selected], ValueMenuItem):
-            if im.LEFT.pressed:
+            if self.game.input.actions.LEFT.pressed:
                 self.items[self.selected].decrement()
-            if im.RIGHT.pressed:
+            if self.game.input.actions.RIGHT.pressed:
                 self.items[self.selected].increment()
-        if im.START.pressed:
+        if self.game.input.actions.START.pressed:
             self.items[self.selected].function
 
     def draw(self, **kwargs):
         # Write each menu option in order.
         for n, item in enumerate(self.items):
-            write(self.screen, (self.x, self.texttopY + (n * self.fontspacing)), item.displaytext,
-                  color = self.fontcolor, align = self.fontalign, antialias = self.fontantialias,
-                  font = self.fontfont, size = self.fontsize)
+            coords = self.x, self.texttopY + (n * self.fontspacing)
+            write(self.screen,
+                  coords,
+                  item.displaytext,
+                  color = self.fontcolor,
+                  halign = self.fontalign,
+                  antialias = self.fontantialias,
+                  font = self.fontfont,
+                  size = self.fontsize)
         # Draw the cursor.
         draw_triangle(self.screen, self.cursorcolor, self.cursorpos,
                       self.cursorwidth, self.cursorheight, self.cursordirection)

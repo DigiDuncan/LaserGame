@@ -21,7 +21,7 @@ class GameLoop():
         self.screen = game.screen
         self.debugscreen = game.debugscreen
         self.clock = game.clock
-        self.gm = GameManager(inputmanager = game.im)
+        self.gm = GameManager(inputmanager = game.input)
 
         # Draw stars?
         for i in range(150):
@@ -37,7 +37,7 @@ class GameLoop():
 
     def update(self, events):
         # Pause
-        if self.gm.input.START.pressed:
+        if self.gm.input.actions.START.pressed:
             self.game.pause()
             return
         # Update objects
@@ -46,12 +46,6 @@ class GameLoop():
     def draw(self):
         # Draw objects
         self.gm.draw(screen = self.screen, debugscreen = self.debugscreen)
-        # Create debug information.
-        if self.gm.state.debug:
-            FRAMEGRAPH_HEIGHT = 61
-            write(self.debugscreen, (-8, 8 + FRAMEGRAPH_HEIGHT), f"{self.clock.get_fps():0.2f}", color=colors.LIGHT_GREEN.rgb)
-            write(self.debugscreen, (-8, 24 + FRAMEGRAPH_HEIGHT), f"{len(self.gm)} objects", color=colors.LIGHT_GREEN.rgb)
-            write(self.debugscreen, (-8, 40 + FRAMEGRAPH_HEIGHT), f"{len(self.gm.collisions)} collisions", color=colors.LIGHT_GREEN.rgb)
 
 
 pygame.quit()

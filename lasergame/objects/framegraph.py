@@ -1,8 +1,10 @@
 import pygame
+from digicolor import colors
 
 from lasergame.classes.gameobject import GameObject
 from lasergame.lib.constants import zlayer
 from lasergame.lib.utils import clamp
+from lasergame.lib.pgutils import write
 
 
 colorlist = []
@@ -28,21 +30,25 @@ for i in range(61):
 
 
 class FrameGraph(GameObject):
-    __slots__ = ["_fps", "show", "surface"]
+    __slots__ = ["_fps", "show", "surface", "object_count", "collision_count"]
 
     def __init__(self):
         self._fps = 60
         self.show = False
         self.surface = pygame.Surface((100, 61), flags=pygame.SRCALPHA)
+        self.object_count = 0
+        self.collision_count = 0
         super().__init__(z=zlayer.DEBUG)
 
     @property
     def color(self):
-        return colorlist[clamp(0, self._fps, 60)]
+        return colorlist[clamp(0, int(self._fps), 60)]
 
     def update(self, gm, clock, **kwargs):
         self.show = gm.state.debug
-        self._fps = int(clock.get_fps())
+        self._fps = clock.get_fps()
+        self.object_count = len(gm)
+        self.collision_count = len(gm.collisions)
 
     def draw(self, debugscreen, **kwargs):
         # Every tick, scroll the surface on pixel to the left,
@@ -54,6 +60,25 @@ class FrameGraph(GameObject):
         self.surface.scroll(dx=-1)
         for i in range(61):
             self.surface.set_at((99, i), (0, 0, 0, 0))
-        self.surface.set_at((99, (60 - self._fps)), self.color)
+        self.surface.set_at((99, (60 - int(self._fps))), self.color)
 
         debugscreen.blit(self.surface, (debugscreen.get_width() - self.surface.get_width(), 3))
+        # Create debug information.
+        write(debugscreen,
+              (-8, 8 + self.surface.get_height()),
+              f"{self._fps:0.2f}",
+              color=colors.LIGHT_GREEN.rgb,
+              halign="right",
+              screen_halign="right")
+        write(debugscreen,
+              (-8, 24 + self.surface.get_height()),
+              f"{self.object_count} objects",
+              color=colors.LIGHT_GREEN.rgb,
+              halign="right",
+              screen_halign="right")
+        write(debugscreen,
+              (-8, 40 + self.surface.get_height()),
+              f"{self.collision_count} collisions",
+              color=colors.LIGHT_GREEN.rgb,
+              halign="right",
+              screen_halign="right")

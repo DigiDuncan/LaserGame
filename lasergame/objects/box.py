@@ -56,6 +56,9 @@ class Box(CollidableGameObject):
 
     def draw(self, screen, debugscreen, **kwargs):
         draw_box(screen, self.center, self.width, self.height, color = self.color)
-        write(screen, (self.x, self.y - 8), str(self._hits), align = "center")
+        write(screen,
+              (self.x, self.y - 8),
+              str(self._hits),
+              halign = "center")
         super().draw(debugscreen = debugscreen)
         return self.collision_box

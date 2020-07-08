@@ -5,29 +5,90 @@ import pygame
 from digicolor import colors
 
 from lasergame.lib.assets import fonts, sounds
-from lasergame.lib.attrdict import AttrDict
 
 
-def write(screen, coords, text, *, color=colors.WHITE.rgb, align: Literal["left", "center", "right"] = "left",
-          valign: Literal["top", "center", "bottom"] = "top", antialias: bool = True, font=None, size=None, background=None,
-          blit = True):
+def render_text(text,
+                *,
+                color=colors.WHITE.rgb,
+                antialias: bool = True,
+                font=None,
+                size=None,
+                background=None):
     font_obj = fonts.get(font, size=size)
     textsurface = font_obj.render(text, antialias, color, background)
-    if coords[0] < 0:
-        coords = (screen.get_width() + coords[0] - textsurface.get_width(), coords[1])
-    if coords[1] < 0:
-        coords = (coords[0], screen.get_height() + coords[1] - textsurface.get_height())
-    if align == "center":
-        coords = (coords[0] - (textsurface.get_width() / 2), coords[1])
-    if align == "right":
-        coords = (coords[0] - textsurface.get_width(), coords[1])
-    if valign == "center":
-        coords = (coords[0], coords[1] - (textsurface.get_height() / 2))
-    if valign == "bottom":
-        coords = (coords[0], coords[1] - textsurface.get_height())
-    if blit:
-        screen.blit(textsurface, coords)
-    return AttrDict({"surface": textsurface, "coords": coords})
+    return textsurface
+
+
+def blit(dest: pygame.Surface,
+         src: pygame.Surface,
+         coords,
+         halign: Literal["left", "center", "right"] = "left",
+         valign: Literal["top", "center", "bottom"] = "top",
+         screen_halign: Literal["left", "center", "right"] = "left",
+         screen_valign: Literal["top", "center", "bottom"] = "top"):
+    coords = align_rect(dest.get_rect(), src.get_rect(), coords, halign=halign, valign=valign, outer_halign=screen_halign, outer_valign=screen_valign)
+    dest.blit(src, coords)
+    return coords
+
+
+def align_rect(
+        outer: pygame.Rect,
+        inner: pygame.Rect,
+        coords,
+        *,
+        halign: Literal["left", "center", "right"] = "left",
+        valign: Literal["top", "center", "bottom"] = "top",
+        outer_halign: Literal["left", "center", "right"] = "left",
+        outer_valign: Literal["top", "center", "bottom"] = "top"):
+    """Calculate coordinates for an inner rectangle aligned to an outer rectangle"""
+    x, y = coords
+
+    if outer_halign == "left":
+        pass
+    elif outer_halign == "center":
+        x = outer.centerx + x
+    elif outer_halign == "right":
+        x = outer.right + x
+
+    if outer_valign == "top":
+        pass
+    elif outer_valign == "center":
+        y = outer.centery + y
+    elif outer_valign == "bottom":
+        y = outer.bottom + y
+
+    if halign == "left":
+        inner.left = x
+    elif halign == "center":
+        inner.centerx = x
+    elif halign == "right":
+        inner.right = x
+
+    if valign == "top":
+        inner.top = y
+    elif valign == "center":
+        inner.centery = y
+    elif valign == "bottom":
+        inner.bottom = y
+
+    return inner.topleft
+
+
+def write(screen,
+          coords,
+          text,
+          *,
+          color=colors.WHITE.rgb,
+          halign: Literal["left", "center", "right"] = "left",
+          valign: Literal["top", "center", "bottom"] = "top",
+          screen_halign: Literal["left", "center", "right"] = "left",
+          screen_valign: Literal["top", "center", "bottom"] = "top",
+          antialias: bool = True,
+          font=None,
+          size=None,
+          background=None):
+    textsurface = render_text(text, color=color, antialias=antialias, font=font, size=size, background=background)
+    blit(screen, textsurface, coords, halign=halign, valign=valign, screen_halign=screen_halign, screen_valign=screen_valign)
 
 
 def get_write_size(text, *, font=None, size=None):

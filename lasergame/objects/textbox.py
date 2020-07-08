@@ -115,6 +115,12 @@ class Textbox(GameObject):
         pygame.draw.rect(screen, self.color, box, 0)
         pygame.draw.rect(screen, self.bordercolor, box, self.borderthickness)
         if self.text != "":
-            write(screen, self.textcoords, self.displaytext, color = self.fontcolor,
-                  align = self.fontalign, valign = self.fontvalign,
-                  antialias = self.fontantialias, font = self.fontfont, size = self.fontsize)
+            write(screen,
+                  self.textcoords,
+                  self.displaytext,
+                  color = self.fontcolor,
+                  halign = self.fontalign,
+                  valign = self.fontvalign,
+                  antialias = self.fontantialias,
+                  font = self.fontfont,
+                  size = self.fontsize)

@@ -28,7 +28,7 @@ class Controller(GameObject):
         super().__init__(z=zlayer.DEBUG)
 
     def update(self, gm, events, **kwargs):
-        self.buttons = {btn.name: btn.held for btn in gm.input.buttons}
+        self.buttons = {btn: gm.input.actions[btn].held for btn in buttonmap}
         self.show = gm.state.debug
 
     def draw(self, debugscreen, **kwargs):

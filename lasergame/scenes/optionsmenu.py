@@ -7,21 +7,20 @@ from lasergame.lib import conf
 from lasergame.lib.pgutils import write
 
 
-class OptionsMenu:
+class OptionsMenu(Menu):
     def __init__(self, *, game):
-        self.game = game
-        self.screen = game.screen
-        self.inputmanager = game.im
-        self.items = [
-            IntValueMenuItem(self.game, "framerate", "FRAMERATE", "framerate", 60, textoverrides = {0: "UNLOCKED", 69: "NICE"}),
-            # Scale does not change.
-            IntValueMenuItem(self.game, "scale", "SCALE", "scale", 4, minimum = 1, maximum = 5),
-            # Nor does debug.
-            BoolValueMenuItem(self.game, "debug", "DEBUG", "debug", True),
-            SceneMenuItem(self.game, "back", "BACK TO MAIN MENU", scene = "mainmenu")
-        ]
-        self.menu = Menu(
-            self.screen, conf.game.center, self.items, cursorsettings = {
+        super().__init__(
+            game,
+            conf.game.center,
+            items = [
+                IntValueMenuItem(game, "framerate", "FRAMERATE", "framerate", 60, textoverrides = {0: "UNLOCKED", 69: "NICE"}),
+                # Scale does not change.
+                IntValueMenuItem(game, "scale", "SCALE", "scale", 4, minimum = 1, maximum = 5),
+                # Nor does debug.
+                BoolValueMenuItem(game, "debug", "DEBUG", "debug", True),
+                SceneMenuItem(game, "back", "BACK TO MAIN MENU", scene = "mainmenu")
+            ],
+            cursorsettings = {
                 "color": colors.WHITE.rgb,
                 "width": 8,
                 "height": 8,
@@ -36,13 +35,16 @@ class OptionsMenu:
             }
         )
 
-    def update(self, **kwargs):
-        self.menu.update(im = self.inputmanager)
-
     def draw(self, **kwargs):
-        write(self.screen, (conf.game.center[0], conf.game.center[1] - 50), "LaserGame",
-              antialias = False, font = "EndlessBossBattleRegular", size = 24, align = "center")
-        self.menu.draw()
+        super().draw()
+        write(self.screen, (0, -50), "LaserGame",
+              antialias = False,
+              font = "EndlessBossBattleRegular",
+              size = 24,
+              valign = "center",
+              halign = "center",
+              screen_halign = "center",
+              screen_valign = "center")
 
 
 pygame.quit()

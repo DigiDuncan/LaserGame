@@ -14,7 +14,7 @@ from lasergame.scenes.testmenu import TestMenu
 
 
 class Game():
-    __slots__ = ["active", "scenes", "running", "paused", "clock", "im", "screen", "debugscreen"]
+    __slots__ = ["active", "scenes", "running", "paused", "clock", "input", "screen", "debugscreen"]
 
     def __init__(self):
         self.active = None
@@ -22,7 +22,8 @@ class Game():
         self.running = True
         self.paused = False
         self.clock = nygame.time.Clock()
-        self.im = InputManager()
+        self.input = InputManager()
+        self.input.load()
 
         # Create the screen.
         window_size = (conf.settings.windowwidth, conf.settings.windowheight)
@@ -55,8 +56,8 @@ class Game():
                     self.quit()
 
             # Get input
-            self.im.update(events=events)
-            if self.im.FULLSCREEN.pressed:
+            self.input.update(events=events)
+            if self.input.actions.FULLSCREEN.pressed:
                 if display.fullscreen:
                     window_size = (conf.settings.windowwidth, conf.settings.windowheight)
                     display.set_mode((window_size))
@@ -66,7 +67,7 @@ class Game():
             paused = self.paused
             if not self.paused:
                 self.active.update(events=events)
-            if paused and self.im.START.pressed:
+            if paused and self.input.actions.START.pressed:
                 self.unpause()
             # Fill the background
             self.screen.fill(colors.BLACK.rgb)
@@ -75,8 +76,16 @@ class Game():
             self.active.draw()
             # Write "PAUSED" on the screen if we're, you know, paused.
             if self.paused:
-                write(self.screen, conf.game.center, "PAUSED", align = "center", valign = "center",
-                      font = "EndlessBossBattleRegular", size = 32, antialias = False)
+                write(self.screen,
+                      (0, 0),
+                      "PAUSED",
+                      halign = "center",
+                      valign = "center",
+                      screen_halign="center",
+                      screen_valign="center",
+                      font = "EndlessBossBattleRegular",
+                      size = 32,
+                      antialias = False)
             # Final draw stage
             display.flip()
             # Timing loop

@@ -6,5 +6,5 @@ class InputListener(GameObject):
 
     def update(self, gm, events, **kwargs):
         # If SELECT and START are pressed, debug toggle.
-        if (gm.input.SELECT.pressed or gm.input.START.pressed) and (gm.input.SELECT.held and gm.input.START.held):
+        if (gm.input.actions.SELECT.pressed or gm.input.actions.START.pressed) and (gm.input.actions.SELECT.held and gm.input.actions.START.held):
             gm.state.debug = not gm.state.debug
