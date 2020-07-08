@@ -16,7 +16,7 @@
     - Show/Hide collisions
 - Use PathDicts for config/constants.
 - Clean up objects and object heirarchy.
-- Rework the object heirarchy so that each object that's rectangley has a...
+- Rework the object heirarchy so that each object that's rectangley has a... [in progress]
   - x, y, center attribute
   - left, top, right, and bottom property
   - topleft, topright, bottomleft, and bottomright property
@@ -25,3 +25,4 @@
 - Dynamically add scenes from /scenes to the game.scenes list.
 - Layers
 - Clean up textboxes
+- Add scale_display from nasergame (add a change display option for scale and windowed/fullscreen)
