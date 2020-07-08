@@ -25,4 +25,11 @@
 - Dynamically add scenes from /scenes to the game.scenes list.
 - Layers
 - Clean up textboxes
-- Add scale_display from nasergame (add a change display option for scale and windowed/fullscreen)
+
+## SNES Tester
+**Tests for...**
+- Are all colors on screen one of the ~32K allowed colors?
+- Are there more than 128 moving sprites on screen?
+- Are there more than 128 colors used per layer per scanline?
+- Are there more than 16 (15 + transparency) colors in a single sprite?
+- Are there more than 32 sprites in a single scanline?
