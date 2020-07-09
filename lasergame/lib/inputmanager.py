@@ -1,3 +1,55 @@
+"""Input Manager
+
+input = InputManager()
+
+# Map a keycode to an action
+input.map("LASERS", pygame.K_SPACE)
+
+input.map("JUMP", pygame.K_LCTRL)
+
+# Map multiple keycodes to an action
+input.map("INVENTORY", pygame.K_i)
+input.map("INVENTORY", pygame.K_TAB)
+
+# Unmap a single keycode
+input.unmap(keycode=pygame.K_i)
+
+input.map("PAUSE", pygame.K_p)
+input.map("PAUSE", pygame.K_PAUSE)
+
+# Unmap an action and all it's mapped keycodes
+input.unmap(action="PAUSE")
+
+# Unmap all actions
+input.clear_map()
+
+
+input.map("UP", pygame.K_w)
+input.map("DOWN", pygame.K_s)
+input.map("LEFT", pygame.K_a)
+input.map("RIGHT", pygame.K_d)
+input.map("SELECT", pygame.K_RSHIFT)
+input.map("START", pygame.K_ENTER)
+
+# Set an exclusive group
+input.set_exclusive(["UP", "DOWN"])
+input.set_exclusive(["LEFT", "RIGHT"])
+
+input.set_exclusive(["SELECT", "START"])
+
+# Remove an exclusive group
+input.remove_exclusive(["SELECT", "START"])
+
+# Check if an action is held down
+print(input.LASERS.held)
+
+# Check if an action has been pressed this frame
+print(input.PAUSE.pressed)
+
+# Check if an action has been released this frame
+print(input.JUMP.released)
+"""
+
 import re
 
 import pygame
@@ -49,9 +101,8 @@ class InputManager:
             self.actions[name] = ActionState(name)
         return self.actions[name]
 
-    def _removeIfUnusedAction(self, name):
+    def _removeIfUnusedAction(self, action):
         # If this action is not mapped to a keycode, remove it
-        action = self.actions[name]
         if not action.keycodes:
             # Remove it from any exclusive groups it may be in
             for ex in list(action.exclusive_groups):
@@ -61,7 +112,7 @@ class InputManager:
                 if len(new_ex) > 1:
                     self.set_exclusive(new_ex)
             # Remove it from the self.actions dictionary
-            del self.actions[name]
+            del self.actions[action.name]
 
     def map(self, action, keycode):
         """Map a keycode to an action
@@ -74,17 +125,27 @@ class InputManager:
         action_state.keycodes.add(keycode)
         self.keycodes[keycode] = action_state
 
-    def unmap_action(self, action):
-        """Remove all mappings for this action"""
-        for keycode in list(self.actions[action].keycodes):
+    def _unmap_action(self, name):
+        action = self.actions[name]
+        for keycode in list(action.keycodes):
             self.unmap(keycode)
 
-    def unmap(self, keycode):
-        """Remove a single keycode input mapping"""
+    def _unmap_keycode(self, keycode):
         action = self.keycodes[keycode]
         action.keycodes.remove(keycode)
         del self.keycodes[keycode]
-        self._removeIfUnusedAction(action.name)
+        self._removeIfUnusedAction(action)
+
+    def unmap(self, *, keycode=None, action=None):
+        """Remove mappings for a keycode or action"""
+        if keycode is None and action is None:
+            raise ValueError("Missing keycode or action")
+        if keycode is not None and action is not None:
+            raise ValueError("Only a single keycode or action is allowed")
+        if keycode is not None:
+            self._unmap_keycode(keycode)
+        if action is not None:
+            self._unmap_action(action)
 
     def clear_map(self):
         """Remove all input mappings"""
