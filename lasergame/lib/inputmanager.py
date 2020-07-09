@@ -1,16 +1,21 @@
+import re
+
 import pygame
 from pygame import locals as pygame_locals
 
 from lasergame.lib.constants import buttons as button_constants
-from lasergame.lib.attrdict import AttrDict
+
+
+RE_VALID_ACTION_NAME = re.compile(r"^[A-Z][A-Z0-9_]*$")
 
 
 class ActionState:
-    __slots__ = ["name", "keycodes", "pressed", "released", "held"]
+    __slots__ = ["name", "keycodes", "exclusive_groups", "pressed", "released", "held"]
 
     def __init__(self, name):
         self.name = name
         self.keycodes = set()
+        self.exclusive_groups = set()
         self.pressed = False
         self.released = False
         self.held = False
@@ -33,21 +38,36 @@ class InputManager:
     __slots__ = ["actions", "keycodes", "exclusive_action_groups"]
 
     def __init__(self):
-        self.actions = AttrDict()
+        self.actions = {}
         self.keycodes = {}
-        self.exclusive_action_groups = []
+        self.exclusive_action_groups = set()
 
-    def _createOrGetAction(self, action):
-        if action not in self.actions:
-            self.actions[action] = ActionState(action)
-        return self.actions[action]
+    def _createOrGetAction(self, name):
+        if not RE_VALID_ACTION_NAME.match(name):
+            raise ValueError(f"Invalid action name: {name}")
+        if name not in self.actions:
+            self.actions[name] = ActionState(name)
+        return self.actions[name]
 
-    def _removeIfUnusedAction(self, action):
-        if not self.actions[action].keycodes:
-            del self.actions[action]
+    def _removeIfUnusedAction(self, name):
+        # If this action is not mapped to a keycode, remove it
+        action = self.actions[name]
+        if not action.keycodes:
+            # Remove it from any exclusive groups it may be in
+            for ex in list(action.exclusive_groups):
+                self.unset_exclusive([action.name for action in ex])
+                new_ex = list(ex)
+                new_ex.remove(action)
+                if len(new_ex) > 1:
+                    self.set_exclusive(new_ex)
+            # Remove it from the self.actions dictionary
+            del self.actions[name]
 
     def map(self, action, keycode):
-        """Map a keycode to an action"""
+        """Map a keycode to an action
+
+        Valid action names consist of the characters [A-Z0-9_] and the first character must be [A-Z].
+        """
         if keycode in self.keycodes:
             self.unmap_keycode(keycode)
         action_state = self._createOrGetAction(action)
@@ -56,64 +76,67 @@ class InputManager:
 
     def unmap_action(self, action):
         """Remove all mappings for this action"""
-        for keycode in self.actions[action].keycodes:
+        for keycode in list(self.actions[action].keycodes):
             self.unmap(keycode)
 
     def unmap(self, keycode):
         """Remove a single keycode input mapping"""
-        action_state = self.keycodes[keycode]
-        action_state.keycodes.remove(keycode)
+        action = self.keycodes[keycode]
+        action.keycodes.remove(keycode)
         del self.keycodes[keycode]
-        self._removeIfUnusedAction(action_state.name)
+        self._removeIfUnusedAction(action.name)
 
     def clear_map(self):
         """Remove all input mappings"""
-        self.actions = AttrDict()
-        self.keycodes = {}
-        self.exclusive_action_groups = []
+        self.actions.clear()
+        self.keycodes.clear()
+        self.exclusive_action_groups.clear()
 
     def set_exclusive(self, actions):
         """Set multiple actions to be exclusive
 
         If more than one of these actions are held at the same time, all actions in the group are ignored.
         """
-        actions = tuple(sorted(*actions))
-        self.exclusive_action_groups.append(actions)
+        action_states = frozenset(self.actions[name] for name in actions)
+        for action_state in action_states:
+            action_state.exclusive_groups.add(action_states)
+        self.exclusive_action_groups.add(action_states)
 
     def unset_exclusive(self, actions):
         """Remove a set of exclusive actions"""
-        actions = tuple(sorted(*actions))
-        self.exclusive_action_groups.remove(actions)
+        action_states = frozenset(self.actions[name] for name in actions)
+        for action_state in action_states:
+            action_state.exclusive_groups.remove(action_states)
+        self.exclusive_action_groups.remove(action_states)
 
     def update(self, events):
         # Reset all actions
-        for action in self.actions:
-            action_state = self.actions[action]
-            action_state.reset()
+        for action in self.actions.values():
+            action.reset()
 
         # Set all pressed and released actions
         for e in events:
             if e.type == pygame.KEYDOWN:
                 if e.key in self.keycodes:
-                    action_state = self.keycodes[e.key]
-                    action_state.pressed = True
+                    action = self.keycodes[e.key]
+                    action.pressed = True
             elif e.type == pygame.KEYUP:
                 if e.key in self.keycodes:
-                    action_state = self.keycodes[e.key]
-                    action_state.released = True
+                    action = self.keycodes[e.key]
+                    action.released = True
 
         # Set all held actions
         pygame_pressed = pygame.key.get_pressed()
         for keycode in self.keycodes:
-            action_state = self.keycodes[keycode]
-            action_state.held = pygame_pressed[keycode]
+            action = self.keycodes[keycode]
+            action.held = pygame_pressed[keycode]
 
         # Check each exclusive action group to see if multiple actions have been triggered
         exclusive_actions_to_reset = set()
         for ex in self.exclusive_action_groups:
             held_count = 0
             for action in ex:
-                if self.actions[action].held:
+                if action.held:
                     held_count += 1
                 if held_count > 1:
                     # If multiple actions have triggered, the add all exclusive group actions to the list of actions that need to be reset
@@ -122,7 +145,7 @@ class InputManager:
 
         # Reset any actions that are breaking exclusive action group rules
         for action in exclusive_actions_to_reset:
-            self.actions[action].held = False
+            action.held = False
 
     def load(self):
         # TODO: Replace this with a more generic load method
@@ -130,3 +153,11 @@ class InputManager:
         for action, pygame_key in button_constants.items():
             keycode = getattr(pygame_locals, pygame_key)
             self.map(action, keycode)
+        self.set_exclusive(("UP", "DOWN"))
+        self.set_exclusive(("LEFT", "RIGHT"))
+
+    def __getattr__(self, name):
+        try:
+            return self.actions[name]
+        except KeyError:
+            raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")

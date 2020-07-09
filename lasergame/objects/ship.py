@@ -82,25 +82,25 @@ class Ship(CollidableGameObject):
         return (self.width / 2) + 2
 
     def update(self, clock, gm, **kwargs):
-        if gm.input.actions.UP.held:
+        if gm.input.UP.held:
             self.y -= self.speed * clock.get_time_secs()
-        if gm.input.actions.DOWN.held:
+        if gm.input.DOWN.held:
             self.y += self.speed * clock.get_time_secs()
-        if gm.input.actions.LEFT.held:
+        if gm.input.LEFT.held:
             self.x -= self.speed * clock.get_time_secs()
-        if gm.input.actions.RIGHT.held:
+        if gm.input.RIGHT.held:
             self.x += self.speed * clock.get_time_secs()
 
-        if gm.input.actions.A.held:
+        if gm.input.A.held:
             if self._lastbullet + (1 / self.bulletrate) < time.get_ticks_sec():
                 gm.add(Bullet((self.x + (self.height / 2), self.y), owner = self.uuid, bullettype = self.weaponselect))
                 play_sound(f"laser-{self._weaponselectindex + 1}", 0)
                 self._lastbullet = time.get_ticks_sec()
-        if gm.input.actions.L.pressed:
+        if gm.input.L.pressed:
             self._weaponselectindex = (self._weaponselectindex - 1) % len(bullettypes)
-        elif gm.input.actions.R.pressed:
+        elif gm.input.R.pressed:
             self._weaponselectindex = (self._weaponselectindex + 1) % len(bullettypes)
-        elif gm.input.actions.B.pressed:
+        elif gm.input.B.pressed:
             gm.add(Star(self.safecenter))
 
         super().update(gm=gm)

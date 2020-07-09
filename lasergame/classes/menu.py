@@ -153,19 +153,19 @@ class Menu(GameObject):
 
     def update(self, **kwargs):
         # Scroll up and down the menu.
-        if self.game.input.actions.UP.pressed:
+        if self.game.input.UP.pressed:
             self.selected -= 1
-        if self.game.input.actions.DOWN.pressed:
+        if self.game.input.DOWN.pressed:
             self.selected += 1
         # Wrap the cursor around.
         self.selected = self.selected % len(self.items)
         # If we're selected on a ValueMenuItem, left and right decrement and increment its value.
         if isinstance(self.items[self.selected], ValueMenuItem):
-            if self.game.input.actions.LEFT.pressed:
+            if self.game.input.LEFT.pressed:
                 self.items[self.selected].decrement()
-            if self.game.input.actions.RIGHT.pressed:
+            if self.game.input.RIGHT.pressed:
                 self.items[self.selected].increment()
-        if self.game.input.actions.START.pressed:
+        if self.game.input.START.pressed:
             self.items[self.selected].function
 
     def draw(self, **kwargs):

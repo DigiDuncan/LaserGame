@@ -22,7 +22,7 @@ class CollidableGameObject(GameObject):
             pygame.draw.rect(debugscreen, colors.RED.rgb, hitbox, 1)
 
     def update(self, gm, **kwargs):
-        self.showuuid = gm.input.actions.SELECT.held and gm.state.debug
+        self.showuuid = gm.input.SELECT.held and gm.state.debug
 
     def collide(self, other, **kwargs):
         pass

@@ -57,7 +57,7 @@ class Game():
 
             # Get input
             self.input.update(events=events)
-            if self.input.actions.FULLSCREEN.pressed:
+            if self.input.FULLSCREEN.pressed:
                 if display.fullscreen:
                     window_size = (conf.settings.windowwidth, conf.settings.windowheight)
                     display.set_mode((window_size))
@@ -67,7 +67,7 @@ class Game():
             paused = self.paused
             if not self.paused:
                 self.active.update(events=events)
-            if paused and self.input.actions.START.pressed:
+            if paused and self.input.START.pressed:
                 self.unpause()
             # Fill the background
             self.screen.fill(colors.BLACK.rgb)
