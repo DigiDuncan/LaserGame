@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import DOUBLEBUF, FULLSCREEN
 
 
 class Display():
@@ -28,9 +27,9 @@ class Display():
         full_screen : bool, optional
             Whether to create a window or a fullscreen display.
         """
-        flags = DOUBLEBUF
+        flags = pygame.DOUBLEBUF
         if fullscreen:
-            flags = flags | FULLSCREEN
+            flags = flags | pygame.FULLSCREEN
         self.output_surface = pygame.display.set_mode(display_size, flags)
         self.size = self.output_surface.get_size()
         self.fullscreen = fullscreen
