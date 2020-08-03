@@ -1,4 +1,3 @@
-import pygame
 from typing import Literal
 
 from digicolor import colors
