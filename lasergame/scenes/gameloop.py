@@ -10,6 +10,7 @@ from lasergame.lib.gamemanager import GameManager
 from lasergame.objects.box import Box
 from lasergame.objects.controller import Controller
 from lasergame.objects.framegraph import FrameGraph
+from lasergame.objects.score import Score
 from lasergame.objects.ship import Ship
 from lasergame.objects.star import Star
 
@@ -33,6 +34,7 @@ class GameLoop():
         self.gm.add(Box((conf.game.center[0] + 100, conf.game.center[1])))
         self.gm.add(Controller())
         self.gm.add(FrameGraph())
+        self.gm.add(Score())
 
     def update(self, events):
         # Pause

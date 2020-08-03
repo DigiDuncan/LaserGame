@@ -15,6 +15,7 @@ def render_text(text,
                 size=None,
                 background=None):
     font_obj = fonts.get(font, size=size)
+    text = str(text)
     textsurface = font_obj.render(text, antialias, color, background)
     return textsurface
 
