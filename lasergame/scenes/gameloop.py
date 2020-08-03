@@ -7,7 +7,6 @@ from digicolor import colors
 from lasergame.classes.inputlistener import InputListener
 from lasergame.lib import conf, constants
 from lasergame.lib.gamemanager import GameManager
-from lasergame.lib.pgutils import write
 from lasergame.objects.box import Box
 from lasergame.objects.controller import Controller
 from lasergame.objects.framegraph import FrameGraph
