@@ -1,4 +1,5 @@
 import pygame
+from typing import Literal
 
 from digicolor import colors
 
@@ -15,8 +16,10 @@ class Textbox(GameObject):
                  align = "left", valign = "top", color: tuple = colors.BLACK.rgb,
                  bordercolor: tuple = colors.WHITE.rgb, borderthickness: int = 1,
                  textspeed = 25,  # chars/sec
-                 fontsettings: dict = {}):
-        self.center = center
+                 fontsettings: dict = {},
+                 animationtype: Literal["frombottom", None] = None,
+                 animationspeed = 0):  # px/sec
+        self.finalcenter = self.center = center
         self.text = text
         self.initialtime = self.timetodeath = timetodeath
         self.height = height
@@ -35,7 +38,10 @@ class Textbox(GameObject):
         self.fontfont = fontsettings.get("font", None)
         self.fontsize = fontsettings.get("size", None)
 
-        super().__init__(center=center, z=zlayer.TEXT)
+        self.animationtype = animationtype
+        self.animationspeed = animationspeed
+
+        super().__init__(z=zlayer.TEXT)
 
     @property
     def left(self):
@@ -80,7 +86,7 @@ class Textbox(GameObject):
         elif self.fontalign == "center":
             tx = self.centerx
         elif self.fontalign == "right":
-            tx = self.righgt - self.borderthickness
+            tx = self.right - self.borderthickness
 
         if self.fontvalign == "top":
             ty = self.top + self.borderthickness
@@ -109,6 +115,10 @@ class Textbox(GameObject):
         self.timetodeath -= 1 / clock.get_fps()
         if not self.alive:
             gm.discard(self)
+        if self.animationtype == "frombottom":
+            ao = self.height - (self.timealive * self.animationspeed)
+            animationoffset = int(clamp(0, ao, self.height))
+            self.center = (self.finalcenter[0], self.finalcenter[1] + animationoffset)
 
     def draw(self, screen, **kwargs):
         box = pygame.Rect(self.left, self.top, self.width, self.height)
