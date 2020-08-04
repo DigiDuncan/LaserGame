@@ -51,7 +51,8 @@ class Box(CollidableGameObject):
                 self._hits += other.damage
                 gm.discard(other)
                 gm.add(Textbox((0, constants.game.height - 50), f"You've hit me for {self._hits} damage so far!", 5,
-                               fontsettings = {"font": "m5x7"}, animationtype = "frombottom", animationspeed = 100))
+                               fontsettings = {"font": "m5x7"}, animationtype = "frombottom", animationspeed = 100,
+                               name = "Box"))
                 gm.state.score += other.damage * 10
         super().update(gm=gm)
 

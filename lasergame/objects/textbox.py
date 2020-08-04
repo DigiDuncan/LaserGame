@@ -6,19 +6,27 @@ from digicolor import colors
 from lasergame.classes.gameobject import GameObject
 from lasergame.lib import constants
 from lasergame.lib.constants import zlayer
-from lasergame.lib.pgutils import write
+from lasergame.lib.pgutils import render_text, write, blit
 from lasergame.lib.utils import clamp
 
 
 class Textbox(GameObject):
-    def __init__(self, center: tuple, text: str, timetodeath: int, *,
-                 height = 50, width = constants.game.width,
-                 align = "left", valign = "top", color: tuple = colors.BLACK.rgb,
-                 bordercolor: tuple = colors.WHITE.rgb, borderthickness: int = 1,
+    def __init__(self,
+                 center: tuple,
+                 text: str,
+                 timetodeath: int, *,
+                 height = 50,
+                 width = constants.game.width,
+                 align = "left",
+                 valign = "top",
+                 color: tuple = colors.BLACK.rgb,
+                 bordercolor: tuple = colors.WHITE.rgb,
+                 borderthickness: int = 1,
                  textspeed = 25,  # chars/sec
-                 fontsettings: dict = {},
+                 fontsettings: dict = {},  # color, align, valign, antialias, font, size
                  animationtype: Literal["frombottom", None] = None,
-                 animationspeed = 0):  # px/sec
+                 animationspeed = 0,  # px/sec
+                 name = None):
         self.finalcenter = self.center = center
         self.text = text
         self.initialtime = self.timetodeath = timetodeath
@@ -40,6 +48,8 @@ class Textbox(GameObject):
 
         self.animationtype = animationtype
         self.animationspeed = animationspeed
+
+        self.name = name
 
         super().__init__(center=self.center, z=zlayer.TEXT)
 
@@ -119,6 +129,7 @@ class Textbox(GameObject):
             ao = self.height - (self.timealive * self.animationspeed)
             animationoffset = int(clamp(0, ao, self.height))
             self.center = (self.finalcenter[0], self.finalcenter[1] + animationoffset)
+        # TODO: fromtop animation
 
     def draw(self, screen, **kwargs):
         box = pygame.Rect(self.left, self.top, self.width, self.height)
@@ -134,3 +145,9 @@ class Textbox(GameObject):
                   antialias = self.fontantialias,
                   font = self.fontfont,
                   size = self.fontsize)
+        if self.name:
+            nametext = render_text(self.name, antialias = self.fontantialias, font = self.fontfont, size = self.fontsize)
+            namebox = pygame.Rect(self.left, self.top - nametext.get_height() + 2, nametext.get_width() + 2, nametext.get_height() + 2)
+            pygame.draw.rect(screen, self.color, namebox, 0)
+            pygame.draw.rect(screen, self.bordercolor, namebox, self.borderthickness)
+            blit(screen, nametext, (self.left + 1, self.top - nametext.get_height() + 1), halign = self.fontalign, valign = self.fontvalign)
