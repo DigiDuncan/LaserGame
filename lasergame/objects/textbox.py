@@ -41,7 +41,7 @@ class Textbox(GameObject):
         self.animationtype = animationtype
         self.animationspeed = animationspeed
 
-        super().__init__(z=zlayer.TEXT)
+        super().__init__(center=self.center, z=zlayer.TEXT)
 
     @property
     def left(self):
@@ -82,11 +82,11 @@ class Textbox(GameObject):
         tx = 0
         ty = 0
         if self.fontalign == "left":
-            tx = self.left + self.borderthickness
+            tx = self.left + self.borderthickness + 1
         elif self.fontalign == "center":
             tx = self.centerx
         elif self.fontalign == "right":
-            tx = self.right - self.borderthickness
+            tx = self.right - self.borderthickness - 1
 
         if self.fontvalign == "top":
             ty = self.top + self.borderthickness
