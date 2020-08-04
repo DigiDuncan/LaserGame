@@ -102,7 +102,7 @@ class Textbox(GameObject):
     @property
     def displaytext(self):
         ci = self.timealive * self.textspeed
-        currentindex = int(clamp(0, ci, len(self.text) - 1))
+        currentindex = int(clamp(0, ci, len(self.text)))
         return self.text[:currentindex]
 
     def update(self, gm, clock, **kwargs):
