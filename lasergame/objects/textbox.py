@@ -147,7 +147,7 @@ class Textbox(GameObject):
                   size = self.fontsize)
         if self.name:
             nametext = render_text(self.name, antialias = self.fontantialias, font = self.fontfont, size = self.fontsize)
-            namebox = pygame.Rect(self.left, self.top - nametext.get_height() + 2, nametext.get_width() + 2, nametext.get_height() + 2)
+            namebox = pygame.Rect(self.left, self.top - nametext.get_height(), nametext.get_width() + 4, nametext.get_height())
             pygame.draw.rect(screen, self.color, namebox, 0)
             pygame.draw.rect(screen, self.bordercolor, namebox, self.borderthickness)
-            blit(screen, nametext, (self.left + 1, self.top - nametext.get_height() + 1), halign = self.fontalign, valign = self.fontvalign)
+            blit(screen, nametext, (self.left + 2, (self.top - nametext.get_height())), halign = self.fontalign, valign = self.fontvalign)
