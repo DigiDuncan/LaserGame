@@ -82,6 +82,12 @@ class Ship(CollidableGameObject):
         return (self.width / 2) + 2
 
     def update(self, clock, gm, **kwargs):
+        collisions = gm.collisions[self]
+        for other in collisions:
+            if isinstance(other, Bullet) and other.owner != self.uuid:
+                gm.state.health -= 1
+                gm.discard(other)
+
         if gm.input.UP.held:
             self.y -= self.speed * clock.get_time_secs()
         if gm.input.DOWN.held:
