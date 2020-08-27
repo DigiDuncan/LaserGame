@@ -55,7 +55,7 @@ class Box(CollidableGameObject):
                                name = "Box"))
                 gm.state.score += other.damage * 10
         if gm.input.X.pressed:
-            gm.add(Bullet((self.x + (self.height / 2), self.y), 270, owner = self.uuid, bullettype = "red"))
+            gm.add(Bullet((self.x - (self.height / 2), self.y), 270, owner = self.uuid, bullettype = "red"))
         super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):
