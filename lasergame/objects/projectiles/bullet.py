@@ -3,6 +3,7 @@ import pygame
 from digicolor import colors
 
 from lasergame.classes.projectile import Projectile
+from lasergame.lib.utils import degreesToXY, maxTuple
 
 bullettypes = {
     "red": {
@@ -41,8 +42,9 @@ bullettypes = {
 class Bullet(Projectile):
     __slots__ = ["bullettype"]
 
-    def __init__(self, center: tuple, *, owner, speed = 180, bullettype = "red", **kwargs):
+    def __init__(self, center: tuple, angle = 90, *, owner, speed = 180, bullettype = "red", **kwargs):
         self.bullettype = bullettype
+        self.angle = angle
         super().__init__(center = center, owner = owner, **kwargs)
 
     @property
@@ -67,11 +69,24 @@ class Bullet(Projectile):
             return bullettypes["red"]["radius"]
 
     @property
+    def xmove(self):
+        xy = degreesToXY(self.angle)
+        return xy["x"] * self.speed
+
+    @property
+    def ymove(self):
+        xy = degreesToXY(self.angle)
+        for k, v in xy.items():
+            v *= self.speed
+        return xy["y"] * self.speed
+
+    @property
     def uuid_offset(self):
         return self.radius + 3
 
     def update(self, clock, screen, gm, **kwargs):
-        self.x += self.speed * clock.get_time_secs()
+        self.x += self.xmove * clock.get_time_secs()
+        self.y += self.ymove * clock.get_time_secs()
         if not self.is_on_screen(screen):
             gm.discard(self)
         super().update(gm=gm, clock=clock, screen=screen)

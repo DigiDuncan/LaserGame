@@ -93,7 +93,7 @@ class Ship(CollidableGameObject):
 
         if gm.input.A.held:
             if self._lastbullet + (1 / self.bulletrate) < time.get_ticks_sec():
-                gm.add(Bullet((self.x + (self.height / 2), self.y), owner = self.uuid, bullettype = self.weaponselect))
+                gm.add(Bullet((self.x + (self.height / 2), self.y), 90, owner = self.uuid, bullettype = self.weaponselect))
                 play_sound(f"laser-{self._weaponselectindex + 1}", 0)
                 self._lastbullet = time.get_ticks_sec()
         if gm.input.L.pressed:

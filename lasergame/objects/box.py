@@ -47,13 +47,15 @@ class Box(CollidableGameObject):
     def update(self, gm, **kwargs):
         collisions = gm.collisions[self]
         for other in collisions:
-            if isinstance(other, Bullet):
+            if isinstance(other, Bullet) and other.owner != self.uuid:
                 self._hits += other.damage
                 gm.discard(other)
                 gm.add(Textbox((0, constants.game.height - 50), f"You've hit me for {self._hits} damage so far!", 5,
                                fontsettings = {"font": "m5x7"}, animationtype = "frombottom", animationspeed = 100,
                                name = "Box"))
                 gm.state.score += other.damage * 10
+        if gm.input.X.pressed:
+            gm.add(Bullet((self.x + (self.height / 2), self.y), 270, owner = self.uuid, bullettype = "red"))
         super().update(gm=gm)
 
     def draw(self, screen, debugscreen, **kwargs):
