@@ -75,7 +75,8 @@ class Ship(CollidableGameObject):
     @property
     def collision_box(self):
         # return pygame.Rect(self.left, self.top, self.width, self.height)
-        return pygame.Rect(self.x, self.y, 1, 1)
+        size = 6
+        return pygame.Rect(self.x - (size / 2), self.y - (size / 2), size, size)
 
     @property
     def uuid_offset(self):
