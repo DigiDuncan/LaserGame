@@ -12,6 +12,8 @@ class Star(GameObject):
     __slots__ = ["twinkle", "size"]
 
     colors = [colors.LIGHT_GRAY.rgb] * 300 + [colors.WHITE.rgb] * 4 + [colors.LIGHT_YELLOW.rgb] * 4 + [colors.YELLOW.rgb]
+    # Clown vomit.
+    # colors = [c[1].rgb for c in colors]
     color_speed = 8
 
     def __init__(self, center, size = 2):
