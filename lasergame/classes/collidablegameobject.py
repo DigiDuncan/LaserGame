@@ -8,6 +8,9 @@ from lasergame.lib.pgutils import scale_rect
 
 
 class CollidableGameObject(GameObject):
+    __slots__ = []
+
+
     @property
     def uuid_offset(self):
         return 0
