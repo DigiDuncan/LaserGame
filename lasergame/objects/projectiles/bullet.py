@@ -40,9 +40,9 @@ bullettypes = {
 
 
 class Bullet(Projectile):
-    __slots__ = ["bullettype"]
+    __slots__ = ["bullettype", "angle", "speed"]
 
-    def __init__(self, center: tuple, angle = 90, *, owner, speed = 180, bullettype = "red", **kwargs):
+    def __init__(self, center: tuple, angle = 90, *, owner, bullettype = "red", **kwargs):
         self.bullettype = bullettype
         self.angle = angle
         super().__init__(center = center, owner = owner, **kwargs)
