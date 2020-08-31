@@ -3,7 +3,7 @@ import pygame
 from digicolor import colors
 
 from lasergame.classes.projectile import Projectile
-from lasergame.lib.utils import degreesToXY, maxTuple
+from lasergame.lib.utils import degreesToXY
 
 bullettypes = {
     "red": {

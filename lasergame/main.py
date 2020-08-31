@@ -7,7 +7,6 @@ from lasergame.lib import conf, constants
 from lasergame.lib.display import display
 from lasergame.lib.inputmanager import InputManager
 from lasergame.lib.pgutils import write
-from lasergame.lib.utils import maxTuple
 from lasergame.scenes.gameloop import GameLoop
 from lasergame.scenes.mainmenu import MainMenu
 from lasergame.scenes.optionsmenu import OptionsMenu
