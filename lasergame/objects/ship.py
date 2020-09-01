@@ -87,6 +87,7 @@ class Ship(CollidableGameObject):
         for other in collisions:
             if isinstance(other, Bullet) and other.owner != self.uuid:
                 gm.state.health -= 1
+                play_sound(f"laser-7", 0)
                 gm.discard(other)
 
         if gm.input.UP.held:
