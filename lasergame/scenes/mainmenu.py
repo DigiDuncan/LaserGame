@@ -50,12 +50,20 @@ class MainMenu(Menu):
 
     def draw(self, **kwargs):
         super().draw()
+        write(self.screen,
+              (3, 0),
+              nygame.time.get_ticks_sec(),
+              antialias = False,
+              font = "SinsGold",
+              size = 16,
+              color = colors.LIGHT_CYAN.rgb)
         splash = render_text(self.splashtext,
                              antialias = False,
                              font = "SinsGold",
                              size = 16,
                              color = colors.LIGHT_CYAN.rgb)
-        splash_rot = (1.5 * math.sin(5 * nygame.time.get_ticks_sec())) * 2.5
+        # splash_rot = magnitude * sin(speed * time_elapsed)
+        splash_rot = 3.75 * math.sin(5 * nygame.time.get_ticks_sec())
         splash = pygame.transform.rotate(splash, splash_rot)
         write(self.screen, (0, -50), "LaserGame",
               antialias = False,
