@@ -22,6 +22,7 @@ class MainMenu(Menu):
     def __init__(self, *, game):
         self.splashtext = random.choice(splashtexts).upper()
         self.logo = images.get("digisoft-small")
+        self.start_time = nygame.time.get_ticks_sec()
         x, y = conf.game.center
         coords = x, y + 30
         super().__init__(
@@ -48,41 +49,59 @@ class MainMenu(Menu):
             }
         )
 
+    @property
+    def current_time(self):
+        return nygame.time.get_ticks_sec() - self.start_time
+
     def draw(self, **kwargs):
         super().draw()
-        write(self.screen,
-              (3, 0),
-              nygame.time.get_ticks_sec(),
-              antialias = False,
-              font = "SinsGold",
-              size = 16,
-              color = colors.LIGHT_CYAN.rgb)
-        splash = render_text(self.splashtext,
-                             antialias = False,
-                             font = "SinsGold",
-                             size = 16,
-                             color = colors.LIGHT_CYAN.rgb)
-        # splash_rot = magnitude * sin(speed * time_elapsed)
-        splash_rot = 3.75 * math.sin(5 * nygame.time.get_ticks_sec())
-        splash = pygame.transform.rotate(splash, splash_rot)
-        write(self.screen, (0, -50), "LaserGame",
-              antialias = False,
-              font = "EndlessBossBattleRegular",
-              size = 24,
-              halign = "center",
-              valign = "center",
-              screen_halign = "center",
-              screen_valign = "center")
-        blit(self.screen, splash, (0, -25),
-             halign="center",
-             valign = "center",
-             screen_halign = "center",
-             screen_valign = "center")
-        blit(self.screen, self.logo, (0, 0),
-             halign="center",
-             valign="bottom",
-             screen_halign="center",
-             screen_valign="bottom")
+        if self.current_time < 1.25:
+            black = pygame.Surface((self.screen.get_width(), self.screen.get_height()))
+            black.fill(colors.BLACK.rgb)
+            blit(self.screen, black, (0, 0))
+            write(self.screen, (0, 40 * self.current_time - 100), "LaserGame",
+                  antialias = False,
+                  font = "EndlessBossBattleRegular",
+                  size = 24,
+                  halign = "center",
+                  valign = "center",
+                  screen_halign = "center",
+                  screen_valign = "center")
+        else:
+            # Have a white flash with a fade lasting 0.5 seconds here.
+            write(self.screen,
+                  (3, 0),
+                  nygame.time.get_ticks_sec(),
+                  antialias = False,
+                  font = "SinsGold",
+                  size = 16,
+                  color = colors.LIGHT_CYAN.rgb)
+            splash = render_text(self.splashtext,
+                                 antialias = False,
+                                 font = "SinsGold",
+                                 size = 16,
+                                 color = colors.LIGHT_CYAN.rgb)
+            # splash_rot = magnitude * sin(speed * time_elapsed)
+            splash_rot = 3.75 * math.sin(5 * nygame.time.get_ticks_sec())
+            splash = pygame.transform.rotate(splash, splash_rot)
+            write(self.screen, (0, -50), "LaserGame",
+                  antialias = False,
+                  font = "EndlessBossBattleRegular",
+                  size = 24,
+                  halign = "center",
+                  valign = "center",
+                  screen_halign = "center",
+                  screen_valign = "center")
+            blit(self.screen, splash, (0, -25),
+                 halign="center",
+                 valign = "center",
+                 screen_halign = "center",
+                 screen_valign = "center")
+            blit(self.screen, self.logo, (0, 0),
+                 halign="center",
+                 valign="bottom",
+                 screen_halign="center",
+                 screen_valign="bottom")
 
 
 pygame.quit()
