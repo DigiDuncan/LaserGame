@@ -1,3 +1,3 @@
 @echo off
-py -3.8 -m lasergame
+python -m lasergame
 pause
